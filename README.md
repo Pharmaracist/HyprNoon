@@ -30,7 +30,7 @@
 ## 📚 Table of Contents
 - [Features](#-features)
 - [Installation](#-installation)
-- [Screenshots](#-showcase)
+- [Showcase](#-showcase)
 - [Credits](#-credits)
 - [Contributing](#-contributing)
 - [License](#-license)
