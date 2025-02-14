@@ -30,7 +30,7 @@
 ## 📚 Table of Contents
 - [Features](#-features)
 - [Installation](#-installation)
-- [Showcase](#-Showcase)
+- [Showcase](#showcase)
 - [Credits](#-credits)
 - [Contributing](#-contributing)
 - [License](#-license)
@@ -62,7 +62,6 @@ WIP
 ```
 
 ## 🖼️ Showcase
-
 <div align="center">
   <details open>
     <summary>Desktop</summary>
