@@ -84,3 +84,7 @@ We welcome contributions! Please feel free to submit a pull request or open an i
 
 ## 📜 License
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/pharmaracist/HyprNoon/blob/main/LICENSE) for more details.
+
+## Join Us On Discord!
+You can join our community and help us GROW!
+[Invite Link](https://discord.gg/uJs5x6kKp7)
