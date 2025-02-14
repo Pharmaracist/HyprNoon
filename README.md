@@ -29,8 +29,8 @@
 
 ## 📚 Table of Contents
 - [Features](#-features)
-- [Getting The Dots](-getting-the-dots-)
-- [Showcase](-showcase)
+- [Getting The Dots](#-getting-the-dots-)
+- [Showcase](#%EF%B8%8F-showcase)
 - [Credits](#-credits)
 - [Contributing](#-contributing)
 - [License](#-license)
