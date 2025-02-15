@@ -6,11 +6,10 @@ import GLib from "gi://GLib";
 import Gio from 'gi://Gio';
 import Applications from 'resource:///com/github/Aylur/ags/service/applications.js';
 const { execAsync, exec } = Utils;
-const { Overlay, Revealer, RevealerState, RevealerTransitionType, RevealerTransitionDirection } = Widget;
 import { execAndClose, expandTilde, hasUnterminatedBackslash, couldBeMath, launchCustomCommand, ls } from './miscfunctions.js';
 import {
     CalculationResultButton, CustomCommandButton, DirectoryButton,
-    DesktopEntryButton, ExecuteCommandButton, SearchButton, AiButton, WallpaperButton, NoResultButton,
+    DesktopEntryButton, ExecuteCommandButton, SearchButton, AiButton, NoResultButton,
 } from './searchbuttons.js';
 import { checkKeybind } from '../.widgetutils/keybind.js';
 import GeminiService from '../../services/gemini.js';
@@ -108,7 +107,7 @@ export const SearchAndWindows = () => {
         hpack: 'center',
         child: Widget.Label({
             className: 'overview-search-prompt txt-small txt',
-            label: getString(`hi ${GLib.get_real_name()} ! Lets Dive!`),
+            label: getString('Type to search')
         }),
     });
 
@@ -195,7 +194,6 @@ export const SearchAndWindows = () => {
                 resultsBox.add(AiButton({ text }));
             if (options.search.enableFeatures.webSearch)
                 resultsBox.add(SearchButton({ text }));
-                resultsBox.add(WallpaperButton({ text }));
             if (resultsBox.children.length === 0)
                 resultsBox.add(NoResultButton());
 
@@ -206,26 +204,19 @@ export const SearchAndWindows = () => {
     return Widget.Box({
         vertical: true,
         children: [
-            Widget.Overlay({
-                child:overviewContent,
-                overlays:[
+            Widget.Box({
+                hpack: 'center',
+                children: [
+                    entry,
                     Widget.Box({
-                        hpack: 'center',
-                        vexpand:false,
-                        vpack:'start',
-                        css:`margin-top: 1rem;`,
-                        children: [
-                            entry,
-                            Widget.Box({
-                                className: 'overview-search-icon-box',
-                            setup: box => box.pack_start(entryPromptRevealer, true, true, 0),
-                        }),
-                        entryIcon,
-                    ]
-                }),
-            ],
-        }),
-        resultsRevealer,
+                        className: 'overview-search-icon-box',
+                        setup: box => box.pack_start(entryPromptRevealer, true, true, 0),
+                    }),
+                    entryIcon,
+                ]
+            }),
+            overviewContent,
+            resultsRevealer,
         ],
         setup: (self) => self
             .hook(App, (_b, name, visible) => {

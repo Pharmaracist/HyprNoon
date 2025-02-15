@@ -59,16 +59,33 @@ class TodoService extends Service {
     constructor() {
         super();
         this._todoPath = `${GLib.get_user_state_dir()}/ags/user/todo.json`;
-        try {
-            const fileContents = Utils.readFile(this._todoPath);
-            this._todoJson = JSON.parse(fileContents);
+        
+        // Ensure directory exists
+        const dirPath = `${GLib.get_user_state_dir()}/ags/user`;
+        if (!GLib.file_test(dirPath, GLib.FileTest.EXISTS)) {
+            Utils.exec(`mkdir -p '${dirPath}'`);
         }
-        catch {
-            Utils.exec(`bash -c 'mkdir -p ${GLib.get_user_cache_dir()}/ags/user'`);
-            Utils.exec(`touch ${this._todoPath}`);
-            Utils.writeFile("[]", this._todoPath).then(() => {
-                this._todoJson = JSON.parse(Utils.readFile(this._todoPath))
-            }).catch(print);
+        
+        // Initialize with empty array
+        this._todoJson = [];
+        
+        // Try to read existing file
+        try {
+            if (GLib.file_test(this._todoPath, GLib.FileTest.EXISTS)) {
+                const fileContents = Utils.readFile(this._todoPath);
+                const parsed = JSON.parse(fileContents);
+                if (Array.isArray(parsed)) {
+                    this._todoJson = parsed;
+                }
+            }
+        } catch (error) {
+            console.error('Error reading todo file:', error);
+        }
+        
+        // Ensure file exists with valid content
+        if (!GLib.file_test(this._todoPath, GLib.FileTest.EXISTS)) {
+            Utils.writeFile(JSON.stringify(this._todoJson), this._todoPath)
+                .catch(error => console.error('Error writing todo file:', error));
         }
     }
 }

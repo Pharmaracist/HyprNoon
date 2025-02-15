@@ -12,7 +12,7 @@ import { PrayerTimesWidget } from "./prayertimes.js";
 // Кэшируем часто используемые значения
 let calendarJson = getCalendarLayout(undefined, true);
 let monthshift = 0;
-let userOpts = userOptions.asyncGet();
+const userOpts = userOptions.asyncGet();
 
 // Оптимизированная функция получения даты
 function getDateInXMonthsTime(x) {
@@ -163,12 +163,12 @@ const CalendarWidget = () => {
   });
 };
 
-const defaultShown = userOpts.muslim?.enabled ? "PrayerTimes" : "calendar";
+const defaultShown = "PrayerTimes";
 const contentStack = Widget.Stack({
   // hexpand: true,
   vexpand: false,
   children: {
-    ...(userOpts.muslim?.enabled ? { PrayerTimes: PrayerTimesWidget() } : {}),
+    PrayerTimes: PrayerTimesWidget(),
     calendar: CalendarWidget(),
     todo: TodoWidget(),
     media: AudioFiles(),
@@ -176,15 +176,7 @@ const contentStack = Widget.Stack({
   },
   transition: "slide_up_down",
   transitionDuration: userOpts.animations.durationLarge,
-  setup: (stack) => {
-    Utils.timeout(1, () => (stack.shown = defaultShown));
-    userOptions.subscribe(newOpts => {
-      userOpts = newOpts;
-      if (!newOpts.muslim?.enabled && stack.shown === "PrayerTimes") {
-        stack.shown = "calendar";
-      }
-    });
-  },
+  setup: (stack) => Utils.timeout(1, () => (stack.shown = defaultShown)),
 });
 
 const StackButton = (stackItemName, icon, name) =>
@@ -234,7 +226,7 @@ export const ModuleCalendar = () =>
           vertical: true,
           className: "sidebar-navrail spacing-v-10",
           children: [
-            ...(userOpts.muslim?.enabled ? [StackButton("PrayerTimes", "mosque", getString("Prayers"))] : []),
+            StackButton("PrayerTimes", "mosque", getString("Prayers")),
             StackButton("calendar", "calendar_month", getString("Calendar")),
             StackButton("todo", "done_outline", getString("To Do")),
             StackButton("media", "music_note", getString("Media")),

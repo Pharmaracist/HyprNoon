@@ -1,15 +1,15 @@
 [config.wallpaper]
 command = "swww"
-set = false
+
 [templates.ags]
 input_path = '~/.config/matugen/templates/ags.scss'
 output_path = '~/.local/state/ags/scss/_material.scss'
-post_hook = 'agsv1 run-js "handleStyles(false);"'
+post_hook='agsv1 run-js "handleStyles(false);"'
 
 [templates.gradience]
 input_path = '~/.config/matugen/templates/gradience.json'
 output_path = '~/.cache/ags/user/generated/gradience/gradience.json'
-post_hook = 'gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both'
+post_hook='rm -rf ~/.config/gtk-4.0 & rm -rf ~/.config/gtk-3.0 & gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both'
 
 [templates.hyprlock]
 input_path = '~/.config/matugen/templates/hyprlock.conf'
@@ -44,6 +44,7 @@ output_path = '/mnt/Data/General-Archive/obsidian/.obsidian/snippets/material-yo
 [templates.vscode]
 input_path = '~/.config/matugen/templates/vscode-color-theme.json'
 output_path = '~/.windsurf/extensions/theme-material-you/themes/vscode.json'
+post_hook = 'cp ~/.config/matugen/other/vscode-package.json ~/.windsurf/extensions/theme-material-you/package.json'
 
 [templates.pywalfox]
 input_path = '~/.config/matugen/templates/pywalfox-colors.json'

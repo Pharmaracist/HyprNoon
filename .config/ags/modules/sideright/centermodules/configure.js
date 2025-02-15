@@ -1,4 +1,4 @@
-const { GLib, Gio } = imports.gi;
+const { GLib } = imports.gi;
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
@@ -74,19 +74,6 @@ export default (props) => {
                                     .catch(print);
                             },
                         }),
-                        ConfigToggle({
-                            icon: 'image',
-                            name: getString('GoWall'),
-                            desc: getString('Theme Wallpaper for ColorPalette'),
-                            initValue: exec(`bash -c "sed -n \'4p\' ${GLib.get_user_state_dir()}/ags/user/colormode.txt"`) != "none",
-                            onChange: (self, newValue) => {
-                                const gowall = newValue == 0 ? "none" : "catppuccin";
-                                console.log(gowall);
-                                execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "4s/.*/${gowall}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`])
-                                    .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh --switch`]))
-                                    .catch(print);
-                            },
-                        }),
                         HyprlandToggle({ icon: 'blur_on', name: getString('Blur'), desc: getString("[Hyprland]\nEnable blur on transparent elements\nDoesn't affect performance/power consumption unless you have transparent windows."), option: "decoration:blur:enabled" }),
                         Subcategory([
                             HyprlandToggle({ icon: 'stack_off', name: getString('X-ray'), desc: getString("[Hyprland]\nMake everything behind a window/layer except the wallpaper not rendered on its blurred surface\nRecommended to improve performance (if you don't abuse transparency/blur) "), option: "decoration:blur:xray" }),
@@ -108,7 +95,7 @@ export default (props) => {
                                 onChange: (self, newValue) => {
                                     userOptions.asyncGet().animations.choreographyDelay = newValue
                                 },
-                            }),
+                            })
                         ]),
                     ]
                 }),
@@ -146,7 +133,7 @@ export default (props) => {
         vertical: true,
         children: [
             mainContent,
-            // footNote,
+            footNote,
         ]
     });
 }

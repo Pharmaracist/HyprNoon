@@ -98,11 +98,7 @@ $bar_ws_width_focus_active: 6.045rem;
     background-color: $layer0;
     min-height: 1.364rem;
 }
-.bar-notch {
-    background-color: $layer0;
-    padding: 0rem 0.681rem;
-    border-radius: 0 0 $rounding_medium $rounding_medium;
-}
+
 .bar-bg-nothing {
     background-color: $layer0;
     min-height: 2px;
@@ -508,14 +504,6 @@ $bar_ws_width_focus_active: 6.045rem;
     color: $utilsOnLayer2;
 }
 
-.bar-util-btn2 {
-    @include full-rounding;
-    @include element_decel;
-    min-height: 1.77rem;
-    min-width: 1.77rem;
-    background-color: $layer0;
-    color: $utilsOnLayer2;
-}
 .bar-util-btn:hover,
 .bar-util-btn:focus {
     background-color: $layer2Hover;

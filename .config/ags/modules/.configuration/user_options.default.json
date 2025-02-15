@@ -1,10 +1,4 @@
 {
-  "muslim": {
-    "enabled": true,
-    "prayerTimes": {
-      "city": "Cairo"
-    }
-  },
   "indicators": {
     "enabled": true
   },
@@ -190,6 +184,10 @@
     "wsNumMarginScale": 0.07
   },
   "sidebar": {
+    "adhan": {
+      "default": "adhan_default.mp3",
+      "fajr": "adhan_fajr.mp3"
+    },
     "centerModules": {
       "enabled": [
         "vpnGate",
@@ -316,7 +314,6 @@
       "apis": {
         "order": [
           "gpt",
-          "gemini",
           "quran",
           "translater"
         ]
@@ -519,12 +516,6 @@
       "showMusic": true,
       "showBattery": true,
       "showAvatar": true
-    }
-  },
-  "etc":{
-    "weather":{
-      "cycle": false,
-      "cycleTimeout":"5000"
     }
   }
 }

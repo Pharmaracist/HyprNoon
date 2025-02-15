@@ -42,7 +42,7 @@ export default (monitor) =>
           children: [
             TimeAndLaunchesWidget(),
             Widget.Box({ hexpand: true }),
-            // Widget.Box({vertical:true,children:[wiseCat,Widget.Box({vexpand:true})]})
+            Widget.Box({vertical:true,children:[wiseCat,Widget.Box({vexpand:true})]})
           ],
         }),
       ],

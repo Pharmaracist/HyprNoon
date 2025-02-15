@@ -1,11 +1,11 @@
 .overview-window {
-    margin-top: 1.727rem;
+    margin-top: 2.727rem;
 }
 
 .overview-search-box {
     @include element_decel;
     @include large-rounding;
-    // @include elevation-border;
+    @include elevation-border;
     @include elevation2;
     min-width: 13.636rem;
     min-height: 3.409rem;
@@ -96,7 +96,7 @@
     @include large-rounding;
     @include elevation-border;
     @include elevation2;
-    padding: 4rem 0.341rem 0.441rem;
+    padding: 0.341rem;
     background-color: $background;
     color: $onBackground;
 }

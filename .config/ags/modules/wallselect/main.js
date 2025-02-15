@@ -5,20 +5,11 @@ import userOptions from "../.configuration/user_options.js";
 import GLib from 'gi://GLib';
 const { Box, Label, EventBox, Scrollable, Button } = Widget;
 import ColorPicker from "../bar/modules/color_picker.js";
-import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
 // Constants
 const CONFIG_DIR = GLib.get_home_dir() + '/.config/ags';
 const WALLPAPER_DIR = GLib.get_home_dir() + (userOptions.asyncGet().wallselect.wallpaperFolder || '/Pictures/wallpapers');
 const THUMBNAIL_DIR = GLib.build_filenamev([WALLPAPER_DIR, "thumbnails"]);
-const bottomRightCorner = RoundedCorner('topright', {
-    className: 'corner corner-wallselect',
-    // vpack:'end'
 
-})
-const bottomLeftCorner = RoundedCorner('topleft', {
-    className: 'corner corner-wallselect',
-    // vpack:'end'
-})
 // Cached Variables
 let wallpaperPathsPromise = null;
 let cachedContent = null;
@@ -28,7 +19,7 @@ const WallpaperButton = (path) =>
     Widget.Button({
         child: Box({ className: "preview-box", css: `background-image: url("${path}");` }),
         onClicked: () => {
-                Utils.execAsync(['sh', `${CONFIG_DIR}/scripts/color_generation/switchwall.sh`, path.replace("thumbnails", "")]).catch(print);
+                Utils.execAsync(['sh', `${CONFIG_DIR}/scripts/color_generation/switchwall.sh`, path.replace("thumbnails", "")]);
                 App.closeWindow("wallselect");
         },
     });
@@ -140,51 +131,7 @@ const ColorPickerBox = () => Box({
     child:ColorPicker()
 });
 export { toggleWindow };
-const MainContent = () => Box({
-    vertical: true,
-    className: "wallselect-container",
-    children:[ 
-        Box({
-            vertical: true,
-            className: "wallselect-window spacing-v-15",
-        vpack: userOptions.asyncGet().bar.position === "top" ? 'start' : 'end',
-        children: [,
-            Box({
-                className: "wallselect-header",
-                children: [
-                    ColorPickerBox(),
-                    Box({ hexpand: true }),
-                    GenerateButton(),
-                ],
-            }),
-            Box({
-                vertical: true,
-                className: "sidebar-module",
-                setup: (self) =>
-                    self.hook(
-                        App,
-                        async (_, name, visible) => {
-                            if (name === "wallselect" && visible) {
-                                const content = await createContent();
-                                self.children = [content];
-                            }
-                        },
-                        "window-toggled",
-                    ),
-            }),
-        ],
-    }),
-    Widget.Box({
-        children: [
-            bottomLeftCorner,
-            Widget.Box({
-                hexpand: true,
-            }),
-            bottomRightCorner,
-        ],
-    }),
-]
-});
+
 // Main Window
 export default () => Widget.Window({
     name: "wallselect",
@@ -199,7 +146,36 @@ export default () => Widget.Window({
             child: Box({ css: 'min-height: 1000px;', }),
         }),
         overlays: [
-             MainContent(),
+            Box({
+                vertical: true,
+                className: "sidebar-right spacing-v-15",
+                vpack: userOptions.asyncGet().bar.position === "top" ? 'start' : 'end',
+                children: [
+                    Box({
+                        className: "wallselect-header",
+                        children: [
+                            ColorPickerBox(),
+                            Box({ hexpand: true }),
+                            GenerateButton(),
+                        ],
+                    }),
+                    Box({
+                        vertical: true,
+                        className: "sidebar-module",
+                        setup: (self) =>
+                            self.hook(
+                                App,
+                                async (_, name, visible) => {
+                                    if (name === "wallselect" && visible) {
+                                        const content = await createContent();
+                                        self.children = [content];
+                                    }
+                                },
+                                "window-toggled",
+                            ),
+                    }),
+                ],
+            }),
         ],
     }),
 });

@@ -8,7 +8,7 @@ import { setupCursorHover } from '../.widgetutils/cursorhover.js';
 import { showColorScheme } from '../../variables.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { darkMode } from '../.miscutils/system.js';
-import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
+
 const ColorBox = ({
     name = 'Color',
     ...rest
@@ -34,7 +34,6 @@ const ColorSchemeSettingsRevealer = () => {
         hpack: 'end',
         child: headerButtonIcon,
     });
-    
     const content = Widget.Revealer({
         revealChild: false,
         transition: 'slide_down',
@@ -46,7 +45,7 @@ const ColorSchemeSettingsRevealer = () => {
                     if (isHoveredColorschemeSettings.value == false)
                         revealer.revealChild = false;
                     headerButtonIcon.label = 'expand_more';
-                }, 100);
+                }, 1500);
             }
         }),
     });
@@ -89,9 +88,9 @@ const gowallArr = [
         { name: getString('One Dark'), value: 'onedark' },
         { name: getString('Solarized'), value: 'solarized' },
         { name: getString('Cyber'), value: 'cyberpunk' },
-        { name: getString('B&W'), value: 'monochrome' },
     ],
     // [
+    //     { name: getString('Material'), value: 'catppuccin' },
     //     { name: getString('Atom One Light'), value: 'nord' },
     //     { name: getString('Sweet'), value: 'everforest' },
     //     { name: getString('Synthwave 84'), value: 'synthwave84' },
@@ -112,6 +111,9 @@ const gowallArr = [
     //     { name: getString('Github Black'), value: 'dracula' },
     //     { name: getString('Github White'), value: 'tokyo-night' },
     // ],
+    [
+        { name: getString('Off'), value: 'none' },
+    ],
 ];
 const schemeOptionsArr = [
     [
@@ -185,10 +187,14 @@ const ColorSchemeSettings = () => Widget.Box({
                     desc: getString('Theme Wallpaper for ColorPalette'),
                     initValue: initGowallIndex,
                     onChange: async (self, newValue) => {
-                            const gowall = newValue == 0 ? "none" : "catppuccin";
+                        try {
+                            const gowall = newValue == 0 ? "none" : "";
                             await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "4s/.*/${gowall}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
                             await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
-                       },
+                        } catch (error) {
+                            console.error('Error changing transparency:', error);
+                        }
+                    },
                 })
             ]
         }),
@@ -234,69 +240,52 @@ const ColorSchemeSettings = () => Widget.Box({
         })
     ]
 });
-const topLeftCorner = RoundedCorner('topleft', {
-    className: 'corner corner-colorscheme'
-})
-const topRightCorner = RoundedCorner('topright', {
-    className: 'corner corner-colorscheme'
-})
-const ColorschemeContent = () => 
-    Widget.Box({
-        children: [
-            Widget.Box({
-            className: 'osd-colorscheme spacing-v-5',
-            vertical: true,
+
+const ColorschemeContent = () => Widget.Box({
+    className: 'osd-colorscheme spacing-v-5',
+    vertical: true,
+    hpack: 'center',
+    children: [
+        Widget.Label({
+            xalign: 0,
+            className: 'txt-norm titlefont txt',
+            label: getString('Color scheme'),
+            hpack: 'center',
+        }),
+        Widget.Box({
+            className: 'spacing-h-5',
             hpack: 'center',
             children: [
-                Widget.Label({
-                    xalign: 0,
-                    className: 'txt-large titlefont txt',
-                    label: getString('Color scheme'),
-                    hpack: 'center',
-                }),
-                Widget.Box({
-                    className: 'spacing-h-5',
-                    hpack: 'center',
-                    children: [
-                        ColorBox({ name: 'P', className: 'osd-color osd-color-primary' }),
-                        ColorBox({ name: 'S', className: 'osd-color osd-color-secondary' }),
-                        ColorBox({ name: 'T', className: 'osd-color osd-color-tertiary' }),
-                        ColorBox({ name: 'Sf', className: 'osd-color osd-color-surface' }),
-                        ColorBox({ name: 'Sf-i', className: 'osd-color osd-color-inverseSurface' }),
-                        ColorBox({ name: 'E', className: 'osd-color osd-color-error' }),
-                    ]
-                }),
-                Widget.Box({
-                    className: 'spacing-h-5',
-                    hpack: 'center',
-                    children: [
-                        ColorBox({ name: 'P-c', className: 'osd-color osd-color-primaryContainer' }),
-                        ColorBox({ name: 'S-c', className: 'osd-color osd-color-secondaryContainer' }),
-                        ColorBox({ name: 'T-c', className: 'osd-color osd-color-tertiaryContainer' }),
-                        ColorBox({ name: 'Sf-c', className: 'osd-color osd-color-surfaceContainer' }),
-                        ColorBox({ name: 'Sf-v', className: 'osd-color osd-color-surfaceVariant' }),
-                        ColorBox({ name: 'E-c', className: 'osd-color osd-color-errorContainer' }),
-                    ]
-                }),
-                ColorSchemeSettingsRevealer(),
+                ColorBox({ name: 'P', className: 'osd-color osd-color-primary' }),
+                ColorBox({ name: 'S', className: 'osd-color osd-color-secondary' }),
+                ColorBox({ name: 'T', className: 'osd-color osd-color-tertiary' }),
+                ColorBox({ name: 'Sf', className: 'osd-color osd-color-surface' }),
+                ColorBox({ name: 'Sf-i', className: 'osd-color osd-color-inverseSurface' }),
+                ColorBox({ name: 'E', className: 'osd-color osd-color-error' }),
             ]
         }),
+        Widget.Box({
+            className: 'spacing-h-5',
+            hpack: 'center',
+            children: [
+                ColorBox({ name: 'P-c', className: 'osd-color osd-color-primaryContainer' }),
+                ColorBox({ name: 'S-c', className: 'osd-color osd-color-secondaryContainer' }),
+                ColorBox({ name: 'T-c', className: 'osd-color osd-color-tertiaryContainer' }),
+                ColorBox({ name: 'Sf-c', className: 'osd-color osd-color-surfaceContainer' }),
+                ColorBox({ name: 'Sf-v', className: 'osd-color osd-color-surfaceVariant' }),
+                ColorBox({ name: 'E-c', className: 'osd-color osd-color-errorContainer' }),
+            ]
+        }),
+        ColorSchemeSettingsRevealer(),
     ]
-    })
-const BorderedColorSchemeContent = () => Widget.Box({
-    className: 'bordered-corner-colorscheme',
-    children:[ 
-        topRightCorner,
-        ColorschemeContent(),
-        topLeftCorner,
-    ],
-})
+});
+
 const isHoveredColorschemeSettings = Variable(false);
 
 export default () => Widget.Revealer({
     transition: 'slide_down',
     transitionDuration: userOptions.asyncGet().animations.durationLarge,
-    child: BorderedColorSchemeContent(),
+    child: ColorschemeContent(),
     setup: (self) => {
         self
             .hook(showColorScheme, (revealer) => {
@@ -310,7 +299,7 @@ export default () => Widget.Revealer({
                     setTimeout(() => {
                         if (isHoveredColorschemeSettings.value == false)
                             revealer.revealChild = showColorScheme.value;
-                    }, 800);
+                    }, 2000);
                 }
             })
     },

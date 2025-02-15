@@ -223,31 +223,6 @@ export const ModuleSettingsIcon = ({ hpack = 'center' } = {}) => Widget.Button({
         Utils.execAsync(['bash', '-c', `${GLib.get_home_dir()}/.local/bin/ags-tweaks`]);
     }
 });
-export const ModuleGameMode = async (props = {}) => {
-    try {
-        return Widget.Button({
-            className: 'txt-small sidebar-iconbutton',
-            tooltipText: getString('Hyprland Game Mode'),
-            onClicked: (button) => {
-                Utils.execAsync(`hyprctl -j getoption animations:enabled`)
-                    .then((output) => {
-                        const enabled = JSON.parse(output)["int"] === 1;
-                        if (enabled) {
-                            execAsync(['bash', '-c', `hyprctl --batch "keyword animations:enabled 0; keyword decoration:shadow:enabled 0; keyword decoration:blur:enabled 0; keyword general:gaps_in 0; keyword general:gaps_out 0; keyword general:border_size 1; keyword decoration:rounding 0; keyword general:allow_tearing 1"`]).catch(print);
-                        } else {
-                            execAsync(['bash', '-c', `hyprctl reload`]).catch(print);
-                        }
-                        button.toggleClassName('sidebar-button-active', enabled);
-                    })
-            },
-            child: Widget.Label({label: 'gamepad', hpack: 'center', className: 'onSurfaceVariant icon-material txt-norm'}),
-            setup: setupCursorHover,
-            ...props,
-        })
-    } catch {
-        return null;
-    };
-}
 
 export const ModulePowerIcon = (props = {}) => Widget.Button({
     ...props,

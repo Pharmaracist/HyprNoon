@@ -3,16 +3,14 @@ import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 import App from "resource:///com/github/Aylur/ags/app.js";
 const { Box, Button } = Widget;
 const { GLib } = imports.gi;
-import { setupCursorHover } from "../../.widgetutils/cursorhover.js";
 
-const createUtilButton = ({ name, icon, onClicked, onSecondaryClick, setup }) => {
+const createUtilButton = ({ name, icon, onClicked, onSecondaryClick }) => {
   const buttonProps = {
     vpack: "center",
     tooltipText: name,
     onClicked,
     className: "icon-material onSurfaceVariant txt-larger",
     label: icon, // No need for template literal here
-    setup:setupCursorHover
   };
   
   if (onSecondaryClick) {
@@ -47,7 +45,6 @@ const changeWallpaperButton = () => createUtilButton({
     `${App.configDir}/scripts/color_generation/randomwall.sh`
   ]),
   onSecondaryClick: () => App.toggleWindow("wallselect"),
-  setup: setupCursorHover,
 });
 
 const geminiScreenshotButton = () => createUtilButton({

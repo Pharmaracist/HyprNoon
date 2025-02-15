@@ -4,16 +4,64 @@ const { Box, Label, EventBox, Stack } = Widget;
 const { execAsync } = Utils;
 const { GLib } = imports.gi;
 import { MaterialIcon } from "../../.commonwidgets/materialicon.js";
-import { WWO_CODE } from "../../.commondata/weather.js";
 import PrayerTimesService from '../../../services/prayertimes.js';
 import Media from 'resource:///com/github/Aylur/ags/service/mpris.js';
 import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
-import Clock from './clock.js'
+
 const WEATHER_CACHE_FOLDER = `${GLib.get_user_cache_dir()}/ags/weather`;
 const WEATHER_CACHE_PATH = WEATHER_CACHE_FOLDER + "/wttr.in.txt";
 Utils.exec(`mkdir -p ${WEATHER_CACHE_FOLDER}`);
-const userName = GLib.get_real_name() + " ~ " + GLib.get_user_name();
 
+const WWO_CODE = {
+  '113': 'Sunny',
+  '116': 'PartlyCloudy',
+  '119': 'Cloudy',
+  '122': 'VeryCloudy',
+  '143': 'Fog',
+  '176': 'LightShowers',
+  '179': 'LightRain',
+  '182': 'HeavyRain',
+  '185': 'HeavyShowers',
+  '200': 'ThunderyShowers',
+  '227': 'LightSnow',
+  '230': 'HeavySnow',
+  '248': 'LightSleet',
+  '260': 'LightSleetShowers',
+  '263': 'LightSnowShowers',
+  '266': 'HeavySnowShowers',
+  '281': 'LightSleet',
+  '284': 'LightSleetShowers',
+  '293': 'LightRain',
+  '296': 'LightRain',
+  '299': 'HeavyRain',
+  '302': 'HeavyRain',
+  '305': 'HeavyRain',
+  '308': 'HeavyRain',
+  '311': 'LightDrizzle',
+  '314': 'LightDrizzle',
+  '317': 'LightDrizzle',
+  '320': 'LightDrizzle',
+  '323': 'LightDrizzle',
+  '326': 'LightDrizzle',
+  '329': 'LightDrizzle',
+  '332': 'LightMist',
+  '335': 'LightMist',
+  '338': 'LightMist',
+  '350': 'LightMist',
+  '353': 'LightMist',
+  '356': 'LightMist',
+  '359': 'LightMist',
+  '362': 'LightMist',
+  '365': 'LightMist',
+  '368': 'LightMist',
+  '371': 'LightMist',
+  '374': 'LightMist',
+  '377': 'LightMist',
+  '386': 'LightMist',
+  '389': 'LightMist',
+  '392': 'LightMist',
+  '395': 'LightMist',
+};
 
 const MAX_TEXT_LENGTH = 30;
 
@@ -24,12 +72,12 @@ const truncateText = (text, maxLength = MAX_TEXT_LENGTH) => {
 
 const WeatherWidget = () => {
   const CACHE_DURATION = 15 * 60 * 1000000; // 15 minutes
-  const CYCLE_INTERVAL = userOptions.asyncGet().etc.weather.cycleTimeout || 10000; // 10 seconds as fallback
+  const CYCLE_INTERVAL = 3000; // 3 seconds
   const PRIORITY_DISPLAY_TIME = 1000; // 1 second for priority displays
   let lastUpdate = 0;
   let cachedData = null;
-  let displayMode = 'clock';
-  let previousMode = 'clock';
+  let displayMode = 'weather';
+  let previousMode = 'weather';
   let notificationTimeout = null;
   let cycleTimeout = null;
   let cachedTrackTitle = null;
@@ -135,6 +183,7 @@ const WeatherWidget = () => {
         return 'mosque';
     }
   };
+
   const weatherIcon = MaterialIcon('device_thermostat', 'large weather-icon txt-norm txt-onLayer1');
   const prayerIcon = MaterialIcon('mosque', 'large weather-icon txt-norm txt-onLayer1');
   const mediaIcon = MaterialIcon('music_note', 'large weather-icon txt-norm txt-onLayer1');
@@ -209,25 +258,6 @@ const WeatherWidget = () => {
     ]
   });
 
-  const usernameContent = Box({
-    className: 'prayer-content spacing-h-10',
-    hpack: 'center',
-    vpack: 'center',
-    children: [
-      Box({
-        className: 'spacing-h-10',
-        hpack: 'center',
-        vpack: 'center',
-        children: [
-          Widget.Label({
-            className: 'txt-norm txt-onLayer1',
-            label: userName
-          })
-        ]
-      })
-    ]
-  });
-
   const mediaContent = Box({
     className: 'weather-content spacing-h-4',
     hpack: 'center',
@@ -258,34 +288,19 @@ const WeatherWidget = () => {
     ]
   });
 
-  const clockContent = Box({
-    className: 'weather-content spacing-h-4',
-    hpack: 'center',
-    vpack: 'center',
-    children: [
-      Box({
-        className: 'spacing-h-2',
-        hpack: 'center',
-        vpack: 'center',
-        children: [Clock()]
-      })
-    ]
-  });
   const contentStack = Stack({
     transition: 'slide_up_down',
-    transitionDuration: userOptions.asyncGet().animations.durationSmall,
+    transitionDuration: 400,
     children: {
       'weather': weatherContent,
       'prayer': prayerContent,
       'media': mediaContent,
       'notification': notificationContent,
-      'clock': clockContent,
-      'username': usernameContent,
     },
   });
 
   const weatherBox = Box({
-    css: `padding:4.55px 45px`,
+    // css: `padding:4.55px 30px`,
     // className: "txt-onSurfaceVariant bar-group-margin bar-group bar-group-standalone bar-group-pad",
     children: [contentStack],
   });
@@ -350,9 +365,9 @@ const WeatherWidget = () => {
     
     lastTitle = newTitle;
   };
-  const showNotification = (Notification) => {
-    const summaryText = Notification.summary || 'New Notification';
-    notificationLabel.label = truncateText(summaryText);
+
+  const showNotification = (notification) => {
+    notificationLabel.label = truncateText(notification.summary) || 'New Notification';
     showPriorityContent('notification', PRIORITY_DISPLAY_TIME);
   };
 
@@ -369,16 +384,8 @@ const WeatherWidget = () => {
         displayMode = 'media';
         break;
       case 'media':
-        displayMode = 'clock';
-        break;
-      case 'clock':
-        displayMode = 'username';
-        break;
-      case 'username':
         displayMode = 'weather';
         break;
-      default:
-        displayMode = 'weather';
     }
     
     contentStack.shown = displayMode;
@@ -429,10 +436,12 @@ const WeatherWidget = () => {
 
       // Set up media monitoring
       Media.connect('changed', updateMediaInfo);
-      Notifications.connect('notified', (box, notifications) => {
-        showNotification(notifications);
+      
+      // Set up notification monitoring
+      Notifications.connect('notified', () => {
+        showNotification({ summary: 'New Notification' });
       });
-
+      
       // Regular weather updates
       self.poll(CACHE_DURATION / 1000000, updateWidget);
     }

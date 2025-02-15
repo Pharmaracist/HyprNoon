@@ -12,8 +12,7 @@ import {
     ModuleSettingsIcon,
     ModulePowerIcon,
     ModuleRawInput,
-    ModuleGameMode,
-    ModuleCloudflareWarp,
+    ModuleCloudflareWarp
 } from "./quicktoggles.js";
 import ModuleNotificationList from "./centermodules/notificationlist.js";
 import ModuleAudioControls from "./centermodules/audiocontrols.js";
@@ -191,9 +190,9 @@ const togglesBox = Widget.Box({
     children: [
         ToggleIconWifi(),
         ToggleIconBluetooth(),
+        await ModuleRawInput(),
         await HyprToggleIcon('touchpad_mouse', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
         await ModuleNightLight(),
-        await ModuleGameMode(),
         ModuleIdleInhibitor(),
         ModuleSettingsIcon(),
         await ModuleCloudflareWarp(),
@@ -220,12 +219,12 @@ const images = [
     '6',
     // '7',
     // '8',
-    // '9',
+    '9',
     // '10'
 ];
 
 const randomIndex = Math.floor(Math.random() * images.length);
-export const selectedImage = images[randomIndex];
+const selectedImage = images[randomIndex];
 
 const Cat = Widget.Button({
     onClicked: () => {

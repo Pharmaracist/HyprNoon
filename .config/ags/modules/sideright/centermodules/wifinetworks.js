@@ -17,27 +17,6 @@ const MATERIAL_SYMBOL_SIGNAL_STRENGTH = {
 }
 
 let connectAttempt = '';
-const NetResource = (icon, command) => {
-    const resourceLabel = Label({
-        className: `txt-smaller txt-subtext`,
-    });
-    const widget = Button({
-        child: Box({
-            hpack: 'start',
-            className: `spacing-h-4`,
-            children: [
-                MaterialIcon(icon, 'very-small'),
-                resourceLabel,
-            ],
-            setup: (self) => self.poll(2000, () => execAsync(['bash', '-c', command])
-                .then((output) => {
-                    resourceLabel.label = output;
-                }).catch(print))
-            ,
-        })
-    });
-    return widget;
-}
 
 const WifiNetwork = (accessPoint) => {
     const networkStrength = MaterialIcon(MATERIAL_SYMBOL_SIGNAL_STRENGTH[accessPoint.iconName], 'hugerass')
@@ -105,9 +84,7 @@ const CurrentNetwork = () => {
                 }),
             }),
         ]
-        
     });
-  
     const networkStatus = Box({
         children: [Label({
             wrapMode: Pango.WrapMode.WORD_CHAR,
@@ -165,7 +142,6 @@ const CurrentNetwork = () => {
                         children: [
                             MaterialIcon('language', 'hugerass'),
                             networkName,
-                            // networkBandwidth,
                             networkStatus,
 
                         ]
@@ -186,16 +162,7 @@ const CurrentNetwork = () => {
         })]
     })
 }
-// const networkBandwidth = Box({
-//     vertical: true,
-//     hexpand: true,
-//     hpack: 'center',
-//     className: 'sidebar-wifinetworks-bandwidth',
-//     children: [
-//         NetResource('arrow_warm_up', `${App.configDir}/scripts/network_bandwidth.py sent`),
-//         NetResource('arrow_cool_down', `${App.configDir}/scripts/network_bandwidth.py recv`),
-//     ]
-// });
+
 export default (props) => {
     const networkList = Box({
         vertical: true,

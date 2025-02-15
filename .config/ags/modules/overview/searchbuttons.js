@@ -184,19 +184,6 @@ export const SearchButton = ({ text = '' }) => {
     });
 }
 
-export const WallpaperButton = ({ text = '' }) => {
-    const search = 'https://wallhaven.cc/search?q=' + text;
-    return searchItem({
-        materialIconName: 'image',
-        name: 'Search wallpapers',
-        actionName: 'Go',
-        content: text,
-        onActivate: () => {
-            App.closeWindow('overview');
-            execAsync(['xdg-open', search]).catch(print);
-        },
-    });
-}
 export const AiButton = ({ text }) => searchItem({
     materialIconName: 'chat_paste_go',
     name: aiConfig.onSearch == 'gemini' ? 'Ask Gemini' : 'Ask ChatGPT',

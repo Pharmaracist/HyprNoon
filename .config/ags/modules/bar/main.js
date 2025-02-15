@@ -12,7 +12,7 @@ import { WindowsTaskbar } from "./modes/windows.js";
 import { VerticalBar } from "./modes/vertical.js";
 import { VerticalBarPinned } from "./modes/verticalPinned.js";
 import { MacBar } from "./modes/macLike.js";
-import { NotchBar } from "./modes/notch.js";
+
 // Mode configuration:
 // [Component, ShowCorners, Description]
 const horizontalModes = new Map([
@@ -30,15 +30,13 @@ const horizontalModes = new Map([
   ["5", [WindowsTaskbar, false, "Windows Taskbar"]],
   // Mac-like mode without corners
   ["6", [MacBar, false, "Mac"]],
-  ["7", [NotchBar, false, "Notched"]],
-
 ]);
 
 const verticalModes = new Map([
    // Floating Vertical bar
-  ["8", [VerticalBar, false, "Vertical Bar"]],
+  ["7", [VerticalBar, false, "Vertical Bar"]],
    // Pinned Corners Vertical bar
-  ["9", [VerticalBarPinned, true, "Vertical Bar Pinned"]],
+  ["8", [VerticalBarPinned, true, "Vertical Bar Pinned"]],
 ]);
 
 // Combined modes for easy lookup
