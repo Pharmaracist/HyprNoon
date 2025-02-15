@@ -203,18 +203,17 @@ v mkdir -p $XDG_BIN_HOME $XDG_CACHE_HOME $XDG_CONFIG_HOME $XDG_DATA_HOME
 
 # MISC (For .config/* but not AGS, not Fish, not Hyprland)
 case $SKIP_MISCCONF in
-  true) sleep 0;;
-  *)
-    find .config/ -mindepth 1 -maxdepth 1 ! -name 'ags' ! -name 'fish' ! -name 'hypr' -print0 | while IFS= read -r -d $'\0' i; do
-      echo "[$0]: Found target: $i"
-      destination="$XDG_CONFIG_HOME/$(basename "$i")" # Store destination path
-      if [ -d "$i" ]; then
-        v rsync -av --delete "$i" "$destination" # Correct rsync (no trailing slash on source)
-      elif [ -f "$i" ]; then
-        v rsync -av "$i" "$destination" # Correct rsync (for files)
-      fi
-    done
-    ;;
+  true) sleep 0;;
+  *)
+    find .config/ -mindepth 1 -maxdepth 1 ! -name 'ags' ! -name 'fish' ! -name 'hypr' -print0 | while IFS= read -r -d $'\0' i; do
+      echo "[$0]: Found target: $i"
+      if [ -d "$i" ]; then
+        v rsync -av --delete "$i" "$XDG_CONFIG_HOME/$(basename "$i")"  # Use basename for the destination
+      elif [ -f "$i" ]; then
+        v rsync -av "$i" "$XDG_CONFIG_HOME/$(basename "$i")"
+      fi
+    done
+    ;;
 esac
 
 case $SKIP_FISH in
