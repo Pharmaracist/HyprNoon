@@ -15,7 +15,7 @@ echo "System information:"
 uname -a
 
 #####################################################################################
-if ! command -v pacman >/dev/null 2>&1; then 
+if ! command -v pacman >/dev/null 2>&1; then
   printf "\e[31m[$0]: pacman not found, it seems that the system is not ArchLinux or Arch-based distros. Aborting...\e[0m\n"
   exit 1
 fi
@@ -26,7 +26,7 @@ startask () {
   printf 'This script 1. only works for ArchLinux and Arch-based distros.\n'
   printf '            2. does not handle system-level/hardware stuff like Nvidia drivers\n'
   printf "\e[31m"
-  
+
   printf "Would you like to create a backup for \"$XDG_CONFIG_HOME\" and \"$HOME/.local/\" folders?\n[y/N]: "
   read -p " " backup_confirm
   case $backup_confirm in
@@ -37,7 +37,7 @@ startask () {
       echo "Skipping backup..."
       ;;
   esac
-  
+
 
   printf '\n'
   printf 'Do you want to confirm every time before a command executes?\n'
@@ -125,7 +125,7 @@ install-local-pkgbuild() {
 
 # Install core dependencies from the meta-packages
 metapkgs=(./arch-packages/illogical-impulse-{audio,backlight,basic,fonts-themes,gnome,gtk,portal,python,screencapture,widgets})
-metapkgs+=(./arch-packages/illogical-impulse-ags)
+metapkgs+=(./arch-packages/illogical-impulse-agsv1)
 metapkgs+=(./arch-packages/illogical-impulse-microtex-git)
 [[ -f /usr/share/icons/Bibata-Modern-Classic/index.theme ]] || \
   metapkgs+=(./arch-packages/illogical-impulse-bibata-modern-classic-bin)
@@ -266,13 +266,14 @@ case $SKIP_HYPRLAND in
     ;;
 esac
 
+v rsync -av --delete ./.config/rofi/ ~/.config/
 # For Wallpapers
 case $SKIP_WALLPAPERS in
   true) sleep 0;;
   *)
     echo -e "\e[34m[$0]: Setting up wallpapers...\e[0m"
-    v mkdir -p "$HOME/Pictures/Wallpapers" 
-    v rsync -av "Wallpapers/Lock.jpg" "$HOME/Pictures/Wallpapers/" 
+    v mkdir -p "$HOME/Pictures/Wallpapers"
+    v rsync -av "Wallpapers/Lock.jpg" "$HOME/Pictures/Wallpapers/"
     ;;
 esac
 
