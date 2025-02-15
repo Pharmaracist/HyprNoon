@@ -205,11 +205,12 @@ v mkdir -p $XDG_BIN_HOME $XDG_CACHE_HOME $XDG_CONFIG_HOME $XDG_DATA_HOME
 case $SKIP_MISCCONF in
   true) sleep 0;;
   *)
-    for i in $(find .config/ -mindepth 1 -maxdepth 1 ! -name 'ags' ! -name 'fish' ! -name 'hypr' -exec basename {} \;); do
-#      i=".config/$i"
-      echo "[$0]: Found target: .config/$i"
-      if [ -d ".config/$i" ];then v rsync -av --delete ".config/$i/" "$XDG_CONFIG_HOME/$i/"
-      elif [ -f ".config/$i" ];then v rsync -av ".config/$i" "$XDG_CONFIG_HOME/$i"
+    find .config/ -mindepth 1 -maxdepth 1 ! -name 'ags' ! -name 'fish' ! -name 'hypr' -print0 | while IFS= read -r -d $'\0' i; do
+      echo "[$0]: Found target: $i"
+      if [ -d "$i" ]; then
+        v rsync -av --delete "$i" "$XDG_CONFIG_HOME/$(basename "$i")" # Correct rsync
+      elif [ -f "$i" ]; then
+        v rsync -av "$i" "$XDG_CONFIG_HOME/$(basename "$i")"
       fi
     done
     ;;
@@ -266,7 +267,12 @@ case $SKIP_HYPRLAND in
     ;;
 esac
 
-v rsync -av --delete ./.config/rofi/ ~/.config/
+# On the previous installer, it was:
+# v rsync -av --delete ./.config/rofi/ ~/.config
+# So it basically deletes all the stuff in $XDG_CONFIG_HOME and puts the rofi things there.
+
+v rsync -av --delete ./.config/rofi/ ~/.config/rofi
+
 # For Wallpapers
 case $SKIP_WALLPAPERS in
   true) sleep 0;;
