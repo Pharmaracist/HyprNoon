@@ -20,29 +20,17 @@ export default (monitor) =>
   Widget.Window({
     name: `desktopbackground${monitor}`,
     layer: "background",
-    // exclusivity: 'ignore',
+    //exclusivity: 'ignore',
     visible: true,
     keymode: "on-demand",
     child: Widget.Overlay({
       child: WallpaperImage(monitor),
       overlays: [
         Widget.Box({
-          css: `margin:${(() => {
-            const opts = userOptions.asyncGet();
-            const mode = currentShellMode.value[0] || "0";
-            // Vertical mode
-            if (mode === "6") {
-              return opts.bar.verticalBar?.position === "left"
-                ? "0 2rem"
-                : "0 0 0 3rem";
-            }
-            // Horizontal mode
-            return `0 2rem ${opts.bar.position === "bottom" ? 2.5 : 0}rem 1.5rem`;
-          })()}`,
           children: [
             TimeAndLaunchesWidget(),
             Widget.Box({ hexpand: true }),
-            Widget.Box({vertical:true,children:[wiseCat,Widget.Box({vexpand:true})]})
+            // Widget.Box({vertical:true,children:[wiseCat,Widget.Box({vexpand:true})]})
           ],
         }),
       ],

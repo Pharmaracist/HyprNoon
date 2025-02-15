@@ -2,6 +2,10 @@
   "indicators": {
     "enabled": true
   },
+  "muslimStuff": {
+    "enabled": true,
+    "city": "Cairo"
+  },
   "wallselect": {
     "enabled": true,
     "wallpaperFolder": "/Pictures/Wallpapers",
@@ -9,74 +13,6 @@
   },
   "session": {
     "enabled": true
-  },
-  "ipod": {
-    "enabled": false,
-    "widget": {
-      "margin": "8",
-      "minHeight": 270,
-      "borderRadius": 22,
-      "padding": "0",
-      "borderWidth": 0,
-      "borderOpacity": 0,
-      "extraCss": ""
-    },
-    "background": {
-      "defaultOpacity": 0.2,
-      "hiddenOpacity": 1,
-      "blurAmount": "0x3",
-      "imageQuality": 80,
-      "imageResize": 60,
-      "transitionMs": 400,
-      "enableBlur": true
-    },
-    "coverArt": {
-      "size": 230,
-      "borderRadius": 12
-    },
-    "visualizer": {
-      "margin": "0",
-      "mode": "end",
-      "padding": "0",
-      "barSpacing": 2.5,
-      "barMinWidth": 20,
-      "barMaxHeight": 40,
-      "barNumber": 63,
-      "heightMultiplier": 2,
-      "transitionMs": 80,
-      "colors": {
-        "low": "rgba(255,255,255,0)",
-        "medium": "rgba(255,255,255,0.6)",
-        "high": "rgba(255,255,255,1)",
-        "heightThresholds": {
-          "low": 1,
-          "medium": 2.2,
-          "high": 4
-        }
-      }
-    },
-    "trackInfo": {
-      "titleSize": "3rem",
-      "artistSize": "2rem",
-      "titleOpacity": 0.9,
-      "artistOpacity": 0.8,
-      "maxChars": 100
-    },
-    "controls": {
-      "buttonSize": "1.8rem",
-      "otherButtonSize": "1.4rem",
-      "spacing": 10,
-      "iconOpacity": 0.8
-    },
-    "volume": {
-      "iconSize": 36,
-      "progressSize": 40,
-      "textSize": "1rem"
-    },
-    "animations": {
-      "showHideMs": 200,
-      "updateDelay": 200
-    }
   },
   "cheatshhet": {
     "enabled": true,
@@ -184,10 +120,6 @@
     "wsNumMarginScale": 0.07
   },
   "sidebar": {
-    "adhan": {
-      "default": "adhan_default.mp3",
-      "fajr": "adhan_fajr.mp3"
-    },
     "centerModules": {
       "enabled": [
         "vpnGate",
@@ -231,7 +163,7 @@
     },
     "github": {
       "repoOwner": "pharmaracist",
-      "repoName": "dots-hyprland"
+      "repoName": "HyprNoon"
     },
     "ai": {
       "logo": "deepseek-symbolic",
@@ -388,7 +320,7 @@
     "preferredUnit": "C"
   },
   "workspaces": {
-    "shown": 9,
+    "shown": 10,
     "style": "japanese"
   },
   "dock": {

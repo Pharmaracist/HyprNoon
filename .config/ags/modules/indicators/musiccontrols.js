@@ -1,4 +1,4 @@
-const { GLib,Gtk,GdkPixbuf,Gdk } = imports.gi;
+const { GLib, Gtk, GdkPixbuf, Gdk } = imports.gi;
 import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
@@ -14,14 +14,14 @@ import CavaService from '../../services/cava.js';
 
 const COMPILED_STYLE_DIR = `${GLib.get_user_cache_dir()}/ags/user/generated`
 const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode.txt`;
-const colorMode = Utils.exec(`bash -c "sed -n \'1p\' '${LIGHTDARK_FILE_LOCATION}'"`);
+const colorMode = Utils.exec(`bash -c "sed -n '1p' '${LIGHTDARK_FILE_LOCATION}'"`);
 const lightDark = (colorMode == "light") ? '-l' : '';
 const COVER_COLORSCHEME_SUFFIX = '_colorscheme.css';
 var lastCoverPath = '';
 
 function isRealPlayer(player) {
     return (
-        // Remove unecessary native buses from browsers if there's plasma integration
+        // Remove unnecessary native buses from browsers if there's plasma integration
         !(hasPlasmaIntegration && player.busName.startsWith('org.mpris.MediaPlayer2.firefox')) &&
         !(hasPlasmaIntegration && player.busName.startsWith('org.mpris.MediaPlayer2.chromium')) &&
         // playerctld just copies other buses and we don't need duplicates
@@ -31,7 +31,9 @@ function isRealPlayer(player) {
     );
 }
 
-export const getPlayer = (name = userOptions.asyncGet().music.preferredPlayer) => Mpris.getPlayer(name) || Mpris.players[0] || null;
+export const getPlayer = (name = userOptions.asyncGet().music.preferredPlayer) =>
+    Mpris.getPlayer(name) || Mpris.players[0] || null;
+
 function lengthStr(length) {
     const min = Math.floor(length / 60);
     const sec = Math.floor(length % 60);
@@ -63,11 +65,12 @@ function getTrackfont(player) {
         return 'Crimson Text, serif'; // Serif for Touhou stuff
     return DEFAULT_MUSIC_FONT;
 }
+
 function trimTrackTitle(title) {
     if (!title) return '';
     const cleanPatterns = [
-        /【[^】]*】/,         // Touhou n weeb stuff
-        " [FREE DOWNLOAD]", // F-777
+        /【[^】]*】/,         // Remove certain bracketed text (e.g., Touhou/weeb stuff)
+        " [FREE DOWNLOAD]",  // Remove literal text such as F-777's suffix
     ];
     cleanPatterns.forEach((expr) => title = title.replace(expr, ''));
     return title;
@@ -75,9 +78,8 @@ function trimTrackTitle(title) {
 
 const TrackProgress = ({ player, ...rest }) => {
     const _updateProgress = (circprog) => {
-        // const player = Mpris.getPlayer();
         if (!player) return;
-        // Set circular progress (see definition of AnimatedCircProg for explanation)
+        // Update circular progress; the font size scales with playback progress.
         circprog.css = `font-size: ${Math.max(player.position / player.length * 100, 0)}px;`
     }
     return AnimatedCircProg({
@@ -87,7 +89,6 @@ const TrackProgress = ({ player, ...rest }) => {
         extraSetup: (self) => self
             .hook(Mpris, _updateProgress)
             .poll(3000, _updateProgress)
-        ,
     })
 }
 
@@ -96,12 +97,11 @@ const TrackTitle = ({ player, ...rest }) => Label({
     label: 'No music playing',
     xalign: 0,
     truncate: 'end',
-    // wrap: true,
     className: 'osd-music-title',
     setup: (self) => self.hook(player, (self) => {
-        // Player name
+        // Update the title label with the current track title or fallback text.
         self.label = player.trackTitle.length > 0 ? trimTrackTitle(player.trackTitle) : 'No media';
-        // Font based on track/artist
+        // Select font based on the track and artist information.
         const fontForThisTrack = getTrackfont(player);
         self.css = `font-family: ${fontForThisTrack}, ${DEFAULT_MUSIC_FONT};`;
     }, 'notify::track-title'),
@@ -113,6 +113,7 @@ const TrackArtists = ({ player, ...rest }) => Label({
     className: 'osd-music-artists',
     truncate: 'end',
     setup: (self) => self.hook(player, (self) => {
+        // Show the track artists if available.
         self.label = player.trackArtists.length > 0 ? player.trackArtists.join(', ') : '';
     }, 'notify::track-artists'),
 })
@@ -121,7 +122,7 @@ const CoverArt = ({ player, ...rest }) => {
     const coverArtDrawingArea = Widget.DrawingArea({ className: 'osd-music-cover-art' });
     const coverArtDrawingAreaStyleContext = coverArtDrawingArea.get_style_context();
     
-    const fallbackCoverArt = Box({ // Fallback
+    const fallbackCoverArt = Box({ // Fallback display when no cover art is available.
         className: 'osd-music-cover-fallback',
         homogeneous: true,
         children: [Label({
@@ -199,22 +200,10 @@ const CoverArt = ({ player, ...rest }) => {
                     return;
                 }
 
-                execAsync(['bash', '-c',
-                    `${App.configDir}/scripts/color_generation/generate_colors_material.py --path '${coverPath}' --mode ${darkMode.value ? 'dark' : 'light'} > ${GLib.get_user_state_dir()}/ags/scss/_musicmaterial.scss`])
-                    .then(() => {
-                        exec(`wal -i "${player.coverPath}" -n -t -s -e -q ${darkMode.value ? '' : '-l'}`);
-                        exec(`cp ${GLib.get_user_cache_dir()}/wal/colors.scss ${GLib.get_user_state_dir()}/ags/scss/_musicwal.scss`);
-                        exec(`sass -I "${GLib.get_user_state_dir()}/ags/scss" -I "${App.configDir}/scss/fallback" "${App.configDir}/scss/_music.scss" "${stylePath}"`);
-                        Utils.timeout(200, () => {
-                            self.attribute.showImage(self, coverPath);
-                            self.css = `background-image: url('${coverPath}');`;
-                        });
-                        App.applyCss(`${stylePath}`);
-                    })
-                    .catch(print);
             },
         },
         setup: (self) => self.hook(player, (self) => {
+            // When the player's cover-path changes, update the cover art.
             self.attribute.updateCover(self);
         }, 'notify::cover-path'),
     });
@@ -232,6 +221,7 @@ const CoverArt = ({ player, ...rest }) => {
 };
 
 const TrackControls = ({ player, ...rest }) => Widget.Revealer({
+    // Initially hidden; these controls become visible when a valid player is detected.
     revealChild: false,
     transition: 'slide_right',
     transitionDuration: userOptions.asyncGet().animations.durationLarge,
@@ -258,17 +248,18 @@ const TrackControls = ({ player, ...rest }) => Widget.Revealer({
             }),
         ],
     }),
+    // The setup hook listens for changes in playback status.
+    // If no valid player is present, the controls remain hidden.
     setup: (self) => self.hook(Mpris, (self) => {
-        // const player = Mpris.getPlayer();
         if (!player)
-            self.revealChild = false;
+            self.revealChild = false; // Hide controls when no player is available.
         else
-            self.revealChild = true;
+            self.revealChild = true;  // Reveal controls when a valid player is active.
     }, 'notify::play-back-status'),
 });
 
 const TrackSource = ({ player, ...rest }) => Widget.Revealer({
-    revealChild: false,
+    revealChild: false, // Initially hidden.
     transition: 'slide_left',
     transitionDuration: userOptions.asyncGet().animations.durationLarge,
     child: Widget.Box({
@@ -281,23 +272,25 @@ const TrackSource = ({ player, ...rest }) => Widget.Revealer({
                 justification: 'center',
                 className: 'icon-nerd',
                 setup: (self) => self.hook(player, (self) => {
+                    // Update the label with the detected media source (e.g., Youtube, Discord).
                     self.label = detectMediaSource(player.trackCoverUrl);
                 }, 'notify::cover-path'),
             }),
         ],
     }),
+    // This hook checks for a valid player. If none is found, the media source remains hidden.
     setup: (self) => self.hook(Mpris, (self) => {
         const mpris = Mpris.getPlayer('');
         if (!mpris)
-            self.revealChild = false;
+            self.revealChild = false; // Hide when no player is active.
         else
-            self.revealChild = true;
+            self.revealChild = true;  // Reveal when a player is detected.
     }),
 });
 
 const TrackTime = ({ player, ...rest }) => {
     return Widget.Revealer({
-        revealChild: false,
+        revealChild: false, // Initially hidden.
         transition: 'slide_left',
         transitionDuration: userOptions.asyncGet().animations.durationLarge,
         child: Widget.Box({
@@ -307,7 +300,6 @@ const TrackTime = ({ player, ...rest }) => {
             children: [
                 Label({
                     setup: (self) => self.poll(1000, (self) => {
-                        // const player = Mpris.getPlayer();
                         if (!player) return;
                         self.label = lengthStr(player.position);
                     }),
@@ -315,22 +307,24 @@ const TrackTime = ({ player, ...rest }) => {
                 Label({ label: '/' }),
                 Label({
                     setup: (self) => self.hook(Mpris, (self) => {
-                        // const player = Mpris.getPlayer();
                         if (!player) return;
                         self.label = lengthStr(player.length);
-                    }),
+                    }, 'notify::track-artists'),
                 }),
             ],
         }),
+       // The hook monitors whether a valid player exists.
+       // If not, the track time widget remains hidden.
        setup : (self) => self.hook(Mpris, (self) => {
-            if (!player) self.revealChild = false;
-            else self.revealChild = true;
+            if (!player)
+                self.revealChild = false; // Hide track time when no player is available.
+            else
+                self.revealChild = true;  // Reveal track time when a player is active.
         }),
     })
 }
 
 const PlayState = ({ player }) => {
-    var position = 0;
     const trackCircProg = TrackProgress({ player: player });
     return Widget.Button({
         className: 'osd-music-playstate',
@@ -345,6 +339,7 @@ const PlayState = ({ player }) => {
                         hpack: 'fill',
                         vpack: 'center',
                         setup: (self) => self.hook(player, (label) => {
+                            // Toggle play/pause icon based on the playback status.
                             label.label = `${player.playBackStatus == 'Playing' ? 'pause' : 'play_arrow'}`;
                         }, 'notify::play-back-status'),
                     }),
@@ -359,7 +354,7 @@ const CavaVisualizer = () => {
     const bars = Array(20).fill(0).map(() => Widget.Box({
         className: 'cava-bar cava-bar-low',
         hpack: 'center',
-        vpack: userOptions.asyncGet().ipod.visualizer.mode || 'center',
+        vpack: 'end',
         hexpand: true,
     }));
 
@@ -418,6 +413,7 @@ const CavaVisualizer = () => {
 
     const checkAndUpdateCava = () => {
         const player = Mpris.getPlayer();
+        // Run the visualizer only when music controls are visible and playback is active.
         const shouldRun = showMusicControls.value && player?.playBackStatus === 'Playing';
         
         if (shouldRun) {
@@ -451,9 +447,11 @@ const CavaVisualizer = () => {
         },
     });
 };
+
 const MusicControlsWidget = (player) => Box({
     className: 'osd-music spacing-h-20 ',
-    css:`min-height: 9.5rem;`,
+    // css: `min-height: 9.5rem;`,
+    vexpand:false,
     children: [
         Widget.Overlay({
             child: Box({
@@ -486,7 +484,8 @@ const MusicControlsWidget = (player) => Box({
                                     setup: (box) => {
                                         box.pack_start(TrackControls({ player: player }), false, false, 0);
                                         box.pack_end(PlayState({ player: player }), false, false, 0);
-                                        if(hasPlasmaIntegration || player.busName.startsWith('org.mpris.MediaPlayer2.chromium')) 
+                                        // Only show TrackTime if there is plasma integration or if the player is Chromium.
+                                        if (hasPlasmaIntegration || player.busName.startsWith('org.mpris.MediaPlayer2.chromium')) 
                                             box.pack_end(TrackTime({ player: player }), false, false, 0)
                                     }
                                 })
@@ -494,21 +493,28 @@ const MusicControlsWidget = (player) => Box({
                         })
                     ],
                 }),
-              
             ],
         })
     ]
-})
+});
 
+// Main exported widget that controls overall visibility.
 export default () => Revealer({
     transition: 'slide_down',
     transitionDuration: userOptions.asyncGet().animations.durationLarge,
-    revealChild: false,
+    revealChild: false, // Initially hidden.
+    // The hook below controls the visibility of the entire music controls widget
+    // based on the showMusicControls flag.
     setup: (self) => self.hook(showMusicControls, () => {
         self.revealChild = showMusicControls.value;
     }),
     child: Box({
+        vexpand:true,
+        css:`min-height:10rem`,
         children: Mpris.bind("players")
-            .as(players => players.map((player) => (isRealPlayer(player) ? MusicControlsWidget(player) : null)))
+            .as(players => 
+                // Only valid players (as determined by isRealPlayer) get their own MusicControlsWidget.
+                players.map((player) => (isRealPlayer(player) ? MusicControlsWidget(player) : null))
+            )
     }),
-})
+});

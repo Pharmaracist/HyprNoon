@@ -2,7 +2,17 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 const { Box, Label, Scrollable } = Widget;
 import PrayerTimesService from '../../services/prayertimes.js';
 
-const PrayerTimeItem = (name, time) => Box({
+// Helper function to convert 24h to 12h format
+const to12Hour = (time24) => {
+    if (!time24) return '';
+    const [hours, minutes] = time24.split(':');
+    const hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    return `${hour12}:${minutes} ${ampm}`;
+};
+
+const PrayerTimeItem = (name, time24) => Box({
     className: 'sidebar-prayertime-item txt-small',
     children: [Box({
         vertical: true,
@@ -16,7 +26,7 @@ const PrayerTimeItem = (name, time) => Box({
             Label({
                 xalign: 0,
                 className: 'sidebar-prayertime-time',
-                label: time || '',
+                label: to12Hour(time24) || '',
             }),
         ],
     })],
@@ -56,7 +66,7 @@ const TopSection = (nextPrayer, hijriDate) => {
                                     xalign: 1,
                                     hexpand: true,
                                     className: 'txt-larger sidebar-prayertime-time',
-                                    label: nextPrayer.time || '',
+                                    label: to12Hour(nextPrayer.time) || '',
                                 }),
                             ],
                         }),

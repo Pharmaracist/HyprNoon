@@ -3,6 +3,7 @@ import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 import App from "resource:///com/github/Aylur/ags/app.js";
 import userOptions from "../.configuration/user_options.js";
 import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
 const { Box, Label, EventBox, Scrollable, Button } = Widget;
 import ColorPicker from "../bar/modules/color_picker.js";
 // Constants
@@ -13,6 +14,55 @@ const THUMBNAIL_DIR = GLib.build_filenamev([WALLPAPER_DIR, "thumbnails"]);
 // Cached Variables
 let wallpaperPathsPromise = null;
 let cachedContent = null;
+let fileMonitor = null;
+
+// Initialize file monitoring
+const initFileMonitor = () => {
+    if (fileMonitor) return;
+
+    const file = Gio.File.new_for_path(WALLPAPER_DIR);
+    fileMonitor = file.monitor_directory(Gio.FileMonitorFlags.NONE, null);
+
+    fileMonitor.connect('changed', (_, file, otherFile, eventType) => {
+        const path = file.get_path();
+        const ext = path.toLowerCase().split('.').pop();
+        const validExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'tga', 'tiff', 'bmp', 'ico'];
+        
+        // Handle both file creation and deletion
+        if ((eventType === Gio.FileMonitorEvent.CREATED || 
+             eventType === Gio.FileMonitorEvent.DELETED) && 
+            validExts.includes(ext)) {
+            
+            const action = eventType === Gio.FileMonitorEvent.CREATED ? 'added' : 'deleted';
+            
+            if (eventType === Gio.FileMonitorEvent.DELETED) {
+                // Get the thumbnail path
+                const filename = path.split('/').pop();
+                const thumbnailPath = GLib.build_filenamev([THUMBNAIL_DIR, filename]);
+                
+                // Delete the thumbnail if it exists
+                if (GLib.file_test(thumbnailPath, GLib.FileTest.EXISTS)) {
+                    GLib.unlink(thumbnailPath);
+                }
+            }
+            
+            // Regenerate thumbnails
+            Utils.execAsync([`bash`, `${CONFIG_DIR}/scripts/generate_thumbnails.sh`])
+                .then(() => {
+                    // Reset caches
+                    wallpaperPathsPromise = null;
+                    cachedContent = null;
+                    
+                    // Refresh UI if visible
+                    if (App.getWindow('wallselect')?.visible) {
+                        App.closeWindow('wallselect');
+                        App.openWindow('wallselect');
+                    }
+                });
+        }
+    });
+};
+
 
 // Wallpaper Button
 const WallpaperButton = (path) => 
@@ -63,13 +113,12 @@ const createContent = async () => {
         return cachedContent;
 
     } catch (error) {
-        console.error("Error creating content:", error);
         return Box({
             className: "wallpaper-error",
             vexpand: true,
             hexpand: true,
             children: [
-                Label({ label: "Error loading wallpapers. Check the console for details.", className: "txt-large txt-error", }),
+                Label({ label: "Error loading wallpapers.", className: "txt-large txt-error", }),
             ],
         });
     }
@@ -113,8 +162,7 @@ const GenerateButton = () => Widget.Button({
                 cachedContent = null; // Invalidate cache
                 App.closeWindow('wallselect');
                 App.openWindow('wallselect');
-            })
-            .catch((error) => console.error("Error generating thumbnails:", error));
+            });
     },
 });
 
@@ -131,6 +179,9 @@ const ColorPickerBox = () => Box({
     child:ColorPicker()
 });
 export { toggleWindow };
+
+// Initialize monitoring when the module loads
+initFileMonitor();
 
 // Main Window
 export default () => Widget.Window({

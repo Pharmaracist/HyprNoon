@@ -1,7 +1,7 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
-
+import GHEntry from './tools/name.js'
 const { Box, Label, Scrollable } = Widget;
 
 const REPO_OWNER = `${userOptions.asyncGet().sidebar.github.repoOwner}`;
@@ -107,6 +107,7 @@ const GithubContent = () => Box({
                 Box({
                     vertical: true,
                     className: 'spacing-v-5',
+                    vexpand: true,
                     children: commits.slice(0, 15).map(commit => 
                         CommitBox({
                             message: commit.commit.message,
@@ -115,6 +116,7 @@ const GithubContent = () => Box({
                         })
                     ),
                 }),
+                GHEntry(),
             ];
         };
 

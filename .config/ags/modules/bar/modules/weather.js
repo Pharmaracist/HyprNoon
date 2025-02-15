@@ -3,6 +3,7 @@ import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 const { Box, Label, EventBox, Stack } = Widget;
 const { execAsync } = Utils;
 const { GLib } = imports.gi;
+import { WWO_CODE } from '../../.commondata/weather.js'
 import { MaterialIcon } from "../../.commonwidgets/materialicon.js";
 import PrayerTimesService from '../../../services/prayertimes.js';
 import Media from 'resource:///com/github/Aylur/ags/service/mpris.js';
@@ -10,59 +11,8 @@ import Notifications from 'resource:///com/github/Aylur/ags/service/notification
 
 const WEATHER_CACHE_FOLDER = `${GLib.get_user_cache_dir()}/ags/weather`;
 const WEATHER_CACHE_PATH = WEATHER_CACHE_FOLDER + "/wttr.in.txt";
+
 Utils.exec(`mkdir -p ${WEATHER_CACHE_FOLDER}`);
-
-const WWO_CODE = {
-  '113': 'Sunny',
-  '116': 'PartlyCloudy',
-  '119': 'Cloudy',
-  '122': 'VeryCloudy',
-  '143': 'Fog',
-  '176': 'LightShowers',
-  '179': 'LightRain',
-  '182': 'HeavyRain',
-  '185': 'HeavyShowers',
-  '200': 'ThunderyShowers',
-  '227': 'LightSnow',
-  '230': 'HeavySnow',
-  '248': 'LightSleet',
-  '260': 'LightSleetShowers',
-  '263': 'LightSnowShowers',
-  '266': 'HeavySnowShowers',
-  '281': 'LightSleet',
-  '284': 'LightSleetShowers',
-  '293': 'LightRain',
-  '296': 'LightRain',
-  '299': 'HeavyRain',
-  '302': 'HeavyRain',
-  '305': 'HeavyRain',
-  '308': 'HeavyRain',
-  '311': 'LightDrizzle',
-  '314': 'LightDrizzle',
-  '317': 'LightDrizzle',
-  '320': 'LightDrizzle',
-  '323': 'LightDrizzle',
-  '326': 'LightDrizzle',
-  '329': 'LightDrizzle',
-  '332': 'LightMist',
-  '335': 'LightMist',
-  '338': 'LightMist',
-  '350': 'LightMist',
-  '353': 'LightMist',
-  '356': 'LightMist',
-  '359': 'LightMist',
-  '362': 'LightMist',
-  '365': 'LightMist',
-  '368': 'LightMist',
-  '371': 'LightMist',
-  '374': 'LightMist',
-  '377': 'LightMist',
-  '386': 'LightMist',
-  '389': 'LightMist',
-  '392': 'LightMist',
-  '395': 'LightMist',
-};
-
 const MAX_TEXT_LENGTH = 30;
 
 const truncateText = (text, maxLength = MAX_TEXT_LENGTH) => {

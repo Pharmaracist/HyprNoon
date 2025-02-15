@@ -15,7 +15,7 @@ starship init fish | source
 if test -f ~/.cache/ags/user/generated/terminal/sequences.txt
     cat ~/.cache/ags/user/generated/terminal/sequences.txt
 end
-alias micro=vim
+
 alias pamcan=pacman
 alias settings="gjs ~/.config/ags/assets/settings.js"
 alias bar="micro ~/.config/ags/modules/bar/main.js"

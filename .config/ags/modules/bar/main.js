@@ -1,4 +1,3 @@
-const { Gtk, GLib } = imports.gi;
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import { currentShellMode, barPosition } from "../../variables.js";
 import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
@@ -12,7 +11,7 @@ import { WindowsTaskbar } from "./modes/windows.js";
 import { VerticalBar } from "./modes/vertical.js";
 import { VerticalBarPinned } from "./modes/verticalPinned.js";
 import { MacBar } from "./modes/macLike.js";
-
+import { NotchBar } from "./modes/notch.js";
 // Mode configuration:
 // [Component, ShowCorners, Description]
 const horizontalModes = new Map([
@@ -30,13 +29,16 @@ const horizontalModes = new Map([
   ["5", [WindowsTaskbar, false, "Windows Taskbar"]],
   // Mac-like mode without corners
   ["6", [MacBar, false, "Mac"]],
+  // Notch mode without corners
+  ["7", [NotchBar, false, "Notch"]],
+
 ]);
 
 const verticalModes = new Map([
    // Floating Vertical bar
-  ["7", [VerticalBar, false, "Vertical Bar"]],
+  ["8", [VerticalBar, false, "Vertical Bar"]],
    // Pinned Corners Vertical bar
-  ["8", [VerticalBarPinned, true, "Vertical Bar Pinned"]],
+  ["9", [VerticalBarPinned, true, "Vertical Bar Pinned"]],
 ]);
 
 // Combined modes for easy lookup

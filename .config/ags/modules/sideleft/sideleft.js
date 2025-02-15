@@ -84,7 +84,7 @@ export const WidgetContent = (ORDER) => {
     });
 };
 
-export let widgetContent = Widget.Box({child:apiWidgets,className: 'sidebar-left spacing-v-10',}) //WidgetContent(ORDER.asyncGet());
+export let widgetContent = WidgetContent(ORDER.asyncGet());
 
 export default () => {
     let unsubscribe = () => {};

@@ -5,12 +5,17 @@ import Keybinds from "./keybinds.js";
 import { ExpandingIconTabContainer } from '../.commonwidgets/tabcontainer.js';
 import { checkKeybind } from '../.widgetutils/keybind.js';
 import clickCloseRegion from '../.commonwidgets/clickcloseregion.js';
-
+import PeriodicTable from "./periodictable.js";
 const cheatsheets = [
     {
         name: getString('Keybinds'),
         materialIcon: 'keyboard',
         contentWidget: Keybinds,
+    },
+    {
+        name: getString('Periodic table'),
+        materialIcon: 'experiment',
+        contentWidget: PeriodicTable,
     },
 ];
 

@@ -1,7 +1,7 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Indicator from '../../services/indicator.js';
 import IndicatorValues from './indicatorvalues.js';
-// import MusicControls from './musiccontrols.js';
+import MusicControls from './musiccontrols.js';
 import ColorScheme from './colorscheme.js';
 import NotificationPopups from './notificationpopups.js';
 
@@ -22,10 +22,10 @@ export default (monitor = 0) => Widget.Window({
             className: 'osd-window',
             css: 'min-height: 2px;',
             children: [
-                IndicatorValues(monitor),
-                // MusicControls(),
-                NotificationPopups(),
                 ColorScheme(),
+                NotificationPopups(),
+                IndicatorValues(monitor),
+                MusicControls(),
             ]
         })
     }),
