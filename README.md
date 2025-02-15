@@ -78,6 +78,7 @@ WIP
 - My gf - She supported me a lot.
 - [end-4](https://github.com/end-4) - For the main dotfile of this beauiful creation.
 - [Sh1zicus](https://github.com/sh1zicus) - For the great kick-start of this dotfile.
+- [os-guy](https://github.com/os-guy) - For dealing with readme and resource structure.
 
 ## 🤝 Contributing
 We welcome contributions! Please feel free to submit a pull request or open an issue if you have new ⭐ feature requests ⭐ or found some 🪲 bugs 🪲 !
