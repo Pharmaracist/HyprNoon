@@ -207,10 +207,11 @@ case $SKIP_MISCCONF in
   *)
     find .config/ -mindepth 1 -maxdepth 1 ! -name 'ags' ! -name 'fish' ! -name 'hypr' -print0 | while IFS= read -r -d $'\0' i; do
       echo "[$0]: Found target: $i"
+      destination="$XDG_CONFIG_HOME/$(basename "$i")" # Store destination path
       if [ -d "$i" ]; then
-        v rsync -av --delete "$i" "$XDG_CONFIG_HOME/$(basename "$i")" # Correct rsync
+        v rsync -av --delete "$i" "$destination" # Correct rsync (no trailing slash on source)
       elif [ -f "$i" ]; then
-        v rsync -av "$i" "$XDG_CONFIG_HOME/$(basename "$i")"
+        v rsync -av "$i" "$destination" # Correct rsync (for files)
       fi
     done
     ;;
