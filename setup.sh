@@ -2,7 +2,7 @@
 # Online script for install HyprNoon.
 
 me="-->online-setup<--"
-remote_repo=Pharmaracist/HyprNoon
+remote_repo=os-guy/HyprNoon
 set -e
 function try { "$@" || sleep 0; }
 function x() {
