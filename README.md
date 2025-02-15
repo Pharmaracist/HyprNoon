@@ -5,7 +5,7 @@
     </p>
 </div>
 
-<div align="center"> 
+<div align="center">
 
 [![GitHub stars](https://img.shields.io/github/stars/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=FFB686&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/stargazers)
 [![GitHub last commit](https://img.shields.io/github/last-commit/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=FFB1C8&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/commits/main)
@@ -36,7 +36,7 @@
 - [License](#-license)
 
 ## ✨ Features
-- **Aim**: The main focus is to provide a Flexible Experience While using it its for your imagination.
+- **Aim**: The main focus is to provide a Flexible Experience, While using it its for your imagination.
 - **User-Friendly**: Designed for ease of use, ensuring a smooth experience for all users.
 - **Feature-Rich**: Packed with functionalities to enhance your desktop environment.
 - **Resource-Friendly**: Optimized to use minimal system resources while providing maximum performance.
@@ -67,16 +67,16 @@ WIP
   | Titles | Screenshots                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Tweaks     | <img src="resources/pics/1.png" width="200" /> <img src="resources/pics/3.png" width="200" />                                                                                                                                                                                                                                      |
-| App Themeing    | <img src="resources/pics/2.png" width="200" />                                                                                                                                                                                                                                                                                                                                                   |
+| App Theming    | <img src="resources/pics/2.png" width="200" />                                                                                                                                                                                                                                                                                                                                                   |
 | Sidebars & Media Control  | <img src="resources/pics/5.png" width="200" />
-| Read Quaran     | <img src="resources/pics/6.png" width="200" />                                                                                            |
-| More From Desktop     | <img src="resources/pics/4.png" width="200" /> <img src="resources/pics/7.png" width="200" /> <img src="resources/pics/8.png" width="200" />     
+| Read Qur'an     | <img src="resources/pics/6.png" width="200" />                                                                                            |
+| More From Desktop     | <img src="resources/pics/4.png" width="200" /> <img src="resources/pics/7.png" width="200" /> <img src="resources/pics/8.png" width="200" />
 
 </div>
 
 ## 🙏 Credits
 - My gf - She supported me a lot.
-- [end-4](https://github.com/end-4) - For the main dotfile of this beauiful creation.
+- [end-4](https://github.com/end-4) - For the main dotfile of this beautiful creation.
 - [Sh1zicus](https://github.com/sh1zicus) - For the great kick-start of this dotfile.
 
 ## 🤝 Contributing
