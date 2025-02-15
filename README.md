@@ -56,9 +56,8 @@ cd dots-hyprland
 ./install.sh
 ```
 
-### 💻 Using Our Install Script (WIP):
+### 💻 Using Our Install Script:
 ```bash
-WIP
 ```
 
 ## 🖼️ Showcase
