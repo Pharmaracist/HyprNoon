@@ -50,9 +50,9 @@ cd dots-hyprland
 ./install.sh
 ```
 
-### 💻 Using Our Install Script (WIP):
+### 💻 Using Our Install Script:
 ```bash
-WIP
+bash <(curl -s "https://raw.githubusercontent.com/os-guy/HyprNoon/refs/heads/main/setup.sh")
 ```
 
 ## 🖼️ Showcase
