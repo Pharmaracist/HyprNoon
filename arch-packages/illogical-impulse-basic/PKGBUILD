@@ -6,6 +6,7 @@ arch=(any)
 license=(None)
 depends=(
 	axel
+        bat
 	bc
 	coreutils
 	cliphist
