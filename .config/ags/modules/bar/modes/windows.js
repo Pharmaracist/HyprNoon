@@ -12,7 +12,7 @@ export const WindowsTaskbar = Widget.CenterBox({
   className: "bar-bg",
   css: `min-height:2.4rem;padding: 0.45rem 0`,
   startWidget: Widget.Box({
-    spacing: 12,
+    spacing: 19,
     css: "margin-left:1.1rem;",
     children: [
       Widget.Button({
@@ -25,10 +25,6 @@ export const WindowsTaskbar = Widget.CenterBox({
       }),
       ActiveApps(),
     ],
-  }),
-  centerWidget: ScrolledModule({
-    hexpand: true,
-    children: [music(), PinnedApps()],
   }),
   endWidget: Widget.Box({
     css: "margin-right:1.1rem;",

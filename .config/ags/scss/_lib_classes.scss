@@ -56,7 +56,9 @@
     text-shadow: 1px 2px 8px rgba(0, 0, 0, 0.69);
     margin: 10px;
 }
-
+.txt-monospace {
+    font-family: "Iosevka"
+}
 .txt-gigantic {
     @include mainfont;
     font-size: 3rem;

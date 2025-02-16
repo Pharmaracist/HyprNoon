@@ -1,7 +1,7 @@
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 const { GLib } = imports.gi;
 const options = userOptions.asyncGet();
-const timeFormat = "%I:%M %p";
+const timeFormat = "%I:%M %P";
 const dateFormat = options.time.dateFormatLong;
 
 const time = Variable("", {
@@ -19,9 +19,21 @@ const date = Variable("", {
 });
 
 const InLineClock = () =>
-  Widget.Label({
-    css:`font-family:"Iosevka"`,
-    className: "txt-norm onSurfaceVariant txt-semibold ",
-    label: time.bind(),
+  Widget.EventBox({
+    onPrimaryClick: () => {
+      App.toggleWindow("sideright");
+    },
+    child: Widget.Box({
+      vpack: "center",
+      className: "onSurfaceVariant txt-semibold techfont",
+      tooltipText: date.bind(),
+      children: [
+        Widget.Label({
+          css:`font-size:16.5px;`,
+          className: "onSurfaceVariant txt-semibold txt-monospace",
+          label: time.bind(),
+        }),
+      ],
+    }),
   });
 export default () => InLineClock();

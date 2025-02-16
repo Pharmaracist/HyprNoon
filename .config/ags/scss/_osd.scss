@@ -49,13 +49,13 @@
 
 .osd-value-txt {
     @include titlefont;
-    font-size: 1.888rem;
+    font-size: 1.688rem;
     font-weight: 500;
     color: $onLayer0;
 }
 
 .osd-value-icon {
-    font-size: 1.888rem;
+    font-size: 1.688rem;
 }
 
 .osd-brightness {
@@ -80,20 +80,14 @@
 }
 
 .osd-colorscheme {
-    border-radius: 0 0 $rounding_large $rounding_large;
+    border-radius: 0 0 1.023rem 1.023rem;
     background-color: $layer0;
-    padding: 0.513rem 0.626rem;
-    margin: -5px;
+    padding: 0.313rem 0.626rem;
     // @include elevation2;
-}
-.corner-colorscheme {
-    background-color: $layer0;
-    border-radius: $rounding_large;
-    
 }
 
 .osd-colorscheme-settings {
-    background-color: $layer2;
+    background-color: $layer1;
     padding: 0.313rem 0.626rem;
     @include small-rounding;
 }
@@ -101,8 +95,8 @@
 .osd-color {
     border-radius: 0.650rem;
     -gtk-outline-radius: 0.650rem;
-    min-width: 2.927rem;
-    min-height: 1.905rem;
+    min-width: 2.727rem;
+    min-height: 1.705rem;
     padding: 0rem 0.341rem;
     font-weight: bold;
 

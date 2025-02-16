@@ -220,7 +220,7 @@ export const ModuleSettingsIcon = ({ hpack = 'center' } = {}) => Widget.Button({
     label: 'settings',
     onClicked: () => {
         App.closeWindow('sideright');
-        Utils.execAsync(['bash', '-c', `${GLib.get_home_dir()}/.local/bin/ags-tweaks`]);
+        Utils.execAsync(['bash', '-c', `${GLib.get_home_dir()}/.local/bin/ags-tweaks`]).catch(print);
     }
 });
 export const ModuleGameMode = async (props = {}) => {

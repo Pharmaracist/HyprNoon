@@ -108,25 +108,7 @@ const timeRow = Box({
                 Widget.Label({
                     xalign:0,
                     className: 'txt-small sec-txt txt',
-                    setup: (self) => {
-                        const getUsername = async () => {
-                            try {
-                                // Fetch the current username
-                                return execAsync(['bash', '-c', 'whoami']);
-                            } catch (err) {
-                                console.error(`Failed to fetch username: ${err}`);
-                                return "Unknown";
-                            }
-                        };
-                
-                        self.poll(5000, label => {
-                            getUsername().then(username => {
-                                label.label = `${username}`;
-                            }).catch(err => {
-                                console.error(`Failed to fetch username: ${err}`);
-                            });
-                        });
-                    },
+                    label:GLib.get_user_name(),
                 }),
                 Widget.Label({
                     xalign:0,

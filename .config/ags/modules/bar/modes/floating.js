@@ -25,16 +25,7 @@ export const FloatingBar = Widget.CenterBox({
       }),
     ],
   }),
-  centerWidget: ScrolledModule({
-    hpack:"center",
-    hexpand: true,
-    children: [
-      ...(userOptions.asyncGet().bar.elements.showClock ? [Clock()] : []),
-      expand(),
-	    media(),
-      Widget.Box({ children: [expand(),BatteryScaleModule()] }),
-    ],
-  }),
+  centerWidget:Clock(),
   endWidget:
   Widget.Box({
     children:[
