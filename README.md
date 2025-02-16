@@ -7,7 +7,7 @@
 
 <div align="center">
 
-[![GitHub stars](https://img.shields.io/github/stars/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=FFB686&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/pharmaracist/HyprNoon?style=for-the-badge&logo=github&color=FFB686&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/stargazers)
 [![Required Arch](https://img.shields.io/badge/Supports-Arch%20Linux-blue?style=for-the-badge&logo=arch-linux&logoColor=D9E0EE&labelColor=292324&color=7DC4E4)](https://archlinux.org/)
 [![Hyprland](https://img.shields.io/badge/Made%20for-Hyprland-pink?style=for-the-badge&logo=linux&logoColor=D9E0EE&labelColor=292324&color=C6A0F6)](https://hyprland.org/)
 [![Maintained](https://img.shields.io/badge/Maintained-Yes-blue?style=for-the-badge&logo=linux&logoColor=D9E0EE&labelColor=292324&color=3362E1)]()
