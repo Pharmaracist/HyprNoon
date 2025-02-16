@@ -21,4 +21,5 @@ depends=(
 	typescript
 	gjs
 	xdg-user-dirs
+        pokemon-colorscripts-go
 )
