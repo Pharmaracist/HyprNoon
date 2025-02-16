@@ -1,0 +1,4 @@
+If you're installing this config manually, please put the .ags folder into your home folder.
+The installer will do this action automatically.
+
+/.ags -> ~/.ags
