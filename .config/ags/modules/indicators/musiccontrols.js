@@ -354,7 +354,7 @@ const CavaVisualizer = () => {
     const bars = Array(20).fill(0).map(() => Widget.Box({
         className: 'cava-bar cava-bar-low',
         hpack: 'center',
-        vpack: userOptions.asyncGet().ipod.visualizer.mode || 'center',
+        vpack: 'end',
         hexpand: true,
     }));
 
@@ -509,6 +509,8 @@ export default () => Revealer({
         self.revealChild = showMusicControls.value;
     }),
     child: Box({
+        vexpand:true,
+        css:`min-height:10rem`,
         children: Mpris.bind("players")
             .as(players => 
                 // Only valid players (as determined by isRealPlayer) get their own MusicControlsWidget.

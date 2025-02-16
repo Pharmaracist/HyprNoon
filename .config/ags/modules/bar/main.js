@@ -1,4 +1,3 @@
-const { Gtk, GLib } = imports.gi;
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import { currentShellMode, barPosition } from "../../variables.js";
 import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
@@ -30,7 +29,8 @@ const horizontalModes = new Map([
   ["5", [WindowsTaskbar, false, "Windows Taskbar"]],
   // Mac-like mode without corners
   ["6", [MacBar, false, "Mac"]],
-  ["7", [NotchBar, false, "Notched"]],
+  // Notch mode without corners
+  ["7", [NotchBar, false, "Notch"]],
 
 ]);
 

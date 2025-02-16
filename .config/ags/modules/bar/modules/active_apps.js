@@ -22,17 +22,34 @@ const AppButton = ({ client }) => {
         `address:${client.address}`,
       ]).catch(print);
     },
-    child: Box({
-      className: "spacing-h-5 txt-norm",
-      children: [
-        Widget.Icon({
-          icon: isValidIcon ? iconName : "application-x-executable", // Changed fallback icon
-          size: 22,
+    child: 
+    Box({
+      vertical:true,
+      tooltipText: client.title || client.class || "Unknown",
+      setup: setupCursorHover,
+      spacing:5,
+      vpack:"end",
+      children:[
+        Box({
+          vpack:"center",
+          spacing:5,
+          className: "spacing-h-5 txt-norm",
+          children: [
+            Widget.Icon({
+              icon: isValidIcon ? iconName : "windows-exe-symbolic", // Changed fallback icon
+              size: 22,
+            }),
+            Widget.Label({
+              truncate:"end",
+              maxWidthChars: 10,
+              className: "txt-small onSurfaceVariant",
+              label: client.title || client.class || "Unknown",
+            }),
+          ],
         }),
-      ],
-    }),
-    tooltipText: client.title || client.class || "Unknown",
-    setup: setupCursorHover,
+        Box({vpack:"end",hexpand:true,className:"active-window-tb"})
+      ]
+    })
   });
 };
 

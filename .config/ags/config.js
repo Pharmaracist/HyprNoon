@@ -29,8 +29,8 @@ function forMonitors(widget) {
 
 // Start stuff
 handleStyles(true);
-// startAutoDarkModeService().catch(print);
-// firstRunWelcome().catch(print);
+startAutoDarkModeService().catch(print);
+firstRunWelcome().catch(print);
 startBatteryWarningService().catch(print);
 
 // Create bars and corners

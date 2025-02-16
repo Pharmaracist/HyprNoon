@@ -8,24 +8,18 @@
 <div align="center">
 
 [![GitHub stars](https://img.shields.io/github/stars/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=FFB686&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/stargazers)
-[![GitHub last commit](https://img.shields.io/github/last-commit/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=FFB1C8&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/commits/main)
-[![Repo size](https://img.shields.io/github/repo-size/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=CAC992&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon)
-[![License](https://img.shields.io/github/license/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=8CABD9&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/blob/main/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/pharmaracist/dots-hyprland?style=for-the-badge&logo=github&color=F5A97F&logoColor=D9E0EE&labelColor=292324)](https://github.com/pharmaracist/HyprNoon/issues)
 [![Required Arch](https://img.shields.io/badge/Supports-Arch%20Linux-blue?style=for-the-badge&logo=arch-linux&logoColor=D9E0EE&labelColor=292324&color=7DC4E4)](https://archlinux.org/)
 [![Hyprland](https://img.shields.io/badge/Made%20for-Hyprland-pink?style=for-the-badge&logo=linux&logoColor=D9E0EE&labelColor=292324&color=C6A0F6)](https://hyprland.org/)
+[![Maintained](https://img.shields.io/badge/Maintained-Yes-blue?style=for-the-badge&logo=linux&logoColor=D9E0EE&labelColor=292324&color=3362E1)]()
+[![Discord](https://dcbadge.limes.pink/api/server/https://discord.gg/qE4JY7d7GZ)](https://discord.gg/qE4JY7d7GZ)
 
 </div>
 
 <div align="center">
-    <h2>My Personal Spaghetti Coded Dotfiles on Hyprland & AGS</h2>
+    <h2>Spaghetti Coded Dotfiles for Hyprland made with AGS</h2>
 </div>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Maintained%3F-Yes-green?style=flat-square&logo=github&logoColor=white&color=A6DA95">
-  <img src="https://img.shields.io/badge/Shell-%23121011.svg?style=flat-square&logo=gnu-bash&logoColor=white&color=E6C384">
-  <img src="https://img.shields.io/badge/Made%20with-AGS-blue?style=flat-square&logo=linux&logoColor=white&color=7AA2F7">
-</p>
+
 
 ## 📚 Table of Contents
 - [Features](#-features)
@@ -56,8 +50,9 @@ cd dots-hyprland
 ./install.sh
 ```
 
-### 💻 Using Our Install Script:
+### 💻 Using Our Install Script (WIP):
 ```bash
+WIP
 ```
 
 ## 🖼️ Showcase
@@ -83,7 +78,3 @@ We welcome contributions! Please feel free to submit a pull request or open an i
 
 ## 📜 License
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/pharmaracist/HyprNoon/blob/main/LICENSE) for more details.
-
-## Join Us On Discord!
-You can join our community and help us GROW!
-[Invite Link](https://discord.gg/uJs5x6kKp7)

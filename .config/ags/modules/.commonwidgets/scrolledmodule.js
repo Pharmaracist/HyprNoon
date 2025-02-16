@@ -5,15 +5,21 @@ import userOptions from '../.configuration/user_options.js';
 const { Box, Stack, EventBox } = Widget;
 
 /**
- * Creates a module switcher with smooth transitions
+ * Creates a module switcher with smooth transitions and auto-cycling
  * @param {Object} props - Properties for the module switcher
  * @param {Array} props.children - Array of widgets to show
+ * @param {boolean} [props.autoCycle] - Enable automatic cycling (default: false)
+ * @param {number} [props.cycleInterval] - Auto-cycle interval in milliseconds (default: 5000)
+ * @param {boolean} [props.pauseOnHover] - Pause cycling on mouse hover (default: true)
  * @param {string} [props.css] - Additional CSS for the container
  * @param {string} [props.className] - Additional class names for the container
  * @returns {import('types/widgets/box').default} The module switcher widget
  */
 export default ({
     children = [],
+    autoCycle = false,
+    cycleInterval = 5000,
+    pauseOnHover = true,
     css = '',
     className = '',
 }) => {
@@ -23,6 +29,8 @@ export default ({
 
     let currentIndex = 0;
     let isTransitioning = false;
+    let cycleTimeoutId = 0;
+    let isCycling = false;
     const transition = userOptions.asyncGet().appearance.Scroll.transition || 'slide_up_down';
     const debounceMs = userOptions.asyncGet().appearance.Scroll.debounce || 100;
 
@@ -32,8 +40,6 @@ export default ({
         homogeneous: true,
         vexpand: true,
         children: validChildren.map((child, i) => Box({
-            // className: 'bar-group bar-group-standalone',
-            // css: 'padding: 0 8px; margin: 1px 0;',
             child,
             name: i.toString(),
         })),
@@ -58,14 +64,79 @@ export default ({
             isTransitioning = false;
             return GLib.SOURCE_REMOVE;
         });
+
+        // Reset cycling timer on user interaction
+        if (isCycling) {
+            stopCycle();
+            startCycle();
+        }
     };
 
-    // Create event box for mouse wheel handling
-    return EventBox({
+    // Cycle control functions
+    const startCycle = () => {
+        if (validChildren.length <= 1) return;
+        isCycling = true;
+        
+        cycleTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, cycleInterval, () => {
+            handleScroll('down');
+            return GLib.SOURCE_CONTINUE;
+        });
+    };
+
+    const stopCycle = () => {
+        if (cycleTimeoutId) {
+            GLib.Source.remove(cycleTimeoutId);
+            cycleTimeoutId = 0;
+        }
+        isCycling = false;
+    };
+
+    // Create event box with hover handling
+    const eventBox = EventBox({
         className: `module-switcher ${className}`,
         css: css || 'min-width: 2rem;',
         onScrollUp: () => handleScroll('up'),
         onScrollDown: () => handleScroll('down'),
         child: stack,
+        setup: (self) => {
+            // Auto-start cycling if enabled
+            if (autoCycle) startCycle();
+
+            // Handle pause on hover
+            if (pauseOnHover) {
+                self.on('enter-notify-event', () => stopCycle());
+                self.on('leave-notify-event', () => {
+                    if (autoCycle) startCycle();
+                });
+            }
+
+            // Cleanup on destroy
+            self.on('destroy', () => stopCycle());
+        },
     });
+
+    // Expose control methods
+    eventBox.jsx = {
+        startCycle: () => {
+            autoCycle = true;
+            startCycle();
+        },
+        stopCycle: () => {
+            autoCycle = false;
+            stopCycle();
+        },
+        toggleCycle: () => {
+            autoCycle = !autoCycle;
+            autoCycle ? startCycle() : stopCycle();
+        },
+        setCycleInterval: (newInterval) => {
+            cycleInterval = newInterval;
+            if (isCycling) {
+                stopCycle();
+                startCycle();
+            }
+        },
+    };
+
+    return eventBox;
 };

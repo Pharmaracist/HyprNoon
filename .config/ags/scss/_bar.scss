@@ -19,7 +19,17 @@ $bar_ws_width_focus_active: 6.045rem;
     color: $onLayer0;
     font-size: 2.032rem;
   }
-
+.bar-util-btn2 {
+    @include element-decel;
+    background-color: $layer0;
+    min-width: 1rem;
+    @include full-rounding
+}
+.bar-notch {
+    background-color: $layer0;
+    min-width:18rem;
+    border-radius: 0 0 $rounding_mediumlarge $rounding_mediumlarge;
+}
 .bar-resources {
     progressbar {
         @include element_decel;
@@ -187,7 +197,10 @@ $bar_ws_width_focus_active: 6.045rem;
 .bar-ws-container {
     transition: 700ms cubic-bezier(0.1, 1, 0, 1);
 }
-
+.active-window-tb {
+    background-color: $primary;
+    @include large-rounding;
+}
 .bar-ws {
     font-size: 1.02rem;
     font-weight: 600;
