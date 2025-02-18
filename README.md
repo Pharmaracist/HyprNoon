@@ -73,6 +73,7 @@ bash <(curl -s "https://raw.githubusercontent.com/os-guy/HyprNoon/refs/heads/mai
 - [end-4](https://github.com/end-4) - For the main dotfile of this beautiful creation.
 - [Sh1zicus](https://github.com/sh1zicus) - For the great kick-start of this dotfile.
 - [os-guy](https://github.com/os-guy) - For the installer and structure.
+- [tr1x_em](https://github.com/tr1xem) - For Misc fix and help.
 
 ## 🤝 Contributing
 We welcome contributions! Please feel free to submit a pull request or open an issue if you have new ⭐ feature requests ⭐ or found some 🪲 bugs 🪲 !
