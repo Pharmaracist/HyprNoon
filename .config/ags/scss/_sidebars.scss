@@ -1140,7 +1140,7 @@ $skeleton-accent: mix($secondary, $onSecondary, 50%);
     @include icon-material;
     color: mix($onSurface, $surface, 75%);
     margin-right: 0.5rem;
-    
+
     &-next {
         color: $onPrimary;
         margin-right: 0.5rem;
@@ -1390,3 +1390,80 @@ $skeleton-accent: mix($secondary, $onSecondary, 50%);
     margin-left: 8px;
     color: $onSurface;
 }
+.sidebar-waifu-heading {
+    @include titlefont;
+    padding: 0.341rem;
+    margin-left: -0.136rem;
+    padding-left: 0.818rem;
+}
+
+.sidebar-waifu-txt {
+    @include mainfont;
+}
+
+.sidebar-waifu-image {
+    @include normal-rounding;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.sidebar-waifu-image-actions {
+    @include element_decel;
+    padding: 0.313rem;
+}
+
+$waifu_image_overlay_transparency: 0.7;
+
+.sidebar-waifu-image-action {
+    @include full-rounding;
+    min-width: 1.875rem;
+    min-height: 1.875rem;
+    background-color: rgba(0, 0, 0, $waifu_image_overlay_transparency ); // Fixed cuz on image
+    color: rgba(255, 255, 255, $waifu_image_overlay_transparency);
+}
+
+.sidebar-waifu-image-action:hover,
+.sidebar-waifu-image-action:focus {
+    background-color: rgba(30, 30, 30, $waifu_image_overlay_transparency);
+}
+
+.sidebar-waifu-image-action:active {
+    background-color: rgba(60, 60, 60, $waifu_image_overlay_transparency);
+}
+
+.sidebar-booru-provider {
+    @include titlefont;
+    @include small-rounding;
+    padding: 0.341rem 0.818rem;
+    margin: 0.341rem;
+    font-weight: bold;
+    background-color: $primary;
+    color: $onPrimary;
+}
+
+.sidebar-booru-imagegrid {
+    @include normal-rounding;
+}
+
+.sidebar-booru-image {
+    @include small-rounding;
+    margin: 0.273rem;
+    min-width: 11.932rem;
+    // background-color: rgba(100, 200, 0, 0.3);
+}
+
+.sidebar-booru-image-drawingarea {
+    // background-color: rgba(200, 100, 0, 0.3);
+    @include small-rounding;
+    min-width: 12.273rem;
+    min-height: 12.273rem;
+}
+
+.sidebar-booru-image-actions {
+    // background-color: rgba(100, 100, 0, 0.3);
+    @include element_decel;
+    margin: 0.545rem;
+}
+
+

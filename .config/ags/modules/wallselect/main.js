@@ -27,32 +27,32 @@ const initFileMonitor = () => {
         const path = file.get_path();
         const ext = path.toLowerCase().split('.').pop();
         const validExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'tga', 'tiff', 'bmp', 'ico'];
-        
+
         // Handle both file creation and deletion
-        if ((eventType === Gio.FileMonitorEvent.CREATED || 
-             eventType === Gio.FileMonitorEvent.DELETED) && 
+        if ((eventType === Gio.FileMonitorEvent.CREATED ||
+             eventType === Gio.FileMonitorEvent.DELETED) &&
             validExts.includes(ext)) {
-            
+
             const action = eventType === Gio.FileMonitorEvent.CREATED ? 'added' : 'deleted';
-            
+
             if (eventType === Gio.FileMonitorEvent.DELETED) {
                 // Get the thumbnail path
                 const filename = path.split('/').pop();
                 const thumbnailPath = GLib.build_filenamev([THUMBNAIL_DIR, filename]);
-                
+
                 // Delete the thumbnail if it exists
                 if (GLib.file_test(thumbnailPath, GLib.FileTest.EXISTS)) {
                     GLib.unlink(thumbnailPath);
                 }
             }
-            
+
             // Regenerate thumbnails
             Utils.execAsync([`bash`, `${CONFIG_DIR}/scripts/generate_thumbnails.sh`])
                 .then(() => {
                     // Reset caches
                     wallpaperPathsPromise = null;
                     cachedContent = null;
-                    
+
                     // Refresh UI if visible
                     if (App.getWindow('wallselect')?.visible) {
                         App.closeWindow('wallselect');
@@ -65,7 +65,7 @@ const initFileMonitor = () => {
 
 
 // Wallpaper Button
-const WallpaperButton = (path) => 
+const WallpaperButton = (path) =>
     Widget.Button({
         child: Box({ className: "preview-box", css: `background-image: url("${path}");` }),
         onClicked: () => {

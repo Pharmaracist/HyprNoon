@@ -122,7 +122,7 @@ const CoverArt = ({ player, ...rest }) => {
     const coverArtDrawingArea = Widget.DrawingArea({ className: 'osd-music-cover-art' });
     const coverArtDrawingAreaStyleContext = coverArtDrawingArea.get_style_context();
 
-    const fallbackCoverArt = Box({ 
+    const fallbackCoverArt = Box({
         className: 'osd-music-cover-fallback',
         homogeneous: true,
         children: [
@@ -348,7 +348,6 @@ const PlayState = ({ player }) => {
         })
     });
 }
-
 const CavaVisualizer = () => {
     const bars = Array(30).fill(0).map(() => Widget.Box({
         className: 'cava-bar cava-bar-low',

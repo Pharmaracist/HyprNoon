@@ -168,8 +168,8 @@ const contentStack = Widget.Stack({
   // hexpand: true,
   vexpand: false,
   children: {
+        calendar: CalendarWidget(),
     ...(userOpts.muslim?.enabled ? { PrayerTimes: PrayerTimesWidget() } : {}),
-    calendar: CalendarWidget(),
     todo: TodoWidget(),
     media: AudioFiles(),
     timers: TimerWidget(),
@@ -234,8 +234,8 @@ export const ModuleCalendar = () =>
           vertical: true,
           className: "sidebar-navrail spacing-v-10",
           children: [
+                        StackButton("calendar", "calendar_month", getString("Calendar")),
             ...(userOpts.muslim?.enabled ? [StackButton("PrayerTimes", "mosque", getString("Prayers"))] : []),
-            StackButton("calendar", "calendar_month", getString("Calendar")),
             StackButton("todo", "done_outline", getString("To Do")),
             StackButton("media", "music_note", getString("Media")),
             StackButton("timers", "access_time", getString("Timers")),

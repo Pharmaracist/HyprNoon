@@ -1,9 +1,15 @@
 {
+  "muslim": {
+    "enabled": false,
+    "prayerTimes": {
+      "city": "Cairo"
+    }
+  },
   "indicators": {
     "enabled": true
   },
   "muslimStuff": {
-    "enabled": true,
+    "enabled": false,
     "city": "Cairo"
   },
   "wallselect": {
@@ -14,8 +20,17 @@
   "session": {
     "enabled": true
   },
+  "cheatshhet": {
+    "enabled": true,
+    "modules": {
+      "periodicTable": "true",
+      "cheats": "true"
+    },
+    "note": "todo Cheatsheet"
+  },
   "desktopBackground": {
-    "enabled": true
+    "enabled": true,
+    "visible": false
   },
   "ai": {
     "defaultGPTProvider": "microsoft-phi-4",
@@ -111,6 +126,17 @@
     "wsNumMarginScale": 0.07
   },
   "sidebar": {
+    "image": {
+        "columns": 2,
+        "batchCount": 20,
+        "allowNsfw": true,
+        "saveInFolderByTags": true
+    },
+    "extraCss":"",
+    "ModuleCalendar" : {
+        "enabled" : true,
+        "visible" : true
+     },
     "centerModules": {
       "enabled": [
         "vpnGate",
@@ -161,7 +187,7 @@
       "__custom": [
         "extraGptModels"
       ],
-      "extraGptModels": {
+    "extraGptModels": {
         "deepseek": {
           "name": "deepseek API",
           "logo_name": "deepseek-symbolic",
@@ -236,7 +262,11 @@
       ],
       "apis": {
         "order": [
-          "gpt",
+
+      "gpt",
+      "gemini",
+        "waifu",
+        "booru",
           "quran",
           "translater"
         ]
@@ -247,7 +277,7 @@
         "languages"
       ],
       "from": "auto",
-      "to": "ar",
+      "to": "en",
       "languages": {
         "auto": "Auto",
         "en": "English",
@@ -294,7 +324,7 @@
     ]
   },
   "time": {
-    "format": "%I:%M",
+    "format": "%I:%M%P",
     "interval": 5000,
     "dateFormatLong": "%A, %d/%m",
     "dateInterval": 5000,
@@ -307,15 +337,15 @@
     }
   },
   "weather": {
-    "city": "Cairo",
+    "city": "Dehradun",
     "preferredUnit": "C"
   },
   "workspaces": {
-    "shown": 9,
-    "style": "japanese"
+    "shown": 10,
+    "style": "normal"
   },
   "dock": {
-    "enabled": true,
+    "enabled": false,
     "hiddenThickness": 5,
     "pinnedApps": [
       "zen-browser",
@@ -433,12 +463,86 @@
       "showWorkspaces": true,
       "showClock": true,
       "showIndicators": true,
-      "showUtils": true,
+      "showUtils": false,
       "showWeather": true,
       "showResources": true,
       "showMusic": true,
       "showBattery": true,
       "showAvatar": true
     }
+  },
+  "etc":{
+    "weather":{
+      "cycle": true,
+      "cycleTimeout":"5000"
+    }
+  },
+  "ipod": {
+      "widget": {
+          "margin": " 0 0",
+          "minHeight": 270,
+          "borderRadius": 0,
+          "padding": "0",
+          "borderWidth": 0,
+          "borderOpacity": 1,
+          "extraCss": "border-top: 0.5px solid @outline"
+      },
+      "background": {
+          "defaultOpacity": 0.2,
+          "hiddenOpacity": 1,
+          "blurAmount": "0x3",
+          "imageQuality": 80,
+          "imageResize": 60,
+          "transitionMs": 400,
+          "enableBlur": true
+      },
+      "coverArt": {
+          "size": 230,
+          "borderRadius": 12
+      },
+      "visualizer": {
+          "margin": "0",
+          "mode": "center",
+          "padding": "0",
+          "barSpacing": 2.5,
+          "barMinWidth": 20,
+          "barMaxHeight": 40,
+          "barNumber": 63,
+          "heightMultiplier": 2,
+          "transitionMs": 80,
+          "colors": {
+              "low": "rgba(255,255,255,0)",
+              "medium": "rgba(255,255,255,0.6)",
+              "high": "rgba(255,255,255,1)",
+              "heightThresholds": {
+                  "low": 1,
+                  "medium": 2.2,
+                  "high": 4
+              }
+          }
+      },
+      "trackInfo": {
+          "titleSize": "3rem",
+          "artistSize": "2rem",
+          "titleOpacity": 0.9,
+          "artistOpacity": 0.8,
+          "maxChars": 100
+      },
+      "controls": {
+          "buttonSize": "1.8rem",
+          "otherButtonSize": "1.4rem",
+          "spacing": 10,
+          "iconOpacity": 0.8
+      },
+      "volume": {
+          "iconSize": 36,
+          "progressSize": 40,
+          "textSize": "1rem"
+      },
+      "animations": {
+          "showHideMs": 200,
+          "updateDelay": 200
+      }
   }
- }
+}
+

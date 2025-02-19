@@ -2,13 +2,15 @@ import GLib from 'gi://GLib';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js'
 import { writable, clone } from '../.miscutils/store.js';
 import { fileExists } from '../.miscutils/files.js';
-
-const defaultConfigPath = `${GLib.get_current_dir()}/.config/ags/modules/.configuration/user_options.default.json`;
+const defaultConfigPath = `${GLib.get_home_dir()}/.config/ags/modules/.configuration/user_options.default.json`
+//const defaultConfigPath = `${GLib.get_current_dir()}/.config/ags/modules/.configuration/user_options.default.json`;
 let configOptions = {};
 
 try {
     const defaultConfig = Utils.readFile(defaultConfigPath);
+    //console.log(defaultConfig);
     configOptions = JSON.parse(defaultConfig);
+
 } catch (e) {
     console.error('Error loading user_options.default.json:', e);
 }
@@ -16,7 +18,7 @@ try {
 let optionsOkay = true;
 function overrideConfigRecursive(userOverrides, configOptions = {}, check = true) {
     for (const [key, value] of Object.entries(userOverrides)) {
-        if (key === '__custom' || (configOptions['__custom'] instanceof Array && 
+        if (key === '__custom' || (configOptions['__custom'] instanceof Array &&
             configOptions['__custom'].indexOf(key) >= 0)) {
             configOptions[key] = value;
             continue;

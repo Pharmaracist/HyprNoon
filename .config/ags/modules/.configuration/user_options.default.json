@@ -1,6 +1,6 @@
 {
   "muslim": {
-    "enabled": true,
+    "enabled": false,
     "prayerTimes": {
       "city": "Cairo"
     }
@@ -9,7 +9,7 @@
     "enabled": true
   },
   "muslimStuff": {
-    "enabled": true,
+    "enabled": false,
     "city": "Cairo"
   },
   "wallselect": {
@@ -126,6 +126,12 @@
     "wsNumMarginScale": 0.07
   },
   "sidebar": {
+    "image": {
+        "columns": 2,
+        "batchCount": 20,
+        "allowNsfw": false,
+        "saveInFolderByTags": false
+    },
     "extraCss":"min-width:500px",
     "ModuleCalendar" : {
         "enabled" : true,
@@ -256,8 +262,11 @@
       ],
       "apis": {
         "order": [
-          "gpt",
-          "gemini",
+
+      "gpt",
+      "gemini",
+        "waifu",
+        "booru",
           "quran",
           "translater"
         ]
