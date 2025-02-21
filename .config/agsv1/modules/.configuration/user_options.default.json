@@ -1,0 +1,534 @@
+{
+  "muslim": {
+    "enabled": true,
+    "prayerTimes": {
+      "city": "Cairo"
+    }
+  },
+  "indicators": {
+    "enabled": true
+  },
+  "muslimStuff": {
+    "enabled": true,
+    "city": "Cairo"
+  },
+  "wallselect": {
+    "enabled": true,
+    "wallpaperFolder": "/Pictures/Wallpapers",
+    "cachingMode": "disk",
+    "width": 200,
+    "height": 120,
+    "radius": 18,
+    "highQualityPreview": true
+  },
+  "session": {
+    "enabled": true
+  },
+  "cheatshhet": {
+    "enabled": true
+  },
+  "desktopBackground": {
+    "enabled": true,
+    "resources": true,
+    "visible": false
+  },
+  "ai": {
+    "defaultGPTProvider": "microsoft-phi-4",
+    "onSearch": "microsoft-phi-4",
+    "defaultTemperature": 0.9,
+    "enhancements": true,
+    "useHistory": true,
+    "safety": true,
+    "writingCursor": " ...",
+    "proxyUrl": "",
+    "__custom": [
+      "extraGptModels"
+    ]
+  },
+  "animations": {
+    "choreographyDelay": 10,
+    "durationSmall": 80,
+    "durationLarge": 200
+  },
+  "appearance": {
+    "avatar": "avatar.png",
+    "autoDarkMode": {
+      "enabled": false,
+      "from": "18:10",
+      "to": "6:10"
+    },
+    "Scroll": {
+      "debounce": 300,
+      "transition": "slide_up_down",
+      "mode": "scroll"
+    },
+    "keyboardUseFlag": false,
+    "layerSmoke": false,
+    "layerSmokeStrength": 0.2,
+    "fakeScreenRounding": 2
+  },
+  "apps": {
+    "bluetooth": "overskride",
+    "imageViewer": "swappy",
+    "network": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
+    "settings": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center",
+    "taskManager": "kitty btop",
+    "terminal": "kitty"
+  },
+  "battery": {
+    "low": 20,
+    "critical": 10,
+    "warnLevels": [
+      20,
+      15,
+      5
+    ],
+    "warnTitles": [
+      "Low battery",
+      "Very low battery",
+      "Critical Battery"
+    ],
+    "warnMessages": [
+      "Plug in the charger",
+      "You there?",
+      "PLUG THE CHARGER ALREADY"
+    ],
+    "suspendThreshold": 3
+  },
+  "brightness": {
+    "controllers": {
+      "default": "auto"
+    }
+  },
+  "cheatsheet": {
+    "keybinds": {
+      "configPath": ""
+    }
+  },
+  "i18n": {
+    "langCode": "",
+    "extraLogs": false
+  },
+  "monitors": {
+    "scaleMethod": "division"
+  },
+  "music": {
+    "musicDir": "/Music",
+    "preferredPlayer": "plasma-browser-integration"
+  },
+  "overview": {
+    "enabled": true,
+    "enableContent":true,
+    "scale": 0.18,
+    "numOfRows": 2,
+    "wsNumScale": 0.09,
+    "wsNumMarginScale": 0.07
+  },
+  "sidebar": {
+    "extraCss":"min-width:450px",
+    "ModuleCalendar" : {
+        "enabled" : true,
+        "visible" : false
+     },
+    "showAnimeCat":false,
+    "centerModules": {
+        "enabled": [
+        "vpnGate",
+        "notifications",
+        "audioControls",
+        "powerProfiles",
+        "taskManager",
+        "bluetooth",
+        "wifiNetworks",
+        "liveConfig",
+        "prayerTimes"
+      ],
+      "vpnGate": {
+        "enabled": false
+      },
+      "notifications": {
+        "enabled": true
+      },
+      "audioControls": {
+        "enabled": true
+      },
+      "powerProfiles": {
+        "enabled": false
+      },
+      "taskManager": {
+        "enabled": false,
+        "pollingRate": 5000
+      },
+      "bluetooth": {
+        "enabled": true
+      },
+      "wifiNetworks": {
+        "enabled": false
+      },
+      "liveConfig": {
+        "enabled": true
+      },
+      "prayerTimes": {
+        "enabled": false
+      }
+    },
+    "github": {
+      "repoOwner": "pharmaracist",
+      "repoName": "HyprNoon"
+    },
+    "ai": {
+      "logo": "deepseek-symbolic",
+      "__custom": [
+        "extraGptModels"
+      ],
+    "extraGptModels": {
+        "zuki": {
+          "name": "ZoukiJourney API",
+          "logo_name": "ai-zukijourney-symbolic",
+          "description": "An API from @zukixa on GitHub.\nNote: Keys are IP-locked so it's buggy sometimes\nPricing: Free: 10/min, 800/day.\nRequires you to join their Discord for a key",
+          "base_url": "https://zukijourney.xyzbot.net/v1/chat/completions",
+          "key_get_url": "https://discord.com/invite/Y4J6XXnmQ6",
+          "key_file": "zuki_key.txt",
+          "model": "gpt-3.5-turbo"
+        },
+        "ollama": {
+          "name": "DeepSeek",
+          "logo_name": "ollama-symbolic",
+          "description": "Ollama Local AI",
+          "base_url": "http://localhost:11434/v1/chat/completions",
+          "key_get_url": "https://openrouter.ai/keys",
+          "key_file": "ollama_key.txt",
+          "model": "deepseek-r1:1.5b"
+        },
+        "oxygen-40": {
+          "name": "Oxygen (GPT-4o)",
+          "logo_name": "ai-oxygen-symbolic",
+          "description": "An API from Tornado Softwares\nPricing: Free: 100/day\nRequires you to join their Discord for a key')",
+          "base_url": "https://app.oxyapi.uk/v1/chat/completions",
+          "key_get_url": "https://discord.com/invite/kM6MaCqGKA",
+          "key_file": "oxygen_key.txt",
+          "model": "gpt-4o"
+        },
+        "microsoft-phi-4": {
+          "name": "microsoft/phi-4",
+          "logo_name": "openrouter-symbolic",
+          "description": "microsoft/phi-4 via OpenRouter",
+          "base_url": "https://openrouter.ai/api/v1/chat/completions",
+          "key_get_url": "https://openrouter.ai/keys",
+          "key_file": "openrouter_key.txt",
+          "model": "microsoft/phi-4"
+        },
+        "mistral-free": {
+          "name": "mistralai/mistral-7b-instruct:free",
+          "logo_name": "openrouter-symbolic",
+          "description": "mistralai/mistral-7b-instruct:free via OpenRouter",
+          "base_url": "https://openrouter.ai/api/v1/chat/completions",
+          "key_get_url": "https://openrouter.ai/keys",
+          "key_file": "openrouter_key.txt",
+          "model": "mistralai/mistral-7b-instruct:free"
+        }
+      },
+      "initMessages": []
+    },
+    "pages": {
+      "order": [
+        "apis",
+        "tools",
+        "github"
+      ],
+      "apis": {
+        "order": [
+          "gpt",
+          "gemini",
+          "quran",
+          "translater"
+        ]
+      }
+    },
+    "translater": {
+      "__custom": [
+        "languages"
+      ],
+      "from": "auto",
+      "to": "ar",
+      "languages": {
+        "auto": "Auto",
+        "en": "English",
+        "ar": "Arabic"
+      }
+    }
+  },
+  "search": {
+    "watchers": [
+      "/usr/share/applications",
+      "~/.local/share/applications",
+      "/var/lib/flatpak/exports/share"
+    ],
+    "enableFeatures": {
+      "actions": true,
+      "commands": true,
+      "mathResults": true,
+      "directorySearch": true,
+      "aiSearch": true,
+      "webSearch": true
+    },
+    "engineBaseUrl": "https://www.google.com/search?q=",
+    "excludedSites": [
+      "quora.com"
+    ]
+  },
+  "timers": {
+    "presets": [
+      {
+        "name": "Pomodoro",
+        "duration": 1500,
+        "icon": "timer"
+      },
+      {
+        "name": "Short Break",
+        "duration": 300,
+        "icon": "coffee"
+      },
+      {
+        "name": "Long Break",
+        "duration": 900,
+        "icon": "self_improvement"
+      }
+    ]
+  },
+  "time": {
+    "format": "%I:%M",
+    "interval": 5000,
+    "dateFormatLong": "%A, %d/%m",
+    "dateInterval": 5000,
+    "dateFormat": "%d/%m",
+    "verticalCLock": {
+      "hours": "%I",
+      "minutes": "%M",
+      "seconds": "%S",
+      "dayTime": "%p"
+    }
+  },
+  "weather": {
+    "city": "Cairo",
+    "preferredUnit": "C"
+  },
+  "workspaces": {
+    "shown": 10,
+    "style": "japanese"
+  },
+  "dock": {
+    "enabled": false,
+    "hiddenThickness": 7,
+    "pinnedApps": [
+      "zen-browser",
+      "spotube",
+      "github-desktop",
+      "Code",
+      "zeditor",
+      "firefox",
+      "nwg-look",
+      "Obisidian",
+      "steam",
+      "heroic-games-launcher",
+      "org.gnome.Nautilus"
+    ],
+    "layer": "top",
+    "monitorExclusivity": true,
+    "searchPinnedAppIcons": false,
+    "trigger": [
+      "client-added",
+      "client-removed"
+    ],
+    "autoHide": [
+      {
+        "trigger": "client-added",
+        "interval": 500
+      },
+      {
+        "trigger": "client-removed",
+        "interval": 500
+      }
+    ]
+  },
+  "icons": {
+    "__custom": [
+      "substitutions",
+      "regexSubstitutions"
+    ],
+    "searchPaths": [
+      ""
+    ],
+    "symbolicIconTheme": {
+      "dark": "Adwaita",
+      "light": "Adwaita"
+    },
+    "substitutions": {
+      "code-url-handler": "code",
+      "Code": "code",
+      "GitHub Desktop": "github-desktop",
+      "Minecraft* 1.20.1": "minecraft",
+      "gnome-tweaks": "org.gnome.tweaks",
+      "pavucontrol-qt": "pavucontrol",
+      "wps": "wps-office2019-kprometheus",
+      "wpsoffice": "wps-office2019-kprometheus",
+      "": "image-missing"
+    },
+    "regexSubstitutions": [
+      {
+        "regex": {},
+        "replace": "steam_icon_$1"
+      }
+    ]
+  },
+  "keybinds": {
+    "overview": {
+      "altMoveLeft": "Ctrl+b",
+      "altMoveRight": "Ctrl+f",
+      "deleteToEnd": "Ctrl+k"
+    },
+    "sidebar": {
+      "prayerTimes": {
+        "city": "Cairo"
+      },
+      "apis": {
+        "nextTab": "Page_Down",
+        "prevTab": "Page_Up"
+      },
+      "options": {
+        "nextTab": "Page_Down",
+        "prevTab": "Page_Up"
+      },
+      "pin": "Ctrl+p",
+      "cycleTab": "Ctrl+Tab",
+      "nextTab": "Ctrl+Page_Down",
+      "prevTab": "Ctrl+Page_Up"
+    },
+    "cheatsheet": {
+      "keybinds": {
+        "nextTab": "Page_Down",
+        "prevTab": "Page_Up"
+      },
+      "nextTab": "Ctrl+Page_Down",
+      "prevTab": "Ctrl+Page_Up",
+      "cycleTab": "Ctrl+Tab"
+    }
+  },
+  "bar": {
+    "position": "top",
+    "traySize": 16,
+    "floatingWidth": 14,
+    "floatingElevation": 1,
+    "verticalBar": {
+      "position": "left"
+    },
+    "pinnedApps": [
+      "windsurf",
+      "heroic",
+      "io.bassi.Amberol",
+      "nwg-look",
+      "org.gnome.Nautilus",
+      "spotify-launcher",
+      "steam"
+    ],
+    "elements": {
+      "showWindowTitle": true,
+      "showWorkspaces": true,
+      "showClock": true,
+      "showIndicators": true,
+      "showUtils": true,
+      "showWeather": true,
+      "showResources": true,
+      "showMusic": true,
+      "showBattery": true,
+      "showAvatar": true
+    }
+  },
+  "etc":{
+        "cornerRadius":"20",
+        "showPassword": true,
+        "todoPath": "${GLib.get_user_state_dir()}/ags/user/todo.md",
+        "notesPath": "${GLib.get_user_state_dir()}/ags/user/",
+        "recordingPath": "${GLib.get_home_dir()}/Videos/",
+        "widgetCorners": false,
+        "screencorners": {
+            "debounce": "0",
+            "topleft":"",
+            "topright":"",
+            "bottomleft":"",
+            "bottomright":""
+        },
+    "weather":{
+      "cycle": false,
+      "cycleTimeout":"5000"
+    }
+  },
+  "ipod": {
+      "widget": {
+          "margin": " 0 0",
+          "minHeight": 270,
+          "borderRadius": 0,
+          "padding": "0",
+          "borderWidth": 0,
+          "borderOpacity": 1,
+          "extraCss": "border-top: 0.5px solid @outline"
+      },
+      "background": {
+          "defaultOpacity": 0.2,
+          "hiddenOpacity": 1,
+          "blurAmount": "0x3",
+          "imageQuality": 80,
+          "imageResize": 60,
+          "transitionMs": 400,
+          "enableBlur": false
+      },
+      "coverArt": {
+          "size": 230,
+          "borderRadius": 12
+      },
+      "visualizer": {
+          "enabled":false,
+          "margin": "0",
+          "mode": "center",
+          "padding": "0",
+          "barSpacing": 2.5,
+          "barMinWidth": 20,
+          "barMaxHeight": 40,
+          "barNumber": 63,
+          "heightMultiplier": 2,
+          "transitionMs": 80,
+          "colors": {
+              "low": "rgba(255,255,255,0)",
+              "medium": "rgba(255,255,255,0.6)",
+              "high": "rgba(255,255,255,1)",
+              "heightThresholds": {
+                  "low": 1,
+                  "medium": 2.2,
+                  "high": 4
+              }
+          }
+      },
+      "trackInfo": {
+          "titleSize": "3rem",
+          "artistSize": "2rem",
+          "titleOpacity": 0.9,
+          "artistOpacity": 0.8,
+          "maxChars": 100
+      },
+      "controls": {
+          "buttonSize": "1.8rem",
+          "otherButtonSize": "1.4rem",
+          "spacing": 10,
+          "iconOpacity": 0.8
+      },
+      "volume": {
+          "iconSize": 36,
+          "progressSize": 40,
+          "textSize": "1rem"
+      },
+      "animations": {
+          "showHideMs": 200,
+          "updateDelay": 200
+      }
+  }
+}
