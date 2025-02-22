@@ -1,60 +1,60 @@
 // User Configuration
 const USER_CONFIG = {
     // Visualization
-    bars: 60,              // Number of bars to show
-    framerate: 144,         // Framerate for the visualization
-    sensitivity: 150,      // Audio sensitivity (higher = more responsive)
+    bars: 60,
+    framerate: 144,
+    sensitivity: 150,
     
     // Audio Processing
-    mode: 'normal',    // Frequency distribution mode (normal/scientific)
-    channels: 'stereo',    // mono or stereo
-    smoothing: 0.5,        // Smoothing factor for bar transitions (0-1)
+    mode: 'normal',
+    channels: 'stereo',
+    smoothing: 0.5,
     
     // Visual Options
-    monstercat: 1.5,       // Monstercat smoothing factor (0-2)
-    noise_reduction: 0.77, // Noise reduction amount (0-1)
+    monstercat: 1.5,
+    noise_reduction: 0.77,
     
     // Advanced Audio
-    autosens: 1.0,        // Automatic sensitivity adjustment (0-1)
-    overshoot: 50,        // Allow bars to overshoot (0-100)
-    integral: 57,         // Integral value for smoothing (0-100)
+    autosens: 1.0,
+    overshoot: 50,
+    integral: 57,
     
     // Frequency Ranges
-    lower_cutoff_freq: 50,     // Lower frequency cutoff
-    higher_cutoff_freq: 10000, // Higher frequency cutoff
+    lower_cutoff_freq: 50,
+    higher_cutoff_freq: 10000,
     
     // Bar Appearance
-    barWidth: 3,          // Width of each bar in pixels
-    spacing: 1,           // Spacing between bars in pixels
-    gravity: 0.,           // Bar fall speed (1-10)
+    barWidth: 3,
+    spacing: 1,
+    gravity: 0,
     
     // Colors and Style
-    reverse: false,       // Reverse bar order
-    mirror: true,         // Mirror the bars
-    waves: false,         // Use wave style instead of bars
+    reverse: false,
+    mirror: true,
+    waves: false,
     
     // Performance
-    sleep_timer: 1,       // Sleep timer in seconds (0 to disable)
-    framerate_divisor: 2, // Divide framerate by this value when hidden
+    sleep_timer: 1,
+    framerate_divisor: 2,
     
     // Input Method
-    method: 'pulse',      // Input method (pulse/alsa/fifo/sndio)
-    source: 'auto',       // Source device (auto/hw:0,0/etc)
+    method: 'pulse',
+    source: 'auto',
     
     // Advanced Drawing
-    continuous_rendering: false, // Render continuously even if no change
-    bar_delimiter: 0,           // Delimiter between bars (0 for none)
+    continuous_rendering: false,
+    bar_delimiter: 0,
     
     // Effects
-    eq: [1,1,1,1,1,1,1,1], // Equalizer values for frequency bands
-    rms_calculation: true,  // Use RMS value calculation
-    peak_cut: 0.8,         // Peak cut amount (0-1)
+    eq: [1,1,1,1,1,1,1,1],
+    rms_calculation: true,
+    peak_cut: 0.8,
 };
 
-import * as Utils from 'resource:///com/github/Aylur/ags/utils.js'
+import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 import Service from 'resource:///com/github/Aylur/ags/service.js';
-import GLib from 'gi://GLib'
-import App from 'resource:///com/github/Aylur/ags/app.js'
+import GLib from 'gi://GLib';
+import App from 'resource:///com/github/Aylur/ags/app.js';
 
 class AudioVisualizerService extends Service {
     static {
@@ -63,15 +63,16 @@ class AudioVisualizerService extends Service {
         });
     }
 
-    #output = "▁".repeat(60)
-    #proc = null
-    #config = {}
-    #configFile = GLib.build_filenamev([App.configDir, 'modules/.configuration/user_options.default.json'])
+    #output = "▁".repeat(60);
+    #proc = null;
+    #config = {};
+    #configFile = GLib.build_filenamev([App.configDir, 'modules/.configuration/user_options.default.json']);
+    #fileMonitor = null;
+    #destroyed = false;
 
     constructor() {
-        super()
+        super();
         
-        // Set default config
         this.#config = {
             bars: USER_CONFIG.bars,
             framerate: USER_CONFIG.framerate,
@@ -101,47 +102,46 @@ class AudioVisualizerService extends Service {
             eq: USER_CONFIG.eq,
             rms_calculation: USER_CONFIG.rms_calculation,
             peak_cut: USER_CONFIG.peak_cut,
-        }
+        };
         
-        this.#loadConfig()
-        this.#initCava()
+        this.#loadConfig();
+        this.#initCava();
 
-        // Watch for config file changes
-        Utils.monitorFile(this.#configFile, () => {
-            this.#loadConfig()
-            this.#initCava()
-        })
+        this.#fileMonitor = Utils.monitorFile(this.#configFile, () => {
+            if (this.#destroyed) return;
+            this.#loadConfig();
+            this.#initCava();
+        });
     }
 
     #loadConfig() {
         try {
-            const content = Utils.readFile(this.#configFile)
-            if (!content) return
+            const content = Utils.readFile(this.#configFile);
+            if (!content) return;
             
-            const options = JSON.parse(content)
+            const options = JSON.parse(content);
             if (options?.visualizer) {
-                this.#config = { ...this.#config, ...options.visualizer }
+                this.#config = { ...this.#config, ...options.visualizer };
             }
         } catch (error) {
-            console.error('Failed to load cava config:', error)
+            console.error('Failed to load cava config:', error);
         }
     }
 
     getConfig() {
-        return { ...this.#config }
+        return { ...this.#config };
     }
 
     #initCava() {
+        if (this.#destroyed) return;
+        
         if (this.#proc) {
-            this.#proc.force_exit()
-            this.#proc = null
+            this.#proc.force_exit();
+            this.#proc = null;
         }
 
-        // Determine the best audio source
-        const audioSource = this.#detectAudioSource()
-
-        // Create a temporary config file for cava
-        const configPath = '/tmp/cava.config'
+        const audioSource = this.#detectAudioSource();
+        const configPath = '/tmp/cava.config';
 
         const config = `
 [general]
@@ -161,7 +161,6 @@ higher_cutoff_freq = ${this.#config.higher_cutoff_freq}
 [input]
 method = ${this.#config.method}
 source = ${this.#config.source}
-
 sample_rate = 44100
 sample_bits = 16
 channels = 2
@@ -177,79 +176,81 @@ ascii_max_range = 7
 [smoothing]
 monstercat = ${this.#config.monstercat}
 noise_reduction = ${this.#config.noise_reduction}
+`;
 
-`
-        Utils.writeFile(config, configPath)
+        Utils.writeFile(config, configPath);
 
-        // Start cava with error handling
         try {
-            this.#proc = Utils.subprocess([
-                'cava',
-                '-p', configPath
-            ], output => {
-                if (!output?.trim()) return
+            this.#proc = Utils.subprocess(
+                ['cava', '-p', configPath],
+                output => {
+                    if (this.#destroyed || !output?.trim()) return;
 
-                // Clean the output and convert numbers to bars
-                const values = output.trim().split('').map(char => char.charCodeAt(0) - 48)
-                
-                // Take only the number of bars we want
-                const bars = values.slice(0, this.#config.bars)
-                    .map(n => {
-                        // Logarithmic scaling to prevent maximum height artifacts
-                        const scaledValue = Math.log1p(n) / Math.log1p(7)
-                        const level = Math.min(Math.max(0, Math.floor(scaledValue * 8)))
-                        return ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"][level]
-                    })
-                    .join('')
+                    const values = output.trim().split('').map(char => char.charCodeAt(0) - 48);
+                    const bars = values.slice(0, this.#config.bars)
+                        .map(n => {
+                            const scaledValue = Math.log1p(n) / Math.log1p(7);
+                            const level = Math.min(Math.max(0, Math.floor(scaledValue * 8)));
+                            return ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"][level];
+                        })
+                        .join('');
 
-                if (bars !== this.#output) {
-                    this.#output = bars
-                    this.emit('output-changed', bars)
+                    if (bars !== this.#output) {
+                        this.#output = bars;
+                        this.emit('output-changed', bars);
+                    }
+                },
+                error => {
+                    if (this.#destroyed) return;
+                    console.error('Cava error:', error);
+                    if (!this.#output) {
+                        this.#output = "▁".repeat(this.#config.bars);
+                        this.emit('output-changed', this.#output);
+                    }
                 }
-            }, error => {
-                console.error('Cava error:', error)
-                if (!this.#output) {
-                    this.#output = "▁".repeat(this.#config.bars)
-                    this.emit('output-changed', this.#output)
-                }
-            })
+            );
         } catch (error) {
-            console.error('Failed to start cava:', error)
-            this.#output = "▁".repeat(this.#config.bars)
-            this.emit('output-changed', this.#output)
+            console.error('Failed to start cava:', error);
+            this.#output = "▁".repeat(this.#config.bars);
+            this.emit('output-changed', this.#output);
         }
     }
 
     #detectAudioSource() {
         try {
-            // Try to get default PulseAudio sink
-            const paOutput = Utils.exec('pactl info')
-            const defaultSinkMatch = paOutput.match(/Default Sink: (.+)/)
-            if (defaultSinkMatch) {
-                return defaultSinkMatch[1] + '.monitor'
-            }
+            const paOutput = Utils.exec('pactl info');
+            const defaultSinkMatch = paOutput.match(/Default Sink: (.+)/);
+            if (defaultSinkMatch) return `${defaultSinkMatch[1]}.monitor`;
         } catch (e) {
-            console.error('Failed to detect default sink:', e)
+            console.error('Failed to detect default sink:', e);
         }
-
-        return 'auto'
+        return 'auto';
     }
 
     get output() {
-        return this.#output
+        return this.#output;
     }
 
     destroy() {
+        if (this.#destroyed) return;
+        this.#destroyed = true;
+
         if (this.#proc) {
-            this.#proc.force_exit()
-            this.#proc = null
+            this.#proc.force_exit();
+            this.#proc = null;
         }
-        super.destroy()
+
+        if (this.#fileMonitor) {
+            this.#fileMonitor.disconnect();
+            this.#fileMonitor = null;
+        }
+
+        super.destroy();
     }
 
     start() {
-        if (!this.#proc) {
-            this.#initCava()
+        if (!this.#proc && !this.#destroyed) {
+            this.#initCava();
         }
     }
 
@@ -258,7 +259,6 @@ noise_reduction = ${this.#config.noise_reduction}
             this.#proc.force_exit();
             this.#proc = null;
             this.#output = "▁".repeat(60);
-            // Don't emit on stop, just update the output
         }
     }
 }

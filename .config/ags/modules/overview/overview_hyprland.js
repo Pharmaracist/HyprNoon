@@ -383,10 +383,10 @@ export default (overviewMonitor = 0) => {
                 })
         },
     });
-
+    const elevate = userOptions.asyncGet().etc.widgetCorners ? "overview-tasks overview-round"  : "overview-tasks elevation " ;
     return Widget.Revealer({
         revealChild: true,
-        hpack: 'fill',
+        hpack: userOptions.asyncGet().etc.widgetCorners ? 'fill' : 'center',
         transition: 'slide_down',
         transitionDuration: userOpts.animations.durationSmall,
         child:Widget.Box({
@@ -395,7 +395,7 @@ export default (overviewMonitor = 0) => {
               Widget.Box({
                 vertical: true,
                 hexpand:true,
-                className: 'overview-tasks',
+                className: `${elevate}`,
                 children: Array.from({ length: userOpts.overview.numOfRows }, (_, index) =>
                     OverviewRow({
                         startWorkspace: 1 + index * 5,
@@ -405,9 +405,9 @@ export default (overviewMonitor = 0) => {
         }),
         Widget.Box({
             children:[
-                RoundedCorner('topleft', {className: 'corner corner-colorscheme'}),
+                userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topleft', {className: 'corner corner-colorscheme'}) : null,
                 Widget.Box({hexpand:true}),
-                RoundedCorner('topright', {className: 'corner corner-colorscheme'}),
+                userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', {className: 'corner corner-colorscheme'}) : null,
 
             ]
         })

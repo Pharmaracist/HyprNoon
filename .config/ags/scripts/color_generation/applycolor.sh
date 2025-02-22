@@ -63,13 +63,13 @@ update_ags() {
 
 # hyprctl keyword general:border_size $hypr_border
 apply_borders() {
-    sed -i "s/border:.*;/border:$ags_border;/" ~/.config/ags/scss/mode.scss
+    sed -i "s/border:.*;/border:$ags_border;/" ~/.local/state/ags/scss/mode.scss
 }
 
 
 apply_transparency() {
     # Ags
-    sed -i "s/$transparent:.*;/$transparent:$ags_transparency;/" ~/.config/ags/scss/mode.scss &
+    sed -i "s/$transparent:.*;/$transparent:$ags_transparency;/" ~/.local/state/ags/scss/mode.scss &
     # Rofi 
     sed -i "s/wbg:.*;/wbg:$rofi_alpha;/" ~/.config/rofi/config.rasi &
     sed -i "s/element-bg:.*;/element-bg:$rofi_alpha_element;/" ~/.config/rofi/config.rasi &

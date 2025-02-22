@@ -389,22 +389,6 @@ const BatteryModule = () => {
   return batteryWidget;
 };
 
-const switchToRelativeWorkspace = async (self, num) => {
-  try {
-    const Hyprland = (
-      await import("resource:///com/github/Aylur/ags/service/hyprland.js")
-    ).default;
-    Hyprland.messageAsync(
-      `dispatch workspace ${num > 0 ? "+" : ""}${num}`,
-    ).catch(print);
-  } catch {
-    execAsync([
-      `${App.configDir}/scripts/sway/swayToRelativeWs.sh`,
-      `${num}`,
-    ]).catch(print);
-  }
-};
-
 export default () =>
   Widget.EventBox({
     // onScrollUp: (self) => switchToRelativeWorkspace(self, -1),

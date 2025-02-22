@@ -12,8 +12,9 @@ import { chatEntry } from './apiwidgets.js';
 import { TabContainer } from '../.commonwidgets/tabcontainer.js';
 import { checkKeybind } from '../.widgetutils/keybind.js';
 import { writable } from '../../modules/.miscutils/store.js';
+import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-l sidebar-round-l "  : "sidebar-l elevation " ;
 import githubWidget from './github.js';
-
 const SIDEBARTABS = {
     'apis': {
         name: 'apis',
@@ -77,16 +78,25 @@ export const WidgetContent = (ORDER) => {
         names: CONTENTS.map((item) => item.friendlyName),
         css: `${userOptions.asyncGet().sidebar.extraCss}`,
         children: CONTENTS.map((item) => item.content),
-        className: 'sidebar-left spacing-v-10',
+        className: `${elevate}`,
         setup: (self) => self.hook(App, (self, currentName, visible) => {
             if (currentName === 'sideleft')
                 self.toggleClassName('sidebar-pinned', pinButton.attribute.enabled && visible);
         }),
     });
 };
-
 export let widgetContent = WidgetContent(ORDER.asyncGet());
-
+const content = () => {
+    return Box({
+        vertical: true,
+        vexpand: true,
+        children: [
+            userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('bottomleft', {className: 'corner corner-colorscheme'}) : null,
+            widgetContent,
+            userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topleft', {className: 'corner corner-colorscheme'}) : null,
+        ],
+      })
+}
 export default () => {
     let unsubscribe = () => {};
 
@@ -94,7 +104,7 @@ export default () => {
         vertical: true,
         vexpand: true,
         children: [
-            widgetContent,
+            content(),
         ],
         setup: (self) => self
             .on('key-press-event', (widget, event) => { // Handle keybinds

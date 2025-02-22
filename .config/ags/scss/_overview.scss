@@ -92,9 +92,10 @@
 .overview-search-result-btn:active {
     background-color: $layer2Hover;
 }
-
-.overview-tasks {
+.overview-round {
     border-radius: $rounding_mediumlarge $rounding_mediumlarge 0 0;
+}
+.overview-tasks {
     border-top: 0.2px solid $outliner;
     padding: 1rem;
     background-color: $layer0;

@@ -21,7 +21,7 @@ export const Indicators = (monitor = 0) => Widget.Window({
             css: 'min-height: 2px;',
             children: [
                 NotificationPopups(),
-                IndicatorValues(monitor),
+                IndicatorValues(),
             ]
         })
     }),

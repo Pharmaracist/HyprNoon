@@ -54,9 +54,10 @@ export const VerticalBar = Widget.CenterBox({
     hexpand:true,
     vpack:"end",
     vertical:true,
+    vexpand:true,
     spacing: 15,
     children:[
-  VolumeControl(),
+  // VolumeControl(),
   StatusIcons(),
   KbLayout(),
 	VerticalClock(),

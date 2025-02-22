@@ -25,19 +25,18 @@ $onSecondaryContainer: mix($color7, $color2, 90%);
     // @include elevation2;
     // margin-top: 1.13rem;
     // @include normal-rounding;
-    border-radius: 0 0 $rounding_medium $rounding_medium;
     min-height: 10.159rem;
     border: 0.2px solid $outliner;
     background-color: $layer0;
     padding: 0rem 1.023rem;
     background-color: $background; // coherent theme
-    // background: // Inspired by Amberol Theme
-    //     linear-gradient(127deg, transparentize($music_gradient1, $music_colorstart_transparentize), transparentize($music_gradient1, $music_colorstart_transparentize - $music_transparentize_amount + $music_extra_transparentize) 70.71%),
-    //     linear-gradient(217deg, transparentize($music_gradient2, $music_colorstart_transparentize), transparentize($music_gradient2, $music_colorstart_transparentize - $music_transparentize_amount + $music_extra_transparentize) 70.71%),
-    //     radial-gradient(circle at 0% 100%, $color4 13%, rgba(0, 0, 0, 0) 100%),
-    //     linear-gradient(336deg, transparentize($music_gradient3, $music_colorstart_transparentize), transparentize($music_gradient3, $music_colorstart_transparentize - $music_transparentize_amount + $music_extra_transparentize) 70.71%),
-    //     linear-gradient($background, $background), // We don't want wallpaper tint, so here's a fully opaque surface
-    // ;
+    background: // Inspired by Amberol Theme
+        linear-gradient(127deg, transparentize($music_gradient1, $music_colorstart_transparentize), transparentize($music_gradient1, $music_colorstart_transparentize - $music_transparentize_amount + $music_extra_transparentize) 70.71%),
+        linear-gradient(217deg, transparentize($music_gradient2, $music_colorstart_transparentize), transparentize($music_gradient2, $music_colorstart_transparentize - $music_transparentize_amount + $music_extra_transparentize) 70.71%),
+        radial-gradient(circle at 0% 100%, $color4 13%, rgba(0, 0, 0, 0) 100%),
+        linear-gradient(336deg, transparentize($music_gradient3, $music_colorstart_transparentize), transparentize($music_gradient3, $music_colorstart_transparentize - $music_transparentize_amount + $music_extra_transparentize) 70.71%),
+        linear-gradient($background, $background), // We don't want wallpaper tint, so here's a fully opaque surface
+    ;
 }
 .corner-music {
     @include large-rounding;

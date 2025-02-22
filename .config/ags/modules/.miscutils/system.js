@@ -14,7 +14,6 @@ darkMode.connect('changed', async ({ value }) => {
     try {
         const lightdark = value ? "dark" : "light";
         const userDir = GLib.get_user_state_dir();
-        const configDir = App.configDir;
         
         // Create directory and update color mode
         await execAsync([
@@ -27,7 +26,7 @@ darkMode.connect('changed', async ({ value }) => {
         const switchColorResult = await execAsync([
             'bash',
             '-c',
-            `${configDir}/scripts/color_generation/switchcolor.sh`
+            `${App.configDir}/scripts/color_generation/switchcolor.sh`
         ]);
         
         // Try to set darkman if available (optional)

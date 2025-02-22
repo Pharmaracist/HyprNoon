@@ -11,7 +11,7 @@ import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { darkMode } from '../.miscutils/system.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
 import clickCloseRegion from '../.commonwidgets/clickcloseregion.js';
-
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "osd-round" : "elevation" ;
 const ColorBox = ({
     name = 'Color',
     ...rest
@@ -158,7 +158,8 @@ const ColorSchemeSettings = () => Widget.Box({
                         try {
                             const transparency = newValue == 0 ? "opaque" : "transparent";
                             await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "2s/.*/${transparency}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
-                            await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
+                            await execAsync(`color-manager`);
+                            // await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
                         } catch (error) {
                             console.error('Error changing transparency:', error);
                         }
@@ -237,9 +238,9 @@ const ColorSchemeSettings = () => Widget.Box({
 const ColorschemeContent = () =>
     Widget.Box({
         children: [
-            RoundedCorner('topright', {className: 'corner corner-colorscheme'}),
+            userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', {className: 'corner corner-colorscheme'}) : null,
             Widget.Box({
-                className: 'osd-colorscheme spacing-v-5',
+                className: `osd-colorscheme ${elevate}`,
                 vertical: true,
                 spacing: 4,
                 children: [
@@ -272,7 +273,7 @@ const ColorschemeContent = () =>
                 ColorSchemeSettingsRevealer(),
             ]
         }),
-        RoundedCorner('topleft', {className: 'corner corner-colorscheme'}),
+        userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topleft', {className: 'corner corner-colorscheme'}) : null,
     ]
     })
 const isHoveredColorschemeSettings = Variable(false);

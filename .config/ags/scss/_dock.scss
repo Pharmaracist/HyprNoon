@@ -1,10 +1,10 @@
 .dock-bg {
-    @include large-rounding;
-    @include elevation2;
     background-color: $layer0;
-    padding: 0.682rem;
+    padding: 0.92rem;
 }
-
+.dock-round {
+    border-radius: $rounding_mediumlarge $rounding_mediumlarge 0 0;
+}
 .dock-app-btn-animate {
     transition-property: background-color;
     transition-duration: 0.5s;

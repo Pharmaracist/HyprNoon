@@ -4,7 +4,10 @@
             #f4d609 70%, #212121 70%, #212121 80%, #f4d609 80%, #f4d609 90%, #212121 90%, #212121 100%);
     background-repeat: repeat;
 }
-
+.elevation {
+    border-radius: $rounding_mediumlarge;
+   margin:0.476rem;
+}
 .test-size {
     min-height: 3rem;
     min-width: 3rem;

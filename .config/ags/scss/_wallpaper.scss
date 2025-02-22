@@ -2,7 +2,9 @@
     background-color: $layer0;
     border-bottom: 0.5px solid $outliner;
     padding: 1rem 0rem 1.2rem;
-    // margin-top:0.5rem;
+}
+
+.wall-rounding {
     border-radius: $rounding_medium $rounding_medium 0 0;
 }
 .wallpaper-list {

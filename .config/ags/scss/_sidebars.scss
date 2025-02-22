@@ -13,7 +13,25 @@ $sidebar_chat_textboxareaColor: mix($onSurfaceVariant, $surfaceVariant, 40%);
     background-color: $background;
     padding: 1.023rem;
 }
-
+.sidebar-round-l {
+    border-radius: 0 $rounding_mediumlarge $rounding_mediumlarge 0;
+}
+.sidebar-l {
+    @include menu_decel;
+    min-width: 27.818rem;
+    background-color: $background;
+    padding: 1.423rem;
+}
+.sidebar-r {
+    @include menu_decel;
+    min-width: 27.818rem;
+    background-color: $background;
+    padding: 1.423rem;
+   
+}
+.sidebar-round-r {
+    border-radius:  $rounding_mediumlarge 0 0  $rounding_mediumlarge;
+}
 .sidebar-left {
     @include menu_decel;
     @include elevation-border;

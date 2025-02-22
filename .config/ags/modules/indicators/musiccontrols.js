@@ -17,6 +17,8 @@ const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode
 const colorMode = Utils.exec(`bash -c "sed -n '1p' '${LIGHTDARK_FILE_LOCATION}'"`);
 const lightDark = (colorMode == "light") ? '-l' : '';
 const COVER_COLORSCHEME_SUFFIX = '_colorscheme.css';
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "osd-round osd-music" : "elevation osd-music" ;
+
 var lastCoverPath = '';
 
 // function isRealPlayer(player) {
@@ -451,7 +453,7 @@ const CavaVisualizer = () => {
     });
 };
 const MusicControlsWidget = (player) => Box({
-    className: 'osd-music spacing-h-20 ',
+    className: `${elevate}`,
     css: `min-height: 9.5rem;`,
     vexpand:false,
     children: [
@@ -506,18 +508,18 @@ const content = Widget.Box({
     hexpand: false,
     vexpand: false,
     children:[
-        RoundedCorner('topright', {className: 'corner corner-music'}),
+        userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', {className: 'corner corner-music'}) : null,
         Box({
             vexpand: false,
             hexpand: false,
             spacing: 25, // Added spacing property here
-            css: `min-height:10rem; min-width:70rem`,
+            css: `min-height:10rem; min-width:55rem`,
             children: Mpris.bind("players")
             .as(players =>
                 players.map(player => MusicControlsWidget(player))
             )
         }),
-        RoundedCorner('topleft', {className: 'corner corner-music'}),
+        userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topleft', {className: 'corner corner-music'}) : null,
     ]
 });
 export default () => PopupWindow({

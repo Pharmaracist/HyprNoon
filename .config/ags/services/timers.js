@@ -26,10 +26,10 @@ class TimersService extends Service {
     constructor() {
         super();
 
-        this._configPath = `${GLib.get_user_config_dir()}/ags/user/timers.json`;
+        this._configPath = `${GLib.get_user_state_dir()}/ags/user/timers.json`;
 
         // Ensure directory exists
-        Utils.exec(`mkdir -p ${GLib.get_user_config_dir()}/ags/user`);
+        Utils.exec(`mkdir -p ${GLib.get_user_state_dir()}/ags/user`);
 
         // Load saved timers
         try {

@@ -1,7 +1,8 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { execAsync, exec } = Utils;
-const { Box, EventBox, Label } = Widget;
+const { Overlay,Box, EventBox, Label } = Widget;
+import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
 import {
     ToggleIconBluetooth,
     ToggleIconWifi,
@@ -34,7 +35,7 @@ import GLib from 'gi://GLib';
 import VPN from './centermodules/vpn.js';
 import taskmanager from './centermodules/taskmanager.js';
 const config = userOptions.asyncGet();
-
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-r sidebar-round-r "  : "sidebar-r elevation " ;
 export const calendarRevealer = Widget.Revealer({
     revealChild: userOptions.asyncGet().sidebar.ModuleCalendar.visible ? true : false,
     child: ModuleCalendar(),
@@ -226,6 +227,37 @@ const Cat = Widget.Button({
         className: 'txt sec-txt txt-massive',
     }),
 });
+
+let topArea = Box({
+    vertical: true,
+    vpack:"center",
+    css:`margin-bottom:0.5rem`,
+    className: 'spacing-v-5',
+    children: [
+        timeRow,
+        togglesBox,
+    ]
+});
+let content = Box({
+    vertical: true,
+    vexpand: true,
+    className: `${elevate}`,
+    children: [
+        Overlay({
+            className: 'spacing-v-5',
+            child:userOptions.asyncGet().sidebar.showAnimeCat ? Cat : Box({css:`min-height:8rem;`,}),
+            overlays:[topArea]
+        }),
+        Box({
+            className: 'sidebar-group',
+            vexpand: true,
+            children: [
+                sidebarOptionsStack,
+            ],
+        }),
+        userOptions.asyncGet().sidebar.ModuleCalendar.enabled ? calendarRevealer : null
+    ]
+});
 export default () => Box({
     vexpand: true,
     hexpand: true,
@@ -237,34 +269,14 @@ export default () => Box({
             onMiddleClick: () => App.closeWindow('sideright'),
         }),
         Box({
-            vertical: true,
-            vexpand: true,
-            className: 'sidebar-right spacing-v-15',
-            children: [
-                Widget.Overlay({
-                    child:Cat,
-                    overlays:[Box({
-                        vertical: true,
-                        vpack:"center",
-                        className: 'spacing-v-5',
-                        children: [
-                            timeRow,
-                            togglesBox,
-                        ]
-                    }),
+            vertical:true,
+            children:[
+                userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('bottomright', {hpack: "end", vpack: 'end', className: 'corner corner-colorscheme'}) : null,
+                content,
+                userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', {hpack:"end", vpack: 'start', className: 'corner corner-colorscheme'}) : null,
 
-                    ]
-                }),
-                Box({
-                    className: 'sidebar-group',
-                    vexpand: true,
-                    children: [
-                        sidebarOptionsStack,
-                    ],
-                }),
-                userOptions.asyncGet().sidebar.ModuleCalendar.enabled ? calendarRevealer : null
             ]
-        }),
+        })
     ],
     setup: (self) => self
         .on('key-press-event', (widget, event) => { // Handle keybinds

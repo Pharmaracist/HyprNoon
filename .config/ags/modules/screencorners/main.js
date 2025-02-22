@@ -1,9 +1,8 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
-import { enableClickthrough } from "../.widgetutils/clickthrough.js";
 import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
 
-if(userOptions.asyncGet().appearance.fakeScreenRounding === 2) Hyprland.connect('event', (service, name, data) => {
+if (userOptions.asyncGet().appearance.fakeScreenRounding === 2) Hyprland.connect('event', (service, name, data) => {
     if (name == 'fullscreen') {
         const monitor = Hyprland.active.monitor.id;
         if (data == '1') {
@@ -22,7 +21,21 @@ if(userOptions.asyncGet().appearance.fakeScreenRounding === 2) Hyprland.connect(
     }
 })
 
-export default (monitor = 0, where = 'bottom left', useOverlayLayer = true) => {
+// Debounce function
+const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+};
+
+// Modified Corner function with debounce
+export default (monitor = 0, where = 'bottom left', useOverlayLayer = true, appCommand = '') => {
     const positionString = where.replace(/\s/, ""); // remove space
     return Widget.Window({
         monitor,
@@ -31,8 +44,9 @@ export default (monitor = 0, where = 'bottom left', useOverlayLayer = true) => {
         anchor: where.split(' '),
         exclusivity: 'ignore',
         visible: true,
-        child: RoundedCorner(positionString, { className: 'corner-black', }),
-        setup: enableClickthrough,
+        child: Widget.EventBox({
+            onHover: debounce(() => {if (appCommand) {Utils.execAsync(appCommand).catch(console.error);}}, userOptions.asyncGet().etc.screencorners.debounce || 650),
+            child: RoundedCorner(positionString, { className: 'corner-black' }),
+        }),
     });
 }
-

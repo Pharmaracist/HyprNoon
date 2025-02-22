@@ -19,8 +19,11 @@ import Overview from "./modules/overview/main.js";
 import Session from "./modules/session/main.js";
 import SideLeft from "./modules/sideleft/main.js";
 import SideRight from "./modules/sideright/main.js";
+import Recorder from "./modules/indicators/recorder.js";
 import MusicControls from "./modules/indicators/musiccontrols.js";
 import { COMPILED_STYLE_DIR } from "./init.js";
+let settings = "gjs ~/.config/ags/assets/ags-tweaks.js";
+const opts = await userOptions.asyncGet();
 const range = (length, start = 1) =>
   Array.from({ length }, (_, i) => i + start);
 function forMonitors(widget) {
@@ -43,12 +46,13 @@ for (let i = 0; i < monitors; i++) {
       App.addWindow(leftCorner);
       App.addWindow(rightCorner);
     })
-    .catch(print);
+    .catch();
 }
 
 const Windows = () => [
   SideLeft(),
   MusicControls(),
+  Recorder(),
   ColorScheme(),
   SideRight(),
   ...(userOptions.asyncGet().indicators.enabled !== false
@@ -70,17 +74,17 @@ const Windows = () => [
   ...(userOptions.asyncGet().dock.enabled ? [forMonitors(Dock)] : []),
   ...(userOptions.asyncGet().appearance.fakeScreenRounding !== 0
     ? [
-        forMonitors((id) => Corner(id, "top left", true)),
-        forMonitors((id) => Corner(id, "top right", true)),
-        forMonitors((id) => Corner(id, "bottom left", true)),
-        forMonitors((id) => Corner(id, "bottom right", true)),
-      ]
+      forMonitors((id) => Corner(id, "top left", true, opts.etc.screencorners.topleft || "obsidian")),
+      forMonitors((id) => Corner(id, "top right", true, opts.etc.screencorners.topright || "zen-browser")),
+      forMonitors((id) => Corner(id, "bottom left", true, opts.etc.screencorners.bottomleft || "kitty")),
+      forMonitors((id) => Corner(id, "bottom right", true, opts.etc.screencorners.bottomright || "kitty")), 
+        ]
     : []),
 ];
 
 
 App.config({
   css: `${COMPILED_STYLE_DIR}/style.css`,
-  stackTraceOnError: false,
+  stackTraceOnError: true,
   windows: Windows().flat(1),
 });

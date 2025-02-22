@@ -12,7 +12,7 @@ const { Box, Icon } = Widget;
 //  */
 const IconWidget = ({ icon, size = 36, className = '' }) => {
     // Construct the full path to the icon
-    const iconPath = Utils.HOME + '/.config/ags/assets/icons/' + icon ;
+    const iconPath = App.configDir + '/assets/icons/' + icon ;
 
     return Box({
         className: `icon-module ${className}`,

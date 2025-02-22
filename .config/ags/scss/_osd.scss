@@ -79,9 +79,12 @@
     padding-top: 0.313rem;
 }
 
+.osd-round {
+    border-radius: 0 0 $rounding_medium $rounding_medium;
+}
+
 .osd-colorscheme {
-    border-radius: 0 0 $rounding_large $rounding_large;
-    background-color: $layer0;
+    background-color: $background;
     padding: 0 0.626rem;
     border-bottom: 0.5px solid $outliner;
 }
@@ -206,4 +209,37 @@
 
 .osd-hide {
     transition: 190ms cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+.recorder-bg {
+    background-color: $background;
+    color: $onBackground;
+    padding : 1rem;
+    border-left: 0.2px solid $outliner;
+}
+.recorder-btn {
+    @include full-rounding;
+    @include element_decel;
+    background-color: $surfaceContainerHigh;
+    padding:1.5rem;
+    min-width: 1.8rem;
+    min-height: 1.8rem;
+    color: $onSurface;
+}
+.recording-state {
+    @include titlefont;
+    color: $onSurface;
+
+}
+.recorder-btn-red {
+    @include full-rounding;
+    @include element_decel;
+    background-color: $error;
+    color: $onError;
+    padding:1.5rem;
+    min-width: 1.8rem;
+    min-height: 1.8rem;
+}
+.record-rounding {
+    border-radius: $rounding_large 0 0  $rounding_large;
 }

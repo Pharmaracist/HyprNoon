@@ -15,7 +15,11 @@
   "wallselect": {
     "enabled": true,
     "wallpaperFolder": "/Pictures/Wallpapers",
-    "wallpaperLimit": 100
+    "cachingMode": "disk",
+    "width": 200,
+    "height": 120,
+    "radius": 18,
+    "highQualityPreview": true
   },
   "session": {
     "enabled": true
@@ -126,6 +130,7 @@
         "enabled" : true,
         "visible" : false
      },
+    "showAnimeCat":false,
     "centerModules": {
         "enabled": [
         "vpnGate",
@@ -158,7 +163,7 @@
         "enabled": true
       },
       "wifiNetworks": {
-        "enabled": true
+        "enabled": false
       },
       "liveConfig": {
         "enabled": true
@@ -440,9 +445,19 @@
     }
   },
   "etc":{
-    "showPassword": true,
-    "todoPath": "${GLib.get_user_state_dir()}/ags/user/todo.md",
-    "notesPath": "${GLib.get_user_state_dir()}/ags/user/",
+        "cornerRadius":"20",
+        "showPassword": true,
+        "todoPath": "${GLib.get_user_state_dir()}/ags/user/todo.md",
+        "notesPath": "${GLib.get_user_state_dir()}/ags/user/",
+        "recordingPath": "${GLib.get_home_dir()}/Videos/",
+        "widgetCorners": false,
+        "screencorners": {
+            "debounce": "0",
+            "topleft":"",
+            "topright":"",
+            "bottomleft":"",
+            "bottomright":""
+        },
     "weather":{
       "cycle": false,
       "cycleTimeout":"5000"

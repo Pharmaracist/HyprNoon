@@ -5,6 +5,7 @@ import Mpris from 'resource:///com/github/Aylur/ags/service/mpris.js';
 import Variable from 'resource:///com/github/Aylur/ags/variable.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { exec, execAsync } = Utils;
+
 import { init as i18n_init, getString } from './i18n/i18n.js'
 //init i18n, Load language file
 i18n_init()
@@ -59,8 +60,6 @@ globalThis['toggleBarPosition'] = () => {
 // Global vars for external control (through keybinds)
 export const showMusicControls = Variable(false, {})
 export const showColorScheme = Variable(false, {})
-globalThis['openMusicControls'] = showMusicControls;
-globalThis['openColorScheme'] = showColorScheme;
 globalThis['mpris'] = Mpris;
 globalThis['getString'] = getString;
 globalThis['currentShellMode'] = currentShellMode;

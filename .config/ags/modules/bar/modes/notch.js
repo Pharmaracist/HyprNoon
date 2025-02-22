@@ -8,7 +8,7 @@ import { RoundedCorner} from '../../.commonwidgets/cairo_roundedcorner.js';
 import { changeWallpaperButton } from "../modules/utils.js";
 import { setupCursorHover } from "../../.widgetutils/cursorhover.js";
 import scrolledmodule from "../../.commonwidgets/scrolledmodule.js";
-
+import FocusOptionalWorkspaces  from "../focus/workspaces_hyprland.js";
 const PowerBtn = () => Widget.Button({
   vpack:'center',
   child: Widget.Label({
@@ -65,7 +65,7 @@ export const NotchBar = Widget.CenterBox({
     spacing: 10,
     children: [
       Battery(),
-      Widget.Box({child:await WindowTitle(),css:`padding:6px 20px;`,hpack:"center",className: "bar-util-btn2 ",vpack:'center',}),
+      Widget.Box({child:await FocusOptionalWorkspaces(),css:`padding:6px 20px;`,hpack:"center",className: "bar-util-btn2 ",vpack:'center',}),
     ],
   }),
   centerWidget:

@@ -3,7 +3,7 @@ import App from 'resource:///com/github/Aylur/ags/app.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { EventBox, Button } = Widget;
-
+import { RoundedCorner } from './../.commonwidgets/cairo_roundedcorner.js';
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
 import Applications from 'resource:///com/github/Aylur/ags/service/applications.js';
 const { execAsync, exec } = Utils;
@@ -216,16 +216,20 @@ const PinnedApps = () => Widget.Box({
             return newButton;
         }),
 });
-
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "dock-bg dock-round" : "dock-bg elevation" ;
 export default (monitor = 0) => {
     const dockContent = Box({
-        className: 'dock-bg spacing-h-5',
-        children: [
-            PinButton(),
-            PinnedApps(),
-            DockSeparator(),
-            Taskbar(),
-            // LauncherButton(),
+        children:[
+            userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('bottomright', {vpack:"end",className: 'corner corner-colorscheme'}) : null,
+            Box({
+                className: `${elevate}`,
+                children:[
+                    PinButton(),
+                    PinnedApps(),
+                    DockSeparator(),
+                    Taskbar(),
+                ]}),
+            userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('bottomleft',{vpack:"end", className: 'corner corner-colorscheme'}) : null,
         ]
     })
     const dockRevealer = Revealer({
@@ -241,7 +245,7 @@ export default (monitor = 0) => {
         },
         revealChild: false,
         transition: 'slide_up',
-        transitionDuration: userOptions.asyncGet().animations.durationLarge,
+        transitionDuration: userOptions.asyncGet().animations.durationSmall,
         child: dockContent,
         setup: (self) => {
             const callback = (self, trigger) => {
