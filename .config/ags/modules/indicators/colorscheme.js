@@ -25,13 +25,13 @@ const ColorBox = ({
 const ColorSchemeSettingsRevealer = () => {
     const headerButtonIcon = MaterialIcon('expand_more', 'norm');
     const header = Widget.Button({
+        hpack:'center',
         className: 'osd-settings-btn-arrow',
         onClicked: () => {
             content.revealChild = !content.revealChild;
             headerButtonIcon.label = content.revealChild ? 'expand_less' : 'expand_more';
         },
         setup: setupCursorHover,
-        hpack: 'end',
         child: headerButtonIcon,
     });
     
@@ -60,8 +60,8 @@ const ColorSchemeSettingsRevealer = () => {
         child: Widget.Box({
             vertical: true,
             children: [
-                header,
                 content,
+                header,
             ]
         }),
     });
@@ -218,6 +218,7 @@ const ColorSchemeSettings = () => Widget.Box({
                 ConfigMulipleSelection({
                     hpack: 'center',
                     vpack: 'center',
+                    css:`margin-bottom:1.5rem`,
                     optionsArr: gowallArr,
                     initIndex: initGowallIndex,
                     onChange: (value, name) => {
@@ -246,8 +247,9 @@ const ColorschemeContent = () =>
             children: [
                 Widget.Label({
                     xalign: 0,
+                    css:`padding:0.56rem 0`,
                     className: 'txt-large titlefont txt',
-                    label: getString('Color scheme'),
+                    label: getString('Appearence'),
                     hpack: 'center',
                 }),
                 Widget.Box({
