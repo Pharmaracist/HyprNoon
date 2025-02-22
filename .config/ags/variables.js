@@ -60,6 +60,9 @@ globalThis['toggleBarPosition'] = () => {
 // Global vars for external control (through keybinds)
 export const showMusicControls = Variable(false, {})
 export const showColorScheme = Variable(false, {})
+globalThis['openMusicControls'] = showMusicControls;
+globalThis['openColorScheme'] = showColorScheme;
+
 globalThis['mpris'] = Mpris;
 globalThis['getString'] = getString;
 globalThis['currentShellMode'] = currentShellMode;

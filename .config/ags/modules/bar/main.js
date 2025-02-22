@@ -12,7 +12,7 @@ import { VerticalBar } from "./modes/vertical.js";
 import { VerticalBarPinned } from "./modes/verticalPinned.js";
 import { IslandBar } from "./modes/macLike.js";
 import { NotchBar } from "./modes/notch.js";
-
+import { SaadiBar } from "./modes/saadi.js";
 // Mode configuration:
 const horizontalModes = new Map([
   // Normal bar with corners
@@ -31,14 +31,16 @@ const horizontalModes = new Map([
   ["6", [IslandBar, false, "Dynamic"]],
   // Notch mode without corners
   ["7", [NotchBar, false, "Notch"]],
+  // Saadi mode with corners
+  ["8", [SaadiBar, true, "Saadi"]],
 
 ]);
 
 const verticalModes = new Map([
    // Floating Vertical bar
-  ["8", [VerticalBar, false, "Vertical Bar"]],
+  ["9", [VerticalBar, false, "Vertical Bar"]],
    // Pinned Corners Vertical bar
-  ["9", [VerticalBarPinned, true, "Vertical Bar Pinned"]],
+  ["10", [VerticalBarPinned, true, "Vertical Bar Pinned"]],
 ]);
 
 // Combined modes for easy lookup

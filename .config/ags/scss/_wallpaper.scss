@@ -3,7 +3,13 @@
     border-bottom: 0.5px solid $outliner;
     padding: 1rem 0rem 1.2rem;
 }
-
+.colorpicker{
+    background-color: $layer0;
+    padding: 0.2rem 1.5rem;
+}
+.pick-rounding {
+    border-radius: 0 0 $rounding_large $rounding_large;
+}
 .wall-rounding {
     border-radius: $rounding_medium $rounding_medium 0 0;
 }

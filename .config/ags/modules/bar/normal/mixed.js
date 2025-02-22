@@ -35,7 +35,7 @@ const BarGroup = ({ child }) => Box({
     ]
 });
 
-const BarResource = (name, icon, command, circprogClassName = 'bar-batt-circprog', textClassName = 'txt-onSurfaceVariant', iconClassName = 'bar-batt') => {
+export const BarResource = (name, icon, command, circprogClassName = 'bar-batt-circprog', textClassName = 'txt-onSurfaceVariant', iconClassName = 'bar-batt') => {
     const resourceCircProg = AnimatedCircProg({
         className: `${circprogClassName}`,
         vpack: 'center',

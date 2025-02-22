@@ -8,6 +8,7 @@ import { MaterialIcon } from "./materialicon.js";
 export const NotificationIndicator = (notifCenterName = "sideright") => {
   const widget = Widget.Revealer({
     transition: "slide_left",
+    className: "onSurfaceVariant",
     transitionDuration: userOptions.asyncGet().animations.durationSmall,
     revealChild: false,
     setup: (self) =>
@@ -27,10 +28,11 @@ export const NotificationIndicator = (notifCenterName = "sideright") => {
           }
         }),
     child: Widget.Box({
+      css: "margin: 0 0.4rem;",
       children: [
         MaterialIcon("notifications", "norm"),
         Widget.Label({
-          className: "txt-small titlefont",
+          className: "txt-small spacing-h-15 titlefont",
           attribute: {
             unreadCount: 0,
             update: (self) => (self.label = `${self.attribute.unreadCount}`),

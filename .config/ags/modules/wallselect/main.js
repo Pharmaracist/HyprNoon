@@ -8,15 +8,15 @@ import GdkPixbuf from 'gi://GdkPixbuf';
 import Gdk from 'gi://Gdk';
 import userOptions from '../.configuration/user_options.js';
 import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
+import ColorPicker from "../bar/modules/color_picker.js";
+
+
 const { Box, Label, EventBox, Scrollable, Button, Revealer } = Widget;
 const opts = await userOptions.asyncGet().wallselect;
 const elevate = userOptions.asyncGet().etc.widgetCorners ? "wall-rounding" : "elevation";
 const storedWallpaper = GLib.get_user_state_dir() + '/ags/user/wallpaper.txt';
-// Directories and constants.
 const CLICK_ACTION_SCRIPT = App.configDir + '/scripts/color_generation/switchwall.sh';
 const WALLPAPER_DIR = GLib.get_home_dir() + opts.wallpaperFolder || '/Pictures/Wallpapers';
-
-// Preview dimensions for each wallpaper.
 const PREVIEW_WIDTH = opts.width || 200;
 const PREVIEW_HEIGHT = opts.height || 120;
 const PREVIEW_CORNER = opts.radius || 18;
@@ -334,6 +334,7 @@ export default () => Widget.Window({
           Box({
             vertical: true,
             className: `wallselect-bg ${elevate}`,
+            css:`margin-bottom:0`,
             children: [
               Box({
                 className: "wallselect-header",
@@ -366,7 +367,17 @@ export default () => Widget.Window({
             vpack: 'end',
             children: [
               userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topleft', { className: 'corner corner-colorscheme' }) : null,
-              Box({ hexpand: true }),
+              
+              Box({ 
+                hexpand:true,
+                hpack: 'center',
+                 children:[
+                   RoundedCorner('topright', { className: 'corner corner-colorscheme' }) ,
+                   Box({className: `colorpicker`,css:`border-radius:0 0 1.4rem 1.4rem `,children:[ColorPicker()]}),
+                   RoundedCorner('topleft', { className: 'corner corner-colorscheme' }) ,
+                
+                ] 
+              }),
               userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', { className: 'corner corner-colorscheme' }) : null,
             ]
           })

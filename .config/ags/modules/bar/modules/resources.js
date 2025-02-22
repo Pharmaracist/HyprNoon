@@ -18,11 +18,11 @@ const BarGroup = ({ child }) =>
     ],
   });
 
+const resourceProgress = ProgressBar({
+      className: 'resource-progress',
+      vpack: 'center',
+  });
 const LinearResource = (name, icon, command) => {
-    const resourceProgress = ProgressBar({
-        className: 'resource-progress',
-        vpack: 'center',
-    });
 
     const resourceIcon = MaterialIcon(icon, 'norm', {
         className: 'resource-icon'

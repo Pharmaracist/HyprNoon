@@ -1,17 +1,14 @@
 const { Gio, GLib } = imports.gi;
 import Variable from 'resource:///com/github/Aylur/ags/variable.js';
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
-import PopupWindow from '../.widgethacks/popupwindow.js';
 import { ConfigToggle, ConfigMulipleSelection } from '../.commonwidgets/configwidgets.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { execAsync } = Utils;
-const { Box } = Widget;
 import { setupCursorHover } from '../.widgetutils/cursorhover.js';
+import { showColorScheme } from '../../variables.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { darkMode } from '../.miscutils/system.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
-import clickCloseRegion from '../.commonwidgets/clickcloseregion.js';
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "osd-round" : "elevation" ;
 const ColorBox = ({
     name = 'Color',
     ...rest
@@ -34,14 +31,14 @@ const ColorSchemeSettingsRevealer = () => {
             headerButtonIcon.label = content.revealChild ? 'expand_less' : 'expand_more';
         },
         setup: setupCursorHover,
-        hpack: 'center',
+        hpack: 'end',
         child: headerButtonIcon,
     });
-
+    
     const content = Widget.Revealer({
         revealChild: false,
         transition: 'slide_down',
-        transitionDuration: userOptions.asyncGet().animations.durationLarge,
+        transitionDuration: 200,
         child: ColorSchemeSettings(),
         setup: (self) => self.hook(isHoveredColorschemeSettings, (revealer) => {
             if (isHoveredColorschemeSettings.value == false) {
@@ -63,8 +60,8 @@ const ColorSchemeSettingsRevealer = () => {
         child: Widget.Box({
             vertical: true,
             children: [
-                content,
                 header,
+                content,
             ]
         }),
     });
@@ -92,7 +89,6 @@ const gowallArr = [
         { name: getString('Cyber'), value: 'cyberpunk' },
         { name: getString('B&W'), value: 'monochrome' },
     ],
-  
 ];
 const schemeOptionsArr = [
     [
@@ -105,8 +101,9 @@ const schemeOptionsArr = [
         { name: getString('Expressive'), value: 'expressive' },
         { name: getString('Content'), value: 'content' },
     ]
-
+   
 ];
+
 export const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode.txt`;
 
 export const initTransparency = Utils.exec(`bash -c "sed -n \'2p\' ${LIGHTDARK_FILE_LOCATION}"`);
@@ -128,7 +125,6 @@ const ColorSchemeSettings = () => Widget.Box({
     children: [
         Widget.Box({
             vertical: true,
-            css:`margin-top:1rem`,
             children: [
                 Widget.Label({
                     xalign: 0,
@@ -158,39 +154,38 @@ const ColorSchemeSettings = () => Widget.Box({
                         try {
                             const transparency = newValue == 0 ? "opaque" : "transparent";
                             await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "2s/.*/${transparency}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
-                            await execAsync(`color-manager`);
-                            // await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
+                            await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
                         } catch (error) {
                             console.error('Error changing transparency:', error);
                         }
                     },
                 }),
                 ConfigToggle({
-                icon: 'image',
-                name: getString('GoWall'),
-                desc: getString('Theme Wallpaper for ColorPalette'),
+                    icon: 'image',
+                    name: getString('GoWall'),
+                    desc: getString('Theme Wallpaper for ColorPalette'),
                     initValue: initGowallIndex,
                     onChange: async (self, newValue) => {
                             const gowall = newValue == 0 ? "none" : "catppuccin";
                             await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "4s/.*/${gowall}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
                             await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
                        },
-                    }),
-                ConfigToggle({
-                icon: 'ripples',
-                name: getString('Borders'),
-                desc: getString('Make Everything Bordered'),
-                initValue: initBorderVal,
-                onChange: async (self, newValue) => {
-                try {
-                                   const border = newValue == 0 ? "noborder" : "border";
-                                   await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "5s/.*/${border}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
-                                   await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
-                } catch (error) {
-                                   console.error('Error changing border mode:', error);
-                               }
-                },
                 }),
+                ConfigToggle({
+                    icon: 'ripples',
+                    name: getString('Borders'),
+                    desc: getString('Make Everything Bordered'),
+                    initValue: initBorderVal,
+                    onChange: async (self, newValue) => {
+                    try {
+                                       const border = newValue == 0 ? "noborder" : "border";
+                                       await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "5s/.*/${border}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
+                                       await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
+                    } catch (error) {
+                                       console.error('Error changing border mode:', error);
+                                   }
+                    },
+                    }),
             ]
         }),
         Widget.Box({
@@ -200,7 +195,7 @@ const ColorSchemeSettings = () => Widget.Box({
                 Widget.Label({
                     xalign: 0,
                     className: 'txt-norm titlefont onSurfaceVariant',
-                    label: getString('Color Modes'),
+                    label: getString('Scheme styles'),
                     hpack: 'center',
                 }),
                 //////////////////
@@ -235,24 +230,27 @@ const ColorSchemeSettings = () => Widget.Box({
         })
     ]
 });
-const ColorschemeContent = () =>
+const topLeftCorner = RoundedCorner('topleft', {
+    className: 'corner corner-colorscheme'
+})
+const topRightCorner = RoundedCorner('topright', {
+    className: 'corner corner-colorscheme'
+})
+const ColorschemeContent = () => 
     Widget.Box({
         children: [
-            userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', {className: 'corner corner-colorscheme'}) : null,
             Widget.Box({
-                className: `osd-colorscheme ${elevate}`,
-                vertical: true,
-                spacing: 4,
-                children: [
-                    Widget.Label({
-                        xalign: 0,
-                        css: `margin-top: 0.75rem;`,
-                        className: 'txt-large titlefont txt',
-                        label: getString('Appearance & Looks'),
-                        hpack: 'center',
-                        vpack: 'center',
-                    }),
-                    Widget.Box({
+            className: 'osd-colorscheme osd-round spacing-v-5',
+            vertical: true,
+            hpack: 'center',
+            children: [
+                Widget.Label({
+                    xalign: 0,
+                    className: 'txt-large titlefont txt',
+                    label: getString('Color scheme'),
+                    hpack: 'center',
+                }),
+                Widget.Box({
                     className: 'spacing-h-5',
                     hpack: 'center',
                     children: [
@@ -273,26 +271,37 @@ const ColorschemeContent = () =>
                 ColorSchemeSettingsRevealer(),
             ]
         }),
-        userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topleft', {className: 'corner corner-colorscheme'}) : null,
     ]
     })
+const BorderedColorSchemeContent = () => Widget.Box({
+    className: 'bordered-corner-colorscheme ',
+    children:[ 
+        topRightCorner,
+        ColorschemeContent(),
+        topLeftCorner,
+    ],
+})
 const isHoveredColorschemeSettings = Variable(false);
 
-export default () => PopupWindow({
-    keymode: 'on-demand',
-    anchor: ['top'],
-    exclusivity:"ignore",
-    layer: 'top',
-    name: 'colorscheme',
-    child:Box({
-            children:[
-            Widget.Box({
-            vertical: true,
-            children:[
-                ColorschemeContent(),
-                clickCloseRegion({ name: 'colorscheme', multimonitor: false, fillMonitor: 'vertical' }),
-            ]
-        }),
-    ]
+export default () => Widget.Revealer({
+    transition: 'slide_down',
+    transitionDuration: userOptions.asyncGet().animations.durationLarge,
+    child: BorderedColorSchemeContent(),
+    setup: (self) => {
+        self
+            .hook(showColorScheme, (revealer) => {
+                if (showColorScheme.value == true)
+                    revealer.revealChild = true;
+                else
+                    revealer.revealChild = isHoveredColorschemeSettings.value;
+            })
+            .hook(isHoveredColorschemeSettings, (revealer) => {
+                if (isHoveredColorschemeSettings.value == false) {
+                    setTimeout(() => {
+                        if (isHoveredColorschemeSettings.value == false)
+                            revealer.revealChild = showColorScheme.value;
+                    }, 800);
+                }
+            })
+    },
 })
-});

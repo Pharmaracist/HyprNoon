@@ -2,14 +2,14 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Indicator from '../../services/indicator.js';
 import IndicatorValues from './indicatorvalues.js';
 import NotificationPopups from './notificationpopups.js';
-
-export const Indicators = (monitor = 0) => Widget.Window({
+import ColorschemeContent from './colorscheme.js';
+export default (monitor = 0) => Widget.Window({
     name: `indicator${monitor}`,
     monitor,
     className: 'indicator',
     layer: 'overlay',
     // exclusivity: 'ignore',
-    visible: true,
+    // visible: true,
     anchor: ['top'],
     child: Widget.EventBox({
         onHover: () => { //make the widget hide when hovering
@@ -18,10 +18,11 @@ export const Indicators = (monitor = 0) => Widget.Window({
         child: Widget.Box({
             vertical: true,
             className: 'osd-window',
-            css: 'min-height: 2px;',
+            css: 'min-height: 0px;',
             children: [
+                IndicatorValues(monitor),
                 NotificationPopups(),
-                IndicatorValues(),
+                ColorschemeContent(),
             ]
         })
     }),

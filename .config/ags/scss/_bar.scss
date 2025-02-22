@@ -131,6 +131,41 @@ $bar_ws_width_focus_active: 6.045rem;
     background-color: $layer1;
 }
 
+.bar-saadi {
+    background-color: $background;
+}
+.group-saadi {
+    @include full-rounding;
+    padding: 0 1rem;
+    margin: 0.6rem 0.4rem;
+    background-color: $layer1;
+}
+.bar-gradiant-tert {
+    @include full-rounding;
+    padding: 0 1rem;
+    margin: 0.6rem 0.4rem;
+    background: linear-gradient(90deg, $surfaceContainerHighest, $tertiaryFixed);    
+} 
+
+.bar-gradiant-prim {
+    @include full-rounding;
+    padding: 0 1rem;
+    margin: 0.6rem 0.4rem;
+    background: linear-gradient(90deg, $surfaceContainerHighest, $primaryFixed);    
+}
+
+.bar-gradiant-sec {
+    @include full-rounding;
+    padding: 0 1rem;
+    margin: 0.6rem 0.4rem;
+    background: linear-gradient(90deg, $surfaceContainerHighest, $tertiaryFixed);    
+}  
+.group-saadi-short {
+    padding: 0 0.5rem;
+    @include full-rounding;
+    margin: 0.6rem 0.4rem;
+    background-color: $layer1;
+}
 .bar-group-pad {
     padding: 0.205rem;
 }
