@@ -3,12 +3,25 @@ reload_apps = true
 
 [config.wallpaper]
 command = "swww"
+arguments = [
+    "img",
+    "-t",
+    "outer",
+    "--transition-duration",
+    "1.5",
+    "--transition-step",
+    "255",
+    "--transition-fps",
+    "60",
+    "-f",
+    "Nearest",
+]
 set = false
 
-[templates.agsv1]
+[templates.ags]
 input_path = "~/.config/matugen/templates/ags.scss"
 output_path = "~/.local/state/ags/scss/_material.scss"
-post_hook='agsv1 run-js "handleStyles(false);"'
+post_hook = "agsv1 --run-js 'globalThis.handleStyles(true)'"
 
 [templates.rofi]
 input_path = "~/.config/matugen/templates/rofi-colors.rasi"
@@ -17,11 +30,7 @@ output_path = "~/.config/rofi/colors.rasi"
 [templates.gradience]
 input_path = "~/.config/matugen/templates/gradience.json"
 output_path = "~/.cache/ags/user/generated/gradience/gradience.json"
-post_hook = "rm -rf ~/.config/gtk-4.0 || mkdir -p ~/.config/presets & gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk gtk4"
-
-[templates.gtk3]
-input_path = "~/.config/matugen/templates/gtk-colors.css"
-output_path = "~/.config/gtk-3.0/colors.css"
+post_hook = "gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both"
 
 [templates.hyprlock]
 input_path = "~/.config/matugen/templates/hyprlock.conf"
@@ -29,8 +38,8 @@ output_path = "~/.config/hypr/hyprlock.conf"
 post_hook = "hyprctl reload"
 
 [templates.hyprland]
-input_path = "~/.config/Ax-Shell/config/matugen/templates/hyprland-colors.conf"
-output_path = "~/.config/Ax-Shell/config/hypr/colors.conf"
+input_path = "~/.config/matugen/templates/hyprland-colors.conf"
+output_path = "~/.cache/ags/user/generated/colors.conf"
 
 [templates.qt5ct]
 input_path = "~/.config/matugen/templates/qtct-colors.conf"
@@ -53,27 +62,10 @@ post_hook = "starship init zsh > ~/.zshrc"
 input_path = "~/.config/matugen/templates/heroic-theme.css"
 output_path = "~/.cache/ags/user/generated/heroic-colors.css"
 
-[templates.obsidian]
-input_path = "~/.config/matugen/templates/obsidian.css"
-output_path = "/mnt/Data/General-Archive/obsidian/.obsidian/snippets/material-you.css"
+# [templates.obsidian]
+# input_path = "~/.config/matugen/templates/obsidian.css"
+# output_path = "/mnt/Data/General-Archive/obsidian/.obsidian/snippets/material-you.css"
 
 [templates.vscode]
 input_path = "~/.config/matugen/templates/vscode-color-theme.json"
 output_path = "~/.windsurf/extensions/theme-material-you/themes/vscode.json"
-
-[templates.spicetify]
-input_path = "~/.config/matugen/templates/colors.ini"
-output_path = "~/.config/spicetify/Themes/Comfy/color.ini"
-
-[templates.pywalfox]
-input_path = "~/.config/matugen/templates/pywalfox-colors.json"
-output_path = "~/.cache/wal/colors.json"
-post_hook = "pywalfox update"
-
-[templates.discord]
-input_path = "~/.config/matugen/templates/discord.css"
-output_path = "~/.config/vesktop/themes/material-you.css"
-
-[templates.telegram]
-input_path = "~/.config/matugen/templates/telegram-colors.tdesktop-theme"
-output_path = "~/.config/telegram-desktop/themes/material-you.tdesktop-theme"

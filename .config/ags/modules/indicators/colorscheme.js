@@ -9,7 +9,7 @@ import { showColorScheme } from '../../variables.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { darkMode } from '../.miscutils/system.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
-let image = Utils.exec([`bash`,`-c`, `cat ${GLib.get_home_dir()}/.cache/swww/eDP-1`]);
+export const image = Utils.exec([`bash`,`-c`, `cat ${GLib.get_home_dir()}/.cache/swww/eDP-1`]);
 const ColorBox = ({
     name = 'Color',
     ...rest

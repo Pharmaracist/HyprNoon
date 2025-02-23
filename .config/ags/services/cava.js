@@ -73,36 +73,7 @@ class AudioVisualizerService extends Service {
     constructor() {
         super();
         
-        this.#config = {
-            bars: USER_CONFIG.bars,
-            framerate: USER_CONFIG.framerate,
-            sensitivity: USER_CONFIG.sensitivity,
-            mode: USER_CONFIG.mode,
-            channels: USER_CONFIG.channels,
-            smoothing: USER_CONFIG.smoothing,
-            monstercat: USER_CONFIG.monstercat,
-            noise_reduction: USER_CONFIG.noise_reduction,
-            gravity: USER_CONFIG.gravity,
-            barWidth: USER_CONFIG.barWidth,
-            autosens: USER_CONFIG.autosens,
-            overshoot: USER_CONFIG.overshoot,
-            integral: USER_CONFIG.integral,
-            lower_cutoff_freq: USER_CONFIG.lower_cutoff_freq,
-            higher_cutoff_freq: USER_CONFIG.higher_cutoff_freq,
-            spacing: USER_CONFIG.spacing,
-            reverse: USER_CONFIG.reverse,
-            mirror: USER_CONFIG.mirror,
-            waves: USER_CONFIG.waves,
-            sleep_timer: USER_CONFIG.sleep_timer,
-            framerate_divisor: USER_CONFIG.framerate_divisor,
-            method: USER_CONFIG.method,
-            source: USER_CONFIG.source,
-            continuous_rendering: USER_CONFIG.continuous_rendering,
-            bar_delimiter: USER_CONFIG.bar_delimiter,
-            eq: USER_CONFIG.eq,
-            rms_calculation: USER_CONFIG.rms_calculation,
-            peak_cut: USER_CONFIG.peak_cut,
-        };
+        this.#config = { ...USER_CONFIG };
         
         this.#loadConfig();
         this.#initCava();
@@ -258,7 +229,8 @@ noise_reduction = ${this.#config.noise_reduction}
         if (this.#proc) {
             this.#proc.force_exit();
             this.#proc = null;
-            this.#output = "▁".repeat(60);
+            this.#output = "▁".repeat(this.#config.bars);
+            this.emit('output-changed', this.#output);
         }
     }
 }

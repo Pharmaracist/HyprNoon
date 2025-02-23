@@ -14,6 +14,7 @@ import DesktopBackground from "./modules/desktopbackground/main.js";
 import Dock from "./modules/dock/main.js";
 import Corner from "./modules/screencorners/main.js";
 import Indicator from "./modules/indicators/main.js";
+// import ColorScheme from "./modules/indicators/colorscheme.js";
 import Overview from "./modules/overview/main.js";
 import Session from "./modules/session/main.js";
 import SideLeft from "./modules/sideleft/main.js";
@@ -49,21 +50,11 @@ for (let i = 0; i < monitors; i++) {
 }
 
 const Windows = () => [
-  
-  ...(userOptions.asyncGet().recorder.enabled !== false
-    ? [Recorder()]
-    : []),
-  
-  ...(userOptions.asyncGet().musiccontrols.enabled !== false
-    ? [MusicControls()]
-    : []),
-  
-  ...(userOptions.asyncGet().sidebar.right.enabled !== false
-    ? [SideRight()]
-    : []),
-  ...(userOptions.asyncGet().sidebar.left.enabled !== false
-    ? [SideLeft()]
-    : []),
+  SideLeft(),
+  MusicControls(),
+  Recorder(),
+  // ColorScheme(),
+  SideRight(),
   ...(userOptions.asyncGet().indicators.enabled !== false
     ? [forMonitors(Indicator)]
     : []),
