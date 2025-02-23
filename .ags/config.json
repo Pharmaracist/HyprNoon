@@ -1,4 +1,10 @@
 {
+  "muslim": {
+    "enabled": true,
+    "prayerTimes": {
+      "city": "Cairo"
+    }
+  },
   "indicators": {
     "enabled": true
   },
@@ -9,13 +15,22 @@
   "wallselect": {
     "enabled": true,
     "wallpaperFolder": "/Pictures/Wallpapers",
-    "wallpaperLimit": 100
+    "cachingMode": "disk",
+    "width": 200,
+    "height": 110,
+    "radius": 20,
+    "highQualityPreview": true
   },
   "session": {
     "enabled": true
   },
-  "desktopBackground": {
+  "cheatshhet": {
     "enabled": true
+  },
+  "desktopBackground": {
+    "enabled": true,
+    "resources": true,
+    "visible": false
   },
   "ai": {
     "defaultGPTProvider": "microsoft-phi-4",
@@ -31,9 +46,9 @@
     ]
   },
   "animations": {
-    "choreographyDelay": 25,
-    "durationSmall": 110,
-    "durationLarge": 180
+    "choreographyDelay": 10,
+    "durationSmall": 80,
+    "durationLarge": 200
   },
   "appearance": {
     "avatar": "avatar.png",
@@ -43,7 +58,7 @@
       "to": "6:10"
     },
     "Scroll": {
-      "debounce": 300,
+      "debounce": 200,
       "transition": "slide_up_down",
       "mode": "scroll"
     },
@@ -54,11 +69,11 @@
   },
   "apps": {
     "bluetooth": "overskride",
-    "imageViewer": "loupe",
+    "imageViewer": "swappy",
     "network": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
     "settings": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center",
-    "taskManager": "foot -e btop",
-    "terminal": "foot"
+    "taskManager": "kitty btop",
+    "terminal": "kitty"
   },
   "battery": {
     "low": 20,
@@ -98,17 +113,25 @@
     "scaleMethod": "division"
   },
   "music": {
+    "musiccontrols": true,
     "musicDir": "/Music",
     "preferredPlayer": "plasma-browser-integration"
   },
   "overview": {
     "enabled": true,
+    "enableContent": true,
     "scale": 0.18,
     "numOfRows": 2,
     "wsNumScale": 0.09,
     "wsNumMarginScale": 0.07
   },
   "sidebar": {
+    "extraCss": "min-width:450px",
+    "ModuleCalendar": {
+      "enabled": true,
+      "visible": false
+    },
+    "showAnimeCat": false,
     "centerModules": {
       "enabled": [
         "vpnGate",
@@ -144,7 +167,7 @@
         "enabled": false
       },
       "liveConfig": {
-        "enabled": false
+        "enabled": true
       },
       "prayerTimes": {
         "enabled": false
@@ -160,15 +183,6 @@
         "extraGptModels"
       ],
       "extraGptModels": {
-        "deepseek": {
-          "name": "deepseek API",
-          "logo_name": "deepseek-symbolic",
-          "description": "deepseek/deepseek-chat via OpenRouter",
-          "base_url": "https://openrouter.ai/api/v1/chat/completions",
-          "key_get_url": "https://openrouter.ai/keys",
-          "key_file": "openrouter_key.txt",
-          "model": "deepseek/deepseek-chat"
-        },
         "zuki": {
           "name": "ZoukiJourney API",
           "logo_name": "ai-zukijourney-symbolic",
@@ -205,15 +219,6 @@
           "key_file": "openrouter_key.txt",
           "model": "microsoft/phi-4"
         },
-        "deepseek-llama-70b": {
-          "name": "deepseek-r1-70b",
-          "logo_name": "openrouter-symbolic",
-          "description": "deepseek/deepseek-r1-distill-llama-70b:free via OpenRouter",
-          "base_url": "https://openrouter.ai/api/v1/chat/completions",
-          "key_get_url": "https://openrouter.ai/keys",
-          "key_file": "openrouter_key.txt",
-          "model": "deepseek/deepseek-r1-distill-llama-70b:free"
-        },
         "mistral-free": {
           "name": "mistralai/mistral-7b-instruct:free",
           "logo_name": "openrouter-symbolic",
@@ -235,6 +240,7 @@
       "apis": {
         "order": [
           "gpt",
+          "gemini",
           "quran",
           "translater"
         ]
@@ -309,12 +315,12 @@
     "preferredUnit": "C"
   },
   "workspaces": {
-    "shown": 9,
-    "style": "japanese"
+    "shown": 10,
+    "style": "chinese"
   },
   "dock": {
     "enabled": true,
-    "hiddenThickness": 5,
+    "hiddenThickness": 7,
     "pinnedApps": [
       "zen-browser",
       "spotube",
@@ -438,5 +444,92 @@
       "showBattery": true,
       "showAvatar": true
     }
+  },
+  "etc": {
+    "cornerRadius": "20",
+    "widgetCorners": true,
+    "showPassword": true,
+    "todoPath": "/mnt/Data/General-Archive/obsidian/HyprNoon.md",
+    "notesPath": "${GLib.get_user_state_dir()}/ags/user/",
+    "recordingPath": "/Videos/Records",
+    "screencorners": {
+      "debounce": "20",
+      "topleft": "",
+      "topright": "",
+      "bottomleft": "",
+      "bottomright": ""
+    },
+    "weather": {
+      "cycle": false,
+      "cycleTimeout": "5000"
+    }
+  },
+  "ipod": {
+    "widget": {
+      "margin": " 0 0",
+      "minHeight": 270,
+      "borderRadius": 0,
+      "padding": "0",
+      "borderWidth": 0,
+      "borderOpacity": 1,
+      "extraCss": "border-top: 0.5px solid @outline"
+    },
+    "background": {
+      "defaultOpacity": 0.2,
+      "hiddenOpacity": 1,
+      "blurAmount": "0x3",
+      "imageQuality": 80,
+      "imageResize": 60,
+      "transitionMs": 400,
+      "enableBlur": false
+    },
+    "coverArt": {
+      "size": 230,
+      "borderRadius": 12
+    },
+    "visualizer": {
+      "enabled": true,
+      "margin": "0",
+      "mode": "center",
+      "padding": "0",
+      "barSpacing": 2.5,
+      "barMinWidth": 20,
+      "barMaxHeight": 40,
+      "barNumber": 63,
+      "heightMultiplier": 2,
+      "transitionMs": 80,
+      "colors": {
+        "low": "rgba(255,255,255,0)",
+        "medium": "rgba(255,255,255,0.6)",
+        "high": "rgba(255,255,255,1)",
+        "heightThresholds": {
+          "low": 1,
+          "medium": 2.2,
+          "high": 4
+        }
+      }
+    },
+    "trackInfo": {
+      "titleSize": "3rem",
+      "artistSize": "2rem",
+      "titleOpacity": 0.9,
+      "artistOpacity": 0.8,
+      "maxChars": 100
+    },
+    "controls": {
+      "buttonSize": "1.8rem",
+      "otherButtonSize": "1.4rem",
+      "spacing": 10,
+      "iconOpacity": 0.8
+    },
+    "volume": {
+      "iconSize": 36,
+      "progressSize": 40,
+      "textSize": "1rem"
+    },
+    "animations": {
+      "showHideMs": 200,
+      "updateDelay": 200
+    }
   }
- }
+}
