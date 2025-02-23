@@ -2,7 +2,7 @@ import Service from 'resource:///com/github/Aylur/ags/service.js';
 const { GLib } = imports.gi;
 import { WWO_CODE } from "../modules/.commondata/weather.js";
 
-const CACHE_DURATION = 15 * 60 * 1000000; // 15 minutes in microseconds
+const CACHE_DURATION = 30 * 60 * 1000000; // 15 minutes in microseconds
 const WEATHER_CACHE_FOLDER = `${GLib.get_user_cache_dir()}/ags/weather`;
 const WEATHER_CACHE_PATH = WEATHER_CACHE_FOLDER + "/wttr.in.txt";
 

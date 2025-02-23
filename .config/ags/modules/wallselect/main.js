@@ -14,8 +14,7 @@ import ColorPicker from "../bar/modules/color_picker.js";
 const { Box, Label, EventBox, Scrollable, Button, Revealer } = Widget;
 const opts = await userOptions.asyncGet().wallselect;
 const elevate = userOptions.asyncGet().etc.widgetCorners ? "wall-rounding" : "elevation";
-const storedWallpaper = GLib.get_user_state_dir() + '/ags/user/wallpaper.txt';
-const CLICK_ACTION_SCRIPT = App.configDir + '/scripts/color_generation/switchwall.sh';
+const CLICK_ACTION_SCRIPT = "matugen image";
 const WALLPAPER_DIR = GLib.get_home_dir() + opts.wallpaperFolder || '/Pictures/Wallpapers';
 const PREVIEW_WIDTH = opts.width || 200;
 const PREVIEW_HEIGHT = opts.height || 120;
@@ -25,7 +24,6 @@ const CACHING_MODE = opts.cachingMode || "disk";
 
 // In-memory cache for scaled pixbufs.
 const pixbufCache = {};
-
 // --- Disk cache setup (only used if CACHING_MODE is "disk") ---
 let DISK_CACHE_DIR = null;
 if (CACHING_MODE === "disk") {
@@ -117,6 +115,7 @@ const loadPreviewAsync = (path) => {
 };
 
 // --- Caching wallpaper paths ---
+let switchWall = `swww img -t outer --transition-duration 1 --transition-step 255 --transition-fps 60 -f Nearest`;
 let wallpaperPathsCache = null;
 let wallpaperPathsCacheTime = 0;
 const CACHE_DURATION = 60 * 1e6; // 60 seconds in microseconds
@@ -221,9 +220,8 @@ const WallpaperPreview = (path) =>
       }
     }),
     onClicked: () => {
-      Utils.execAsync(['bash',`-c`, `echo ${path} > ${storedWallpaper}`]).catch(print);
-      Utils.execAsync(['sh', `${CLICK_ACTION_SCRIPT}`, path]).catch(print);
-      App.closeWindow("wallselect");
+        Utils.execAsync(['bash', '-c', `${switchWall} ${path}`]).catch(print);
+        App.closeWindow("wallselect");
     },
   });
   

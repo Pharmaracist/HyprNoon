@@ -3,12 +3,17 @@ reload_apps = true
 
 [config.wallpaper]
 command = "swww"
-set = false
+arguments = [ "img", "-t", "outer", "--transition-duration", "1.5", "--transition-step", "255", "--transition-fps", "60", "-f", "Nearest",]
+set = true
+
+[templates.ags]
+input_path = "~/.config/matugen/templates/ags.scss"
+output_path = "~/.config/ags/styles/_material.scss"
+post_hook = "ags quit ; ags run"
 
 [templates.agsv1]
 input_path = "~/.config/matugen/templates/ags.scss"
-output_path = "~/.local/state/ags/scss/_material.scss"
-post_hook='agsv1 run-js "handleStyles(false);"'
+output_path = "~/.local/#state/ags/scss/_material.scss"
 
 [templates.rofi]
 input_path = "~/.config/matugen/templates/rofi-colors.rasi"
@@ -77,3 +82,8 @@ output_path = "~/.config/vesktop/themes/material-you.css"
 [templates.telegram]
 input_path = "~/.config/matugen/templates/telegram-colors.tdesktop-theme"
 output_path = "~/.config/telegram-desktop/themes/material-you.tdesktop-theme"
+
+[templates.ax-shell]
+input_path = "~/.config/Ax-Shell/config/matugen/templates/ax-shell.css"
+output_path = "~/.config/Ax-Shell/styles/colors.css"
+post_hook = "fabric-cli exec ax-shell 'app.set_css()' &"

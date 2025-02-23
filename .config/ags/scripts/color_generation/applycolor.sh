@@ -30,7 +30,7 @@ else #Opaque Stuff
     rofi_alpha_element="var(surface-container-low)"
 fi
 
-if [[ "$fifthline" == *"noborder"* ]]; then 
+if [[ "$fifthline" == *"noborder"* ]]; then
    ags_border=False
    hypr_border="0"
 else
@@ -57,20 +57,20 @@ apply_lightdark() {
     fi
 }
 
-update_ags() { 
+update_ags() {
     agsv1 run-js "handleStyles(false);"
 }
 
 # hyprctl keyword general:border_size $hypr_border
 apply_borders() {
-    sed -i "s/border:.*;/border:$ags_border;/" ~/.local/state/ags/scss/mode.scss
+    sed -i "s/border:.*;/border:$ags_border;/" ~/.local/state/ags/scss/_mode.scss
 }
 
 
 apply_transparency() {
     # Ags
-    sed -i "s/$transparent:.*;/$transparent:$ags_transparency;/" ~/.local/state/ags/scss/mode.scss &
-    # Rofi 
+    sed -i "s/$transparent:.*;/$transparent:$ags_transparency;/" ~/.local/state/ags/scss/_mode.scss &
+    # Rofi
     sed -i "s/wbg:.*;/wbg:$rofi_alpha;/" ~/.config/rofi/config.rasi &
     sed -i "s/element-bg:.*;/element-bg:$rofi_alpha_element;/" ~/.config/rofi/config.rasi &
     # Hyprland
@@ -80,9 +80,9 @@ apply_transparency() {
 apply_lightdark &
 wait
 apply_transparency &
-wait 
+wait
 apply_borders &
-wait 
+wait
 update_ags &
 wait
 exit 0

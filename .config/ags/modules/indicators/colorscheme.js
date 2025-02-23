@@ -9,6 +9,7 @@ import { showColorScheme } from '../../variables.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { darkMode } from '../.miscutils/system.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
+let image = Utils.exec([`bash`,`-c`, `cat ${GLib.get_home_dir()}/.cache/swww/eDP-1`]);
 const ColorBox = ({
     name = 'Color',
     ...rest
@@ -92,14 +93,14 @@ const gowallArr = [
 ];
 const schemeOptionsArr = [
     [
-        { name: getString('Tonal Spot'), value: 'tonal-spot' },
-        { name: getString('Fruit Salad'), value: 'fruit-salad' },
-        { name: getString('Fidelity'), value: 'fidelity' },
-        { name: getString('Rainbow'), value: 'rainbow' },
-        { name: getString('Neutral'), value: 'neutral' },
-        { name: getString('Monochrome'), value: 'monochrome' },
-        { name: getString('Expressive'), value: 'expressive' },
-        { name: getString('Content'), value: 'content' },
+        { name: getString('Tonal Spot'), value: 'scheme-tonal-spot' },
+        { name: getString('Fruit Salad'), value: 'scheme-fruit-salad' },
+        { name: getString('Fidelity'), value: 'scheme-fidelity' },
+        { name: getString('Rainbow'), value: 'scheme-rainbow' },
+        { name: getString('Neutral'), value: 'scheme-neutral' },
+        { name: getString('Monochrome'), value: 'scheme-monochrome' },
+        { name: getString('Expressive'), value: 'scheme-expressive' },
+        { name: getString('Content'), value: 'scheme-content' },
     ]
    
 ];
@@ -205,27 +206,26 @@ const ColorSchemeSettings = () => Widget.Box({
                     optionsArr: schemeOptionsArr,
                     initIndex: initSchemeIndex,
                     onChange: async (value, name) => {
-                        await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "3s/.*/${value}/" ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
-                        await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchcolor.sh`]);
-                    },
+                        await execAsync([`bash`, `-c`, `matugen image ${image} -t ${value}`]);
+                          },
                 }),
-                Widget.Label({
-                    xalign: 0,
-                    className: 'txt-norm titlefont onSurfaceVariant',
-                    label: getString('Wallpaper Styles'),
-                    hpack: 'center',
-                }),
-                ConfigMulipleSelection({
-                    hpack: 'center',
-                    vpack: 'center',
-                    css:`margin-bottom:1.5rem`,
-                    optionsArr: gowallArr,
-                    initIndex: initGowallIndex,
-                    onChange: (value, name) => {
-                        execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "4s/.*/${value}/" ${GLib.get_user_state_dir()}/ags/user/colormode.txt`])
-                            .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchwall.sh --switch`]))
-                    },
-                }),
+                // Widget.Label({
+                //     xalign: 0,
+                //     className: 'txt-norm titlefont onSurfaceVariant',
+                //     label: getString('Wallpaper Styles'),
+                //     hpack: 'center',
+                // }),
+                // ConfigMulipleSelection({
+                //     hpack: 'center',
+                //     vpack: 'center',
+                //     css:`margin-bottom:1.5rem`,
+                //     optionsArr: gowallArr,
+                //     initIndex: initGowallIndex,
+                //     onChange: (value, name) => {
+                //         execAsync([`bash`, `-c`, `matugen image ${image} -t ${value}`]).catch(print);
+                //             // .then(execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/switchwall.sh --switch`]))
+                //     },
+                // }),
                 //////////////////
             ]
         })

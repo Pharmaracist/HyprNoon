@@ -45,7 +45,8 @@ export default (monitor = 0, where = 'bottom left', useOverlayLayer = true, appC
         exclusivity: 'ignore',
         visible: true,
         child: Widget.EventBox({
-            onHover: debounce(() => {if (appCommand) {Utils.execAsync(appCommand).catch(console.error);}}, userOptions.asyncGet().etc.screencorners.debounce || 650),
+            onHover: debounce(() => {if (appCommand) {Utils.execAsync(appCommand).catch(console.error);}}, userOptions.asyncGet().etc.screencorners.debounce),
+            onHoverLost: debounce(() => {if (appCommand) {Utils.execAsync(appCommand).catch(console.error);}}, userOptions.asyncGet().etc.screencorners.debounce),
             child: RoundedCorner(positionString, { className: 'corner-black' }),
         }),
     });

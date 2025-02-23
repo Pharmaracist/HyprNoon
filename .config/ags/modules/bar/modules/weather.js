@@ -1,5 +1,4 @@
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
-import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 const { Box, EventBox, Stack } = Widget;
 const { GLib } = imports.gi;
 import { MaterialIcon } from "../../.commonwidgets/materialicon.js";
@@ -9,13 +8,12 @@ import Media from 'resource:///com/github/Aylur/ags/service/mpris.js';
 import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
 import Clock from './clock.js';
 
-const MAX_TEXT_LENGTH = 30;
 const userName = GLib.get_real_name() + " ~ " + GLib.get_user_name();
 
 const WeatherWidget = () => {
     const CYCLE_INTERVAL = userOptions.asyncGet().etc.weather.cycleTimeout || 10000;
     const PRIORITY_DISPLAY_TIME = 1000;
-    
+
     let displayMode = 'weather';
     let previousMode = 'weather';
     let notificationTimeout = null;
@@ -38,7 +36,7 @@ const WeatherWidget = () => {
     const mediaContent = Box({
         className: 'content-box spacing-h-4',
         hpack: 'center',
-        hexpand:true,
+        hexpand: true,
         children: [
             mediaIcon,
             mediaTitleLabel
@@ -48,7 +46,7 @@ const WeatherWidget = () => {
     const notificationContent = Box({
         className: 'content-box spacing-h-4',
         hpack: 'center',
-        hexpand:true,
+        hexpand: true,
         children: [
             notificationIcon,
             notificationLabel
@@ -58,7 +56,7 @@ const WeatherWidget = () => {
     const usernameContent = Box({
         className: 'content-box',
         hpack: 'center',
-        hexpand:true,
+        hexpand: true,
         child: Widget.Label({
             className: 'txt-norm txt-onLayer1',
             label: userName
@@ -88,7 +86,7 @@ const WeatherWidget = () => {
     // Priority display management
     const showPriorityContent = (mode, duration) => {
         if (notificationTimeout) GLib.source_remove(notificationTimeout);
-        
+
         previousMode = displayMode;
         displayMode = mode;
         contentStack.shown = mode;
@@ -103,19 +101,19 @@ const WeatherWidget = () => {
 
     // Media tracking
     const updateMediaInfo = () => {
-        const title = Media.title ? Utils.truncateString(Media.title, MAX_TEXT_LENGTH) : 'Silent Mode';
-        
-        if (title !== lastTitle && Media.title) {
+        const title = Media.title || 'Silent Mode';
+
+        if (title !== lastTitle) {
             mediaTitleLabel.label = title;
             showPriorityContent('media', PRIORITY_DISPLAY_TIME);
         }
-        
+
         lastTitle = title;
     };
 
     // Notification handling
     const showNotification = (notification) => {
-        notificationLabel.label = Utils.truncateString(notification.summary, MAX_TEXT_LENGTH);
+        notificationLabel.label = notification.summary;
         showPriorityContent('notification', PRIORITY_DISPLAY_TIME);
     };
 
@@ -143,16 +141,16 @@ const WeatherWidget = () => {
         child: Box({
             className: 'complex-status',
             hpack: 'center',
-            hexpand:true,
+            hexpand: true,
             child: contentStack,
             setup: self => {
                 // Initialize services
                 self
                     .hook(Media, updateMediaInfo, 'changed')
                     .hook(Notifications, (box, id) => {
-                      const notifications = Notifications.notifications;
-                      if (notifications.length > 0) showNotification(notifications[0]);
-                  }, 'notified')
+                        const notifications = Notifications.notifications;
+                        if (notifications.length > 0) showNotification(notifications[0]);
+                    }, 'notified');
                 // Start initial cycle
                 startAutoCycle();
             }

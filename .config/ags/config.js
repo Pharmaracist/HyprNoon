@@ -36,7 +36,7 @@ handleStyles(true);
 startAutoDarkModeService().catch(print);
 firstRunWelcome().catch(print);
 startBatteryWarningService().catch(print);
-
+let specialWs = `hyprctl dispatch togglespecialworkspace`
 // Create bars and corners
 const monitors = Gdk.Display.get_default()?.get_n_monitors() || 1;
 for (let i = 0; i < monitors; i++) {
@@ -75,7 +75,7 @@ const Windows = () => [
   ...(userOptions.asyncGet().appearance.fakeScreenRounding !== 0
     ? [
       forMonitors((id) => Corner(id, "top left", true, opts.etc.screencorners.topleft || "obsidian")),
-      forMonitors((id) => Corner(id, "top right", true, opts.etc.screencorners.topright || "zen-browser")),
+      forMonitors((id) => Corner(id, "top right", true, opts.etc.screencorners.topright || `${specialWs}`)),
       forMonitors((id) => Corner(id, "bottom left", true, opts.etc.screencorners.bottomleft || "kitty")),
       forMonitors((id) => Corner(id, "bottom right", true, opts.etc.screencorners.bottomright || "kitty")), 
         ]
