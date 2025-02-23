@@ -115,7 +115,7 @@ const loadPreviewAsync = (path) => {
 };
 
 // --- Caching wallpaper paths ---
-let switchWall = `swww img -t outer --transition-duration 1 --transition-step 255 --transition-fps 60 -f Nearest`;
+let switchWall = `swww img -t outer --transition-duration 1 --transition-step 255 --transition-fps 120 -f Nearest`;
 let wallpaperPathsCache = null;
 let wallpaperPathsCacheTime = 0;
 const CACHE_DURATION = 60 * 1e6; // 60 seconds in microseconds
@@ -221,6 +221,7 @@ const WallpaperPreview = (path) =>
     }),
     onClicked: () => {
         Utils.execAsync(['bash', '-c', `${switchWall} ${path}`]).catch(print);
+        Utils.execAsync(['bash', '-c', `matugen image ${path}`]).catch(print);
         App.closeWindow("wallselect");
     },
   });

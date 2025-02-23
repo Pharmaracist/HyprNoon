@@ -7,7 +7,7 @@ const { execAsync, exec } = Utils;
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
 import { setupCursorHover } from '../../.widgetutils/cursorhover.js';
 import { ConfigToggle } from '../../.commonwidgets/configwidgets.js';
-import { download , upload } from '../../.commonwidgets/networkspeed.js';
+// import { download , upload } from '../../.commonwidgets/networkspeed.js';
 const MATERIAL_SYMBOL_SIGNAL_STRENGTH = {
     'network-wireless-signal-excellent-symbolic': "signal_wifi_4_bar",
     'network-wireless-signal-good-symbolic': "network_wifi_3_bar",
@@ -166,17 +166,17 @@ const CurrentNetwork = () => {
                             MaterialIcon('language', 'hugerass'),
                             networkName,
                             // networkStatus,
-                            Box({
-                                css:`margin-right:1rem`,
-                                vertical:true,
-                                vpack:'center',
-                                hexpand: true,
-                                hpack:'end',
-                                children: [
-                                    download,
-                                    upload,
-                                ]
-                            }),
+                            // Box({
+                            //     css:`margin-right:1rem`,
+                            //     vertical:true,
+                            //     vpack:'center',
+                            //     hexpand: true,
+                            //     hpack:'end',
+                            //     children: [
+                            //         download,
+                            //         upload,
+                            //     ]
+                            // }),
 
                         ]
                     }),

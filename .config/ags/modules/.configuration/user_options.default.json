@@ -5,6 +5,10 @@
       "city": "Cairo"
     }
   },
+  "recorder": {
+    "enabled": true
+  },
+  
   "indicators": {
     "enabled": true
   },
@@ -125,6 +129,8 @@
     "wsNumMarginScale": 0.07
   },
   "sidebar": {
+    "left":true,
+    "right":true,
     "extraCss":"min-width:450px",
     "ModuleCalendar" : {
         "enabled" : true,

@@ -220,8 +220,9 @@ const NetworkWifiIndicator = () =>
       }),
   });
 
-export const NetworkIndicator = () =>
+export const NetworkIndicator = (props = {},) =>
   Widget.Stack({
+    ...props,
     transition: "slide_up_down",
     transitionDuration: userOptions.asyncGet().animations.durationSmall,
     children: {
@@ -241,6 +242,23 @@ export const NetworkIndicator = () =>
       }),
   });
 
+  export const bluetoothPill = (props = {}) =>
+    Widget.Box({
+      ...props,
+      child: Widget.Box({
+        className: "onSurfaceVariant spacing-h-15",
+        children: [
+          Widget.Box({
+            className: "onSurfaceVariant spacing-h-10 ",
+            children: [
+              BluetoothDevices(),
+              BluetoothIndicator(),
+            ],
+          }),
+        ],
+      }),
+    });
+  
 export const StatusIcons = (props = {}, monitor = 0) =>
   Widget.Box({
     ...props,

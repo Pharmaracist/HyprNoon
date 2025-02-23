@@ -16,14 +16,14 @@ import {
     ModuleRawInput,
     ModuleGameMode,
     ModuleCloudflareWarp,
-} from "./quicktoggles.js";
+} from "./modules/quicktoggles.js";
 import ModuleNotificationList from "./centermodules/notificationlist.js";
 import ModuleAudioControls from "./centermodules/audiocontrols.js";
 import ModuleWifiNetworks from "./centermodules/wifinetworks.js";
 import ModulePowerProfiles from './centermodules/powerprofiles.js';
 import ModuleBluetooth from "./centermodules/bluetooth.js";
 import ModuleConfigure from "./centermodules/configure.js";
-import { ModuleCalendar } from "./calendar.js";
+import { ModuleCalendar } from "./modules/calendar.js";
 import ModulePrayerTimes from './centermodules/prayertimes.js';
 import { getDistroIcon } from '../.miscutils/system.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';

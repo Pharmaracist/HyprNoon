@@ -15,6 +15,8 @@ const BatteryScale = () => {
 
     const percentageLabel = Label({
         className: "txt-smallie sec-txt txt-semibold",
+        truncate:"end",
+        wrap:true,
         css: "margin-left: 8px;",
     });
 

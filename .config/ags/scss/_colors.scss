@@ -19,7 +19,7 @@ $transparency: 0.75;
   $surfaceTint: transparentize($surfaceTint, $transparency);
 }
 $outliner: $secondary;
-@if $border == False {
+@if $border != True {
   $outliner: rgba($secondary, 0);
 }
 // Others

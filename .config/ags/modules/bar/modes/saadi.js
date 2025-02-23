@@ -2,13 +2,14 @@ const { Gtk } = imports.gi;
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import Update from "../modules/update.js";
 import { Tray } from "../modules/tray.js";
-import { NotificationIndicator } from "../../.commonwidgets/statusicons.js";
+import { bluetoothPill, NotificationIndicator } from "../../.commonwidgets/statusicons.js";
 import Clock from "../modules/clock.js";
 import NetworkSpeed from "../../.commonwidgets/networkspeed.js";
 import PrayerTimesWidget from "../modules/prayertimes.js";
 import WeatherOnly from "../modules/weatherOnly.js";
 import NormalOptionalWorkspaces from "../normal/workspaces_hyprland.js";
 import SystemResources from "../normal/resources.js";
+import BatteryScaleModule from "../modules/battery_scale.js";
 
 const Box = Widget.Box;
 
@@ -28,19 +29,26 @@ export const SaadiBar = Widget.CenterBox({
       }),
       Box({
         hexpand: false,
-        css: `padding : 0`,
+        hpack:'start',
+        css: `padding : 0; min-width:20px`,
         className: "group-saadi",
         children: [
           NetworkSpeed()
         ]
       }),
       Box({
-        hexpand: false,
         className: "group-saadi",
         children: [
-          WeatherOnly()
+          BatteryScaleModule()
         ]
       }),
+      // Box({
+      //   hexpand: false,
+      //   className: "group-saadi",
+      //   children: [
+      //     WeatherOnly()
+      //   ]
+      // }),
     ]
   }),
   centerWidget: Widget.Box({
@@ -78,7 +86,8 @@ export const SaadiBar = Widget.CenterBox({
             children: [
               NormalOptionalWorkspaces(),
             ]
-          })
+          }),
+          Widget.Button({onClicked:()=> App.toggleWindow(`sideright`),child:bluetoothPill({className:"prim-txt group-saadi"})})
         ]
       }),
     ]

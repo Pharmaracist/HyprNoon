@@ -10,6 +10,7 @@ export const hasFlatpak = !!exec(`bash -c 'command -v flatpak'`);
 
 const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode.txt`;
 export const darkMode = Variable(!(Utils.readFile(LIGHTDARK_FILE_LOCATION).split('\n')[0].trim() == 'light'));
+let image = Utils.exec([`bash`,`-c`, `cat ${GLib.get_home_dir()}/.cache/swww/eDP-1`]);
 darkMode.connect('changed', async ({ value }) => {
     try {
         const lightdark = value ? "dark" : "light";
@@ -20,31 +21,13 @@ darkMode.connect('changed', async ({ value }) => {
             'bash', 
             '-c', 
             `mkdir -p "${userDir}/ags/user" && sed -i "1s/.*/${lightdark}/" "${userDir}/ags/user/colormode.txt"`
-        ]);
-
-        // Run color switch script
-        const switchColorResult = await execAsync([
-            'bash',
-            '-c',
-            `${App.configDir}/scripts/color_generation/switchcolor.sh`
-        ]);
-        
-        // Try to set darkman if available (optional)
-        try {
-            await execAsync([
-                'bash',
-                '-c',
-                `command -v darkman && darkman set ${lightdark}`
-            ]);
-        } catch (darkmanError) {
-            // Ignore darkman errors as it's optional
-            console.debug('Darkman not available or failed:', darkmanError);
-        }
+        ]).then(() => {
+            Utils.execAsync(`matugen image ${image} -m ${lightdark}`).catch((error) => {
+                console.error('Error generating color scheme:', error);
+            })
+        });
     } catch (error) {
-        console.error('Error changing dark mode:', error.message || error);
-        if (error instanceof Error) {
-            console.error(error.stack);
-        }
+        console.error('Error changing dark mode:', error);
     }
 });
 globalThis['darkMode'] = darkMode;

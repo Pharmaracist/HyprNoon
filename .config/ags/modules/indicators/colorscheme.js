@@ -121,6 +121,7 @@ export const initGowallIndex = calculateSchemeInitIndex(gowallArr, initGowall);
 
 const ColorSchemeSettings = () => Widget.Box({
     className: 'osd-colorscheme-settings spacing-v-5 margin-20',
+    css:`padding:0 2rem `,
     vertical: true,
     vpack: 'center',
     children: [
@@ -161,17 +162,17 @@ const ColorSchemeSettings = () => Widget.Box({
                         }
                     },
                 }),
-                ConfigToggle({
-                    icon: 'image',
-                    name: getString('GoWall'),
-                    desc: getString('Theme Wallpaper for ColorPalette'),
-                    initValue: initGowallIndex,
-                    onChange: async (self, newValue) => {
-                            const gowall = newValue == 0 ? "none" : "catppuccin";
-                            await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "4s/.*/${gowall}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
-                            await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
-                       },
-                }),
+                // ConfigToggle({
+                //     icon: 'image',
+                //     name: getString('GoWall'),
+                //     desc: getString('Theme Wallpaper for ColorPalette'),
+                //     initValue: initGowallIndex,
+                //     onChange: async (self, newValue) => {
+                //             const gowall = newValue == 0 ? "none" : "catppuccin";
+                //             await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "4s/.*/${gowall}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
+                //             await execAsync(['bash', '-c', `${App.configDir}/scripts/color_generation/applycolor.sh &`]);
+                //        },
+                // }),
                 ConfigToggle({
                     icon: 'ripples',
                     name: getString('Borders'),

@@ -140,6 +140,13 @@ $bar_ws_width_focus_active: 6.045rem;
     margin: 0.6rem 0.4rem;
     background-color: $layer1;
 }
+.bar-group2 {
+    @include titlefont;
+    color: $battOnLayer2;
+    @include full-rounding;
+    padding: 0 1.3rem;
+    background-color: $battLayer2;
+}
 .bar-gradiant-tert {
     @include full-rounding;
     padding: 0 1rem;
@@ -624,27 +631,27 @@ $bar_ws_width_focus_active: 6.045rem;
 }
 .battery-scale-bar {
     min-width: 50px;
-    min-height: 3px;
-    margin: 0 4px;
+    min-height: 5px;
     background-color: $onSurfaceVariant;
-    border-radius: 25px;
+    border-radius: 99px;
 
     trough progress {
-        background: linear-gradient(90deg, $surfaceContainerLowest, $primary);
-        animation: chargeAnimation 5s linear infinite;
-        border-radius: 25px;
-        min-height: 12px;
+        background-color: $primary;
+        // background: linear-gradient(90deg, $primary, $primaryFixed);
+        animation: chargeAnimation 10s linear infinite;
+        border-radius: 99px;
+        min-height: 18px;
     }
     &.bar-batt-charging trough progress {
         background: linear-gradient(90deg, $black, $primary);
-        border-radius: 25px;
+        border-radius: 99px;
         min-height: 25px;
         animation: chargeAnimation 2s linear infinite;
     }
 
     &.bar-batt-low trough progress {
         background-color: $error;
-        border-radius: 2px;
+        border-radius: 99px;
     }
 
 }

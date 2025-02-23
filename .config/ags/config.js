@@ -14,7 +14,6 @@ import DesktopBackground from "./modules/desktopbackground/main.js";
 import Dock from "./modules/dock/main.js";
 import Corner from "./modules/screencorners/main.js";
 import Indicator from "./modules/indicators/main.js";
-// import ColorScheme from "./modules/indicators/colorscheme.js";
 import Overview from "./modules/overview/main.js";
 import Session from "./modules/session/main.js";
 import SideLeft from "./modules/sideleft/main.js";
@@ -50,11 +49,21 @@ for (let i = 0; i < monitors; i++) {
 }
 
 const Windows = () => [
-  SideLeft(),
-  MusicControls(),
-  Recorder(),
-  // ColorScheme(),
-  SideRight(),
+  
+  ...(userOptions.asyncGet().recorder.enabled !== false
+    ? [Recorder()]
+    : []),
+  
+  ...(userOptions.asyncGet().musiccontrols.enabled !== false
+    ? [MusicControls()]
+    : []),
+  
+  ...(userOptions.asyncGet().sidebar.right.enabled !== false
+    ? [SideRight()]
+    : []),
+  ...(userOptions.asyncGet().sidebar.left.enabled !== false
+    ? [SideLeft()]
+    : []),
   ...(userOptions.asyncGet().indicators.enabled !== false
     ? [forMonitors(Indicator)]
     : []),
@@ -74,10 +83,10 @@ const Windows = () => [
   ...(userOptions.asyncGet().dock.enabled ? [forMonitors(Dock)] : []),
   ...(userOptions.asyncGet().appearance.fakeScreenRounding !== 0
     ? [
-      forMonitors((id) => Corner(id, "top left", true, opts.etc.screencorners.topleft || "obsidian")),
+      forMonitors((id) => Corner(id, "top left", true, opts.etc.screencorners.topleft || `agsv1 -t cheatsheet`)),
       forMonitors((id) => Corner(id, "top right", true, opts.etc.screencorners.topright || `${specialWs}`)),
       forMonitors((id) => Corner(id, "bottom left", true, opts.etc.screencorners.bottomleft || "kitty")),
-      forMonitors((id) => Corner(id, "bottom right", true, opts.etc.screencorners.bottomright || "kitty")), 
+      forMonitors((id) => Corner(id, "bottom right", true, opts.etc.screencorners.bottomright || `${specialWs}`)),
         ]
     : []),
 ];
