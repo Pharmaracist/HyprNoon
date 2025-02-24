@@ -10,6 +10,7 @@ depends=(
 	coreutils
 	cliphist
 	cmake
+        pokemon-colorscripts-go
 	curl
 	rofi-wayland
 	rsync
