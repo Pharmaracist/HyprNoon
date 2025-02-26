@@ -1408,3 +1408,7 @@ $skeleton-accent: mix($secondary, $onSecondary, 50%);
     margin-left: 8px;
     color: $onSurface;
 }
+.sidebar-bottom {
+    border-radius: $rounding_medium 0 0 0;
+
+}

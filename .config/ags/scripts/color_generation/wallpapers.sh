@@ -37,7 +37,7 @@ set_wallpaper() {
     if [ -n "$wallpaper" ] && [ -f "$wallpaper" ]; then
         echo "$wallpaper" > "$CURRENT_WALLPAPER_FILE"
         debug "Setting wallpaper: $wallpaper with MODE=$MODE SCHEME=$SCHEME CONTRAST=$CONTRAST"
-        sh ~/.config/ags/scripts/color_generation/switchwall.sh $wallpaper
+        swww img -t outer --transition-duration 1 --transition-step 255 --transition-fps 120 -f Nearest $wallpaper 
         matugen image "$wallpaper" \
             --mode "$MODE" \
             --type "$SCHEME" \

@@ -37,7 +37,7 @@ const BarResource = (
 
   // Create a Revealer to handle the sliding effect of the resource label
   const detailRevealer = Revealer({
-    transitionDuration: 500, // Adjust this value for the speed of the slide
+    transitionDuration: 300, // Adjust this value for the speed of the slide
     transition: "slide_right", // Slide to the right on reveal
     revealChild: false,
     child: resourceLabel, // The resource label is the child of the revealer
@@ -55,13 +55,22 @@ const BarResource = (
               homogeneous: true,
               children: [
                 Overlay({
-                  child: Box({
-                    vpack: "center",
-                    className: `${iconClassName}`,
-                    homogeneous: true,
-                    children: [MaterialIcon(icon, "small")],
-                  }),
-                  overlays: [resourceCircProg],
+                  child: resourceCircProg,
+                  overlays: [
+                    Button({
+                      child:Box({
+                      vpack: "center",
+                      hpack: "center",
+                      className: `${iconClassName}`,
+                      homogeneous: true,
+                      children: [MaterialIcon(icon, "smallie")],
+                    }),
+                    onClicked: () => {
+                      // Toggle the reveal state of the resource label to trigger the sliding animation
+                      detailRevealer.revealChild = !detailRevealer.revealChild;
+                    },
+                  })
+                  ],
                 }),
               ],
             }),
@@ -81,10 +90,7 @@ const BarResource = (
                 });
             }),
         }),
-        onClicked: () => {
-          // Toggle the reveal state of the resource label to trigger the sliding animation
-          detailRevealer.revealChild = !detailRevealer.revealChild;
-        },
+        
       }),
       detailRevealer, // Add the revealer that will slide the label
     ],

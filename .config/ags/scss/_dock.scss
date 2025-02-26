@@ -16,9 +16,10 @@
 }
 
 .pinned-dock-app-btn {
-    @include normal-rounding;
+    @include full-rounding;
     padding: 0.273rem;
-    background-color: $layer0Hover;
+    color:$secondary;
+    // background-color: $layer0Hover;
 }
 
 .dock-app-btn:hover,
@@ -37,6 +38,7 @@
 }
 
 .dock-separator {
-    min-width: 0.068rem;
+    min-width: 0.07rem;
+    margin:0 0.8rem;
     background-color: $outline;
 }

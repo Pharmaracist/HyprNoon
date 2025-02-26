@@ -1,27 +1,27 @@
 // User Configuration
 const USER_CONFIG = {
     // Visualization
-    bars: 60,
-    framerate: 144,
+    bars: 120,
+    framerate: 40,
     sensitivity: 150,
     
     // Audio Processing
     mode: 'normal',
     channels: 'stereo',
-    smoothing: 0.5,
+    smoothing: 1,
     
     // Visual Options
-    monstercat: 1.5,
-    noise_reduction: 0.77,
+    monstercat: 1.8,
+    noise_reduction: 0.97,
     
     // Advanced Audio
-    autosens: 1.0,
+    autosens: 1.4,
     overshoot: 50,
     integral: 57,
     
     // Frequency Ranges
     lower_cutoff_freq: 50,
-    higher_cutoff_freq: 10000,
+    higher_cutoff_freq: 5000,
     
     // Bar Appearance
     barWidth: 3,

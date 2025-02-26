@@ -224,7 +224,7 @@ const StackButton = (stackItemName, icon, name) =>
       }),
   });
 
-export const ModuleCalendar = () =>
+export const ModuleCalendar = (props = {}) =>
   Box({
     hexpand: true,
     className: "sidebar-group spacing-h-5",
@@ -234,9 +234,12 @@ export const ModuleCalendar = () =>
           vpack: "center",
           // hexpand: true,
           vertical: true,
+          hpack: "fill",
           className: "sidebar-navrail spacing-v-10",
           children: [
-            ...(userOpts.muslim?.enabled ? [StackButton("PrayerTimes", "mosque", getString("Prayers"))] : []),
+            ...(userOpts.muslim?.enabled
+              ? [StackButton("PrayerTimes", "mosque", getString("Prayers"))]
+              : []),
             StackButton("calendar", "calendar_month", getString("Calendar")),
             StackButton("todo", "done_outline", getString("To Do")),
             StackButton("media", "music_note", getString("Media")),

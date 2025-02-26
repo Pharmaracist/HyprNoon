@@ -6,7 +6,6 @@ const { Box, Button, EventBox, Label, Overlay, Revealer, Scrollable } = Widget;
 const { execAsync, exec } = Utils;
 import { AnimatedCircProg } from "../../.commonwidgets/cairo_circularprogress.js";
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
-import { showMusicControls } from '../../../variables.js';
 import scrolledmodule from '../../.commonwidgets/scrolledmodule.js';
 const CUSTOM_MODULE_CONTENT_INTERVAL_FILE = `${GLib.get_user_cache_dir()}/ags/user/scripts/custom-module-interval.txt`;
 const CUSTOM_MODULE_CONTENT_SCRIPT = `${GLib.get_user_cache_dir()}/ags/user/scripts/custom-module-poll.sh`;

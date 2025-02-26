@@ -1,6 +1,5 @@
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import Mpris from "resource:///com/github/Aylur/ags/service/mpris.js";
-import { showMusicControls } from "../../../variables.js";
 
 const MediaIndicator = () => Widget.Box({
     className: 'bar-media-indicator',
@@ -70,6 +69,6 @@ export default () => Widget.EventBox({
             player.playPause();
         }
     },
-    onSecondaryClick: () =>  showMusicControls.setValue(!showMusicControls.value),
+    onSecondaryClick: () =>  App.toggleWindow('musiccontrols'),
     child: MediaIndicator(),
 });

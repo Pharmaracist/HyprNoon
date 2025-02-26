@@ -1,3 +1,11 @@
+.ipod-widget {
+  background-color: $background;
+  min-height: 20rem;
+  padding: 1rem;
+  border-top: 0.8px solid $outliner;
+  border-radius: $rounding_mediumlarge $rounding_mediumlarge 0 0;
+
+}
 .media-controls-container {
   .bluetooth-indicator {
     .bluetooth-device {
@@ -98,7 +106,3 @@
   .transition {
   }
 }
-
-.ipod-widget {
-    background-color: $layer0;
-  }

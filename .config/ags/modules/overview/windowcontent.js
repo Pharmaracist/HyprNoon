@@ -106,7 +106,7 @@ export const SearchAndWindows = () => {
         transition: 'crossfade', 
         transitionDuration: options.animations.durationLarge,
         revealChild: true,
-        hpack: 'center',
+        hpack: 'start',
         vpack:'center',
         child: Widget.Label({
             className: 'overview-search-prompt txt-small txt',
@@ -209,14 +209,15 @@ export const SearchAndWindows = () => {
         children:[
             Widget.Box({
                 children: [
-                    // RoundedCorner('bottomright', {vpack:'end',className: 'corner corner-colorscheme'}),
+                    RoundedCorner('topright', {vpack:'start',className: 'corner corner-colorscheme'}),
                     entry,
                     entryIcon,
                     Widget.Box({
-                    className: 'overview-search-icon-box',
-                    setup: box => box.pack_start(entryPromptRevealer, true, true, 0),
+                        hpack:"start",
+                        className: 'overview-search-icon-box',
+                        setup: box => box.pack_start(entryPromptRevealer, true, true, 0),
                     }),
-                    // RoundedCorner('bottomleft', {vpack:'end',className: 'corner corner-colorscheme'}),
+                    RoundedCorner('topleft', {vpack:'start',className: 'corner corner-colorscheme'}),
                 ],
             }),
         ]
@@ -232,7 +233,7 @@ export const SearchAndWindows = () => {
                     EntryBarContent()
                 ]
             }),
-            userOptions.asyncGet().overview.enableContent ? overviewContent : null || true,
+            // userOptions.asyncGet().overview.enableContent ? overviewContent : null || true,
             resultsRevealer,
         ],
         setup: (self) => self

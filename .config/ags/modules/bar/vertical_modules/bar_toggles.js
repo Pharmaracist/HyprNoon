@@ -2,7 +2,6 @@ import Audio from "resource:///com/github/Aylur/ags/service/audio.js";
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import Mpris from 'resource:///com/github/Aylur/ags/service/mpris.js';
 import { MaterialIcon } from "../../.commonwidgets/materialicon.js";
-import { showMusicControls } from '../../../variables.js';
 
 export const MicIndicator = () =>
   Widget.Button({
@@ -82,7 +81,7 @@ export const MediaControls = () =>
     hexpand: true,
     setup: (self) => self.on("button-press-event", (_, event) => {
       if (event.get_button()[1] === 3) { // Right click
-        showMusicControls.value = !showMusicControls.value;
+        App.toggleWindow('musiccontrols');
         return true;
       }
       return false;

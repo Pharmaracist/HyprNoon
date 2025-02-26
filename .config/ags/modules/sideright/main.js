@@ -11,7 +11,7 @@ export default () => PopupWindow({
     layer: 'top',
     child: Box({
         children: [
-            clickCloseRegion({ name: 'sideright', multimonitor: false, fillMonitor: 'horizontal' }),
+            userOptions.asyncGet().etc.clickCloseRegion ? clickCloseRegion({ name: 'sideright', multimonitor: false, fillMonitor: 'horizontal' }) : null,
             SidebarRight(),
         ]
     })

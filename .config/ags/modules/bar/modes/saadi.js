@@ -1,6 +1,6 @@
 const { Gtk } = imports.gi;
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
-import Update from "../modules/update.js";
+// import Update from "../modules/update.js";
 import { Tray } from "../modules/tray.js";
 import { bluetoothPill, NotificationIndicator } from "../../.commonwidgets/statusicons.js";
 import Clock from "../modules/clock.js";
@@ -10,17 +10,24 @@ import WeatherOnly from "../modules/weatherOnly.js";
 import NormalOptionalWorkspaces from "../normal/workspaces_hyprland.js";
 import SystemResources from "../normal/resources.js";
 import BatteryScaleModule from "../modules/battery_scale.js";
-
+import powermode from "../modules/powermode.js";
 const Box = Widget.Box;
-
+const Power = Widget.Button({
+  child: Widget.Label({
+    label: "power_settings_new",
+    className: "txt-large group-saadi icon-material onSurfaceVariant",
+  }),
+  onClicked: () => {
+    App.toggleWindow('session0');
+  }
+});
 export const SaadiBar = Widget.CenterBox({
   className: "bar-saadi",
   css: `padding:0 1.8rem`,
   startWidget: Widget.Box({
     className: "spacing-h-4",
     children: [
-      NotificationIndicator(),
-      Update,
+      // Update,
       Box({
         className: "group-saadi",
         children: [
@@ -38,6 +45,7 @@ export const SaadiBar = Widget.CenterBox({
       }),
       Box({
         className: "group-saadi",
+        css:`padding: 0.1rem 0.2rem 0.1rem 0`,
         children: [
           BatteryScaleModule()
         ]
@@ -54,6 +62,7 @@ export const SaadiBar = Widget.CenterBox({
   centerWidget: Widget.Box({
     className: "group-saadi",
     children: [
+      NotificationIndicator(),
       Clock(),
     ],
   }),
@@ -87,7 +96,8 @@ export const SaadiBar = Widget.CenterBox({
               NormalOptionalWorkspaces(),
             ]
           }),
-          Widget.Button({onClicked:()=> App.toggleWindow(`sideright`),child:bluetoothPill({className:"prim-txt group-saadi"})})
+          Widget.Button({onClicked:()=> App.toggleWindow(`sideright`),child:bluetoothPill({className:"prim-txt group-saadi"})}),
+          Power
         ]
       }),
     ]

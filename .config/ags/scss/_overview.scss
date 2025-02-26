@@ -4,13 +4,12 @@
 
 .overview-search-box {
     @include element_decel;
-    @include large-rounding;
-    margin: $elevation_margin;
-    min-width: 13.636rem;
-    // border-radius: $rounding_medium $rounding_medium ;
+    // @include large-rounding;
+    // margin: $elevation_margin;
+    min-width: 24.636rem;
     min-height: 3.409rem;
-    padding: 0rem 1.364rem;
-    padding-right: 2.864rem;
+    border-radius: 0 0 $rounding_mediumlarge $rounding_mediumlarge;
+    padding: 0rem 2.864rem 0rem 1.364rem;
     border:0.1px solid $outliner;
     background-color: $background;
     color: $onBackground;
@@ -24,7 +23,7 @@
 }
 
 .overview-search-box-extended {
-    min-width: 25.909rem;
+    min-width: 50.909rem;
     caret-color: $onSecondaryContainer;
 }
 
@@ -47,12 +46,11 @@
 }
 
 .overview-search-results {
-    // min-height: 2.813rem;
-    // min-height: 37.5rem;
-    @include large-rounding;
+    border-radius: $rounding_medium;
     @include elevation-border;
     @include elevation2;
-    min-width: 28.773rem;
+    margin-top: 0.8rem;
+    min-width: 52.909rem;
     padding: 0.682rem;
     background-color: $layer0;
     color: $onLayer0;

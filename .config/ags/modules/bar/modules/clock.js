@@ -1,6 +1,5 @@
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
-import { showMusicControls } from "../../../variables.js";
 const { Box, Label, EventBox } = Widget;
 const { GLib } = imports.gi;
 import fetcher from "./fetcher.js";

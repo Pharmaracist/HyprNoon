@@ -5,6 +5,6 @@ export default (id = '') => PopupWindow({
     name: `overview${id}`,
     keymode: 'on-demand',
     anchor: ['top','left', 'right'],
-    layer: 'top',
+    // layer: 'normal',
     child:SearchAndWindows()
 })

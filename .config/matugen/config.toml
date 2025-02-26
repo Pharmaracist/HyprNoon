@@ -3,25 +3,18 @@ reload_apps = true
 
 [config.wallpaper]
 command = "swww"
-arguments = [
-    "img",
-    "-t",
-    "outer",
-    "--transition-duration",
-    "1.5",
-    "--transition-step",
-    "255",
-    "--transition-fps",
-    "60",
-    "-f",
-    "Nearest",
-]
 set = false
 
 [templates.ags]
 input_path = "~/.config/matugen/templates/ags.scss"
 output_path = "~/.local/state/ags/scss/_material.scss"
 post_hook = "agsv1 --run-js 'globalThis.handleStyles(true)'"
+
+
+[templates.foot]
+input_path = "~/.config/matugen/templates/foot.ini"
+output_path = "~/.config/foot/colors.ini"
+
 
 [templates.rofi]
 input_path = "~/.config/matugen/templates/rofi-colors.rasi"

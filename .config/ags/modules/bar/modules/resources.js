@@ -78,13 +78,15 @@ const BarResource = (
         homogeneous: true,
         children: [
           Overlay({
-            child: Box({
-              vpack: "center",
-              className: `${iconClassName}`,
-              homogeneous: true,
-              children: [MaterialIcon(icon, "small")],
-            }),
-            overlays: [resourceProgress],
+            child: resourceProgress,
+            overlays:[
+              Box({
+                vpack: "center",
+                className: `${iconClassName}`,
+                homogeneous: true,
+                children: [MaterialIcon(icon, "small")],
+              }),
+            ] 
           }),
         ],
       }),

@@ -266,7 +266,7 @@ $bar_ws_width_focus_active: 6.045rem;
 
 .bar-ws-focus-active {
     min-width: $bar_ws_width_focus_active;
-    background-color: $primary;
+    background-color: $primaryFixed;
 }
 
 .bar-ws-focus-occupied {
@@ -636,16 +636,16 @@ $bar_ws_width_focus_active: 6.045rem;
     border-radius: 99px;
 
     trough progress {
-        background-color: $primary;
-        // background: linear-gradient(90deg, $primary, $primaryFixed);
+        // background-color: $primary;
+        background: linear-gradient(90deg, $secondary 1%, $primaryContainer);
         animation: chargeAnimation 10s linear infinite;
         border-radius: 99px;
-        min-height: 18px;
+        min-height: 25.5px;
     }
     &.bar-batt-charging trough progress {
         background: linear-gradient(90deg, $black, $primary);
         border-radius: 99px;
-        min-height: 25px;
+        min-height: 25.5px;
         animation: chargeAnimation 2s linear infinite;
     }
 

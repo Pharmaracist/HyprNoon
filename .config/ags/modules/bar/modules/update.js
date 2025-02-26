@@ -1,6 +1,6 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import Utils from 'resource:///com/github/Aylur/ags/utils.js';
-const { Box, Revealer,Label, Button } = Widget;
+const { Box, Revealer, Label, Button } = Widget;
 const { GLib } = imports.gi;
 
 const UPDATE_CHECK_INTERVAL = 3600;
@@ -32,9 +32,13 @@ const UpdateService = class UpdateService extends Service {
         try {
             const output = await Utils.execAsync(['checkupdates'])
                 .catch(err => {
+                    // Log the error to inspect its structure
+                    console.error('Error during update check:', err);
+
                     // Handle "no updates" scenario properly
-                    if (err.message.includes('exit status 1')) 
+                    if (err && err.message && err.message.includes('exit status 1')) {
                         return '';
+                    }
                     throw err;
                 });
 

@@ -8,10 +8,11 @@ export default () => PopupWindow({
     keymode: 'on-demand',
     anchor: ['left', 'top', 'bottom'],
     name: 'sideleft',
+    layer: 'top',
     child: Box({
         children: [
             SidebarLeft(),
-            clickCloseRegion({ name: 'sideleft', multimonitor: false, fillMonitor: 'horizontal' }),
+            userOptions.asyncGet().etc.clickCloseRegion ? clickCloseRegion({ name: 'sideleft', multimonitor: false, fillMonitor: 'horizontal' }) : null,
         ]
     })
 });

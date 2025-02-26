@@ -76,9 +76,9 @@ const BatteryContent = () => {
     let timeoutId = 0;
 
     const percentageLabel = Label({
-        className: "sec-txt txt-percent txt-hugerass",
+        className: "sec-txt bar-date",
         setup: (self) => self.hook(Battery, (label) => {
-            label.label = `${Battery.percent.toFixed(0)}%   `;
+            label.label = `${Battery.percent.toFixed(0)}`;
         }),
     });
 
@@ -94,7 +94,6 @@ const BatteryContent = () => {
     const percentageBox = Box({
         vpack: "center",
         children: [
-            percentageLabel,
             detailsBox,
         ]
     });
@@ -170,7 +169,12 @@ const BatteryContent = () => {
         child: Box({
             className: "battery-module spacing-h-5",
             children: [
-                batteryIcon,
+                Overlay({
+                    child:batteryIcon,
+                    overlays:[
+                        percentageLabel,
+                    ]
+                }),
                 detailsRevealer,
             ],
         }),

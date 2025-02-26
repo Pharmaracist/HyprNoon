@@ -20,7 +20,7 @@ import Session from "./modules/session/main.js";
 import SideLeft from "./modules/sideleft/main.js";
 import SideRight from "./modules/sideright/main.js";
 import Recorder from "./modules/indicators/recorder.js";
-import MusicControls from "./modules/indicators/musiccontrols.js";
+import Ipod from "./modules/music/music.js";
 import { COMPILED_STYLE_DIR } from "./init.js";
 let settings = "gjs ~/.config/ags/assets/ags-tweaks.js";
 const opts = await userOptions.asyncGet();
@@ -51,9 +51,8 @@ for (let i = 0; i < monitors; i++) {
 
 const Windows = () => [
   SideLeft(),
-  MusicControls(),
+  Ipod(),
   Recorder(),
-  // ColorScheme(),
   SideRight(),
   ...(userOptions.asyncGet().indicators.enabled !== false
     ? [forMonitors(Indicator)]

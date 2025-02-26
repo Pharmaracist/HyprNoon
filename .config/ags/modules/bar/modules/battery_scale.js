@@ -51,8 +51,8 @@ const BatteryScale = () => {
         batteryProgress.toggleClassName("bar-batt-low", isLow);
         batteryProgress.toggleClassName("bar-batt-charging", isCharging);
         
-        const chargingText = isCharging ? " " : "";
-        percentageLabel.label = `${percent}% ${chargingText}`;
+        const chargingText = isCharging ? "  " : "";
+        percentageLabel.label = `${percent} % ${chargingText} `;
     };
 
     const widget = Box({

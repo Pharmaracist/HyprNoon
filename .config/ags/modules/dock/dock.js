@@ -53,10 +53,14 @@ const DockSeparator = (props = {}) => Box({
 const PinButton = () => Widget.Button({
     className: 'dock-app-btn dock-app-btn-animate',
     tooltipText: 'Pin Dock',
+    css:`margin:0 0.75rem`,
     child: Widget.Box({
         homogeneous: true,
         className: 'dock-app-icon txt',
-        child: MaterialIcon('push_pin', 'hugeass')
+        child: Widget.Icon({
+            icon:"hyprlunaris-symbolic",
+            size:48
+        })
     }),
     onClicked: (self) => {
         isPinned = !isPinned
