@@ -13,7 +13,7 @@ import { TabContainer } from '../.commonwidgets/tabcontainer.js';
 import { checkKeybind } from '../.widgetutils/keybind.js';
 import { writable } from '../../modules/.miscutils/store.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-l sidebar-round-l "  : "sidebar-l elevation " ;
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-l sidebar-round-l shadow-window"  : "sidebar-l elevation shadow-window" ;
 import githubWidget from './github.js';
 const SIDEBARTABS = {
     'apis': {

@@ -90,8 +90,10 @@ export const SearchAndWindows = () => {
     const options = userOptions.asyncGet();
     
     const resultsBox = Widget.Box({
-        className: 'overview-search-results',
+        className: 'overview-search-results shadow-window ',
+        css:`margin-top:0.3rem`,
         vertical: true,
+        vexpand:true,
     });
 
     const resultsRevealer = Widget.Revealer({
@@ -99,6 +101,7 @@ export const SearchAndWindows = () => {
         revealChild: false,
         transition: 'slide_down',
         hpack: 'center',
+        vexpand:true,
         child: resultsBox,
     });
 
@@ -107,9 +110,10 @@ export const SearchAndWindows = () => {
         transitionDuration: options.animations.durationLarge,
         revealChild: true,
         hpack: 'start',
-        vpack:'center',
+        vpack:'start',
         child: Widget.Label({
             className: 'overview-search-prompt txt-small txt',
+            css:`margin-top:1rem`,
             label: getString(`hi ${GLib.get_real_name()} ! Wanna Dive!`),
         }),
     });
@@ -130,7 +134,7 @@ export const SearchAndWindows = () => {
     });
 
     const entry = Widget.Entry({
-        className: 'overview-search-box txt-small txt',
+        className: 'overview-search-box shadow-window txt-small txt',
         hpack: 'center',
         onAccept: (self) => {
             resultsBox.children[0]?.onClicked();
@@ -206,8 +210,10 @@ export const SearchAndWindows = () => {
     });
     const EntryBarContent = () => Widget.Box({
         vertical:true,
+        hpack: 'center',
         children:[
             Widget.Box({
+                hpack: 'center',
                 children: [
                     RoundedCorner('topright', {vpack:'start',className: 'corner corner-colorscheme'}),
                     entry,
@@ -224,17 +230,17 @@ export const SearchAndWindows = () => {
     })  
     return Widget.Box({
         vertical: true,
-        // spacing:10,
+        hpack: 'center',
         children: [
             Widget.Box({
                 hpack: 'center',
                 hexpand:true,
+                vertical:true,
                 children: [
-                    EntryBarContent()
+                    EntryBarContent(),
+                    resultsRevealer
                 ]
             }),
-            // userOptions.asyncGet().overview.enableContent ? overviewContent : null || true,
-            resultsRevealer,
         ],
         setup: (self) => self
             .hook(App, (_b, name, visible) => {

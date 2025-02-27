@@ -220,7 +220,7 @@ const PinnedApps = () => Widget.Box({
             return newButton;
         }),
 });
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "dock-bg dock-round" : "dock-bg elevation" ;
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "dock-bg dock-round " : "elevation dock-bg" ;
 export default (monitor = 0) => {
     const dockContent = Box({
         children:[

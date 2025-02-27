@@ -66,6 +66,8 @@ export default () => {
             }),
             Label({
                 className: 'txt-norm onSurfaceVariant txt',
+                hpack:"end",
+                hexpand:true,
                 setup: self => {
                     self.hook(freeSpace, () => {
                         self.label = `${freeSpace.value} free disk space`;

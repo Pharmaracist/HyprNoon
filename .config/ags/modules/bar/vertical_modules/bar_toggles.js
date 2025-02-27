@@ -81,7 +81,7 @@ export const MediaControls = () =>
     hexpand: true,
     setup: (self) => self.on("button-press-event", (_, event) => {
       if (event.get_button()[1] === 3) { // Right click
-        App.toggleWindow('musiccontrols');
+        App.toggleWindow('music');
         return true;
       }
       return false;

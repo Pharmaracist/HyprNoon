@@ -6,7 +6,7 @@ import PrayerTimesWidget from './prayertimes.js';
 import WeatherOnly from './weatherOnly.js';
 import Media from 'resource:///com/github/Aylur/ags/service/mpris.js';
 import Notifications from 'resource:///com/github/Aylur/ags/service/notifications.js';
-import Clock from './clock.js';
+import Clock from './inline_clock.js';
 
 const userName = GLib.get_real_name() + " ~ " + GLib.get_user_name();
 
@@ -36,7 +36,7 @@ const WeatherWidget = () => {
     const mediaContent = Box({
         className: 'content-box spacing-h-4',
         hpack: 'center',
-        hexpand: true,
+        // hexpand: true,
         children: [
             mediaIcon,
             mediaTitleLabel
@@ -46,7 +46,7 @@ const WeatherWidget = () => {
     const notificationContent = Box({
         className: 'content-box spacing-h-4',
         hpack: 'center',
-        hexpand: true,
+        // hexpand: true,
         children: [
             notificationIcon,
             notificationLabel
@@ -56,7 +56,7 @@ const WeatherWidget = () => {
     const usernameContent = Box({
         className: 'content-box',
         hpack: 'center',
-        hexpand: true,
+        // hexpand: true,
         child: Widget.Label({
             className: 'txt-norm txt-onLayer1',
             label: userName
@@ -65,6 +65,7 @@ const WeatherWidget = () => {
 
     const clockContent = Box({
         className: 'content-box',
+        hpack:"center",
         child: Clock()
     });
 

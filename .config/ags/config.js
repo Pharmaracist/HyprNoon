@@ -14,15 +14,15 @@ import DesktopBackground from "./modules/desktopbackground/main.js";
 import Dock from "./modules/dock/main.js";
 import Corner from "./modules/screencorners/main.js";
 import Indicator from "./modules/indicators/main.js";
-// import ColorScheme from "./modules/indicators/colorscheme.js";
 import Overview from "./modules/overview/main.js";
 import Session from "./modules/session/main.js";
 import SideLeft from "./modules/sideleft/main.js";
 import SideRight from "./modules/sideright/main.js";
 import Recorder from "./modules/indicators/recorder.js";
-import Ipod from "./modules/music/music.js";
+import MusicWindow from './modules/music/music.js';
+import overview from "./modules/overview/overview.js";
 import { COMPILED_STYLE_DIR } from "./init.js";
-let settings = "gjs ~/.config/ags/assets/ags-tweaks.js";
+
 const opts = await userOptions.asyncGet();
 const range = (length, start = 1) =>
   Array.from({ length }, (_, i) => i + start);
@@ -51,9 +51,10 @@ for (let i = 0; i < monitors; i++) {
 
 const Windows = () => [
   SideLeft(),
-  Ipod(),
+  MusicWindow(),
   Recorder(),
   SideRight(),
+  overview(),
   ...(userOptions.asyncGet().indicators.enabled !== false
     ? [forMonitors(Indicator)]
     : []),
@@ -73,10 +74,10 @@ const Windows = () => [
   ...(userOptions.asyncGet().dock.enabled ? [forMonitors(Dock)] : []),
   ...(userOptions.asyncGet().appearance.fakeScreenRounding !== 0
     ? [
-      forMonitors((id) => Corner(id, "top left", true, opts.etc.screencorners.topleft || `agsv1 -t cheatsheet`)),
+      forMonitors((id) => Corner(id, "top left", true, opts.etc.screencorners.topleft || `agsv1 -t glance`)),
       forMonitors((id) => Corner(id, "top right", true, opts.etc.screencorners.topright || `${specialWs}`)),
-      forMonitors((id) => Corner(id, "bottom left", true, opts.etc.screencorners.bottomleft || "kitty")),
-      forMonitors((id) => Corner(id, "bottom right", true, opts.etc.screencorners.bottomright || `${specialWs}`)),
+      forMonitors((id) => Corner(id, "bottom left", true, opts.etc.screencorners.bottomleft || `${specialWs}`)),
+      forMonitors((id) => Corner(id, "bottom right", true, opts.etc.screencorners.bottomright || `agsv1 -t music`)),
         ]
     : []),
 ];
@@ -84,6 +85,6 @@ const Windows = () => [
 
 App.config({
   css: `${COMPILED_STYLE_DIR}/style.css`,
-  stackTraceOnError: true,
+  stackTraceOnError: false,
   windows: Windows().flat(1),
 });

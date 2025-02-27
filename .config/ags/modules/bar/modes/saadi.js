@@ -1,6 +1,4 @@
-const { Gtk } = imports.gi;
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
-// import Update from "../modules/update.js";
 import { Tray } from "../modules/tray.js";
 import { bluetoothPill, NotificationIndicator } from "../../.commonwidgets/statusicons.js";
 import Clock from "../modules/clock.js";
@@ -10,7 +8,8 @@ import WeatherOnly from "../modules/weatherOnly.js";
 import NormalOptionalWorkspaces from "../normal/workspaces_hyprland.js";
 import SystemResources from "../normal/resources.js";
 import BatteryScaleModule from "../modules/battery_scale.js";
-import powermode from "../modules/powermode.js";
+import scrolledmodule from "../../.commonwidgets/scrolledmodule.js";
+
 const Box = Widget.Box;
 const Power = Widget.Button({
   child: Widget.Label({
@@ -23,7 +22,7 @@ const Power = Widget.Button({
 });
 export const SaadiBar = Widget.CenterBox({
   className: "bar-saadi",
-  css: `padding:0 1.8rem`,
+  css: `padding:0.2rem 2rem`,
   startWidget: Widget.Box({
     className: "spacing-h-4",
     children: [
@@ -49,22 +48,20 @@ export const SaadiBar = Widget.CenterBox({
         children: [
           BatteryScaleModule()
         ]
-      }),
-      // Box({
-      //   hexpand: false,
-      //   className: "group-saadi",
-      //   children: [
-      //     WeatherOnly()
-      //   ]
-      // }),
+      })
     ]
   }),
-  centerWidget: Widget.Box({
+  centerWidget: Widget.Button({
+    child:Widget.Box({
     className: "group-saadi",
     children: [
       NotificationIndicator(),
       Clock(),
     ],
+   }),
+   onClicked: () => {
+    App.toggleWindow('sideright')
+  }
   }),
   endWidget: Widget.Box({
     children: [
@@ -72,13 +69,25 @@ export const SaadiBar = Widget.CenterBox({
         hexpand: true,
         hpack: 'end',
         children: [
-          Widget.Box({
-            hpack: 'end',
-            hexpand: true,
-            className: "group-saadi",
-            children: [
-              PrayerTimesWidget()
-            ],
+          scrolledmodule({
+            children:[
+              Widget.Box({
+                hpack: 'end',
+                hexpand: true,
+                className: "group-saadi",
+                children: [
+                  PrayerTimesWidget()
+                ],
+              }),
+              Widget.Box({
+                hpack: 'end',
+                hexpand: true,
+                className: "group-saadi",
+                children: [
+                  WeatherOnly()
+                ],
+              }),    
+            ]
           }),
           Widget.Box({
             hpack: 'end',

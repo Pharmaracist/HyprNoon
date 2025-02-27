@@ -13,7 +13,7 @@ const AppButton = ({ icon, name, ...rest }) => {
             children: [
                 Widget.Icon({
                     icon: icon || '',
-                    size: 22,
+                    size: 28,
                 }),
             ],
         }),
@@ -28,7 +28,8 @@ export default () => {
     return Box({
         hexpand: true,
         hpack: 'center',
-        className: 'bar-pinned-apps spacing-h-5',
+        className: 'bar-pinned-apps',
+        spacing:10,
         children: pinnedApps.map(appId => {
             const app = Applications.list.find(a => 
                 a.desktop?.toLowerCase().includes(appId.toLowerCase()) ||

@@ -11,9 +11,9 @@ import Gdk from 'gi://Gdk';
 const { Box, Label, EventBox, Button, Revealer } = Widget;
 
 // Desired dimensions and rounded corner settings.
-const COVER_WIDTH = 48;
-const COVER_HEIGHT = 44;
-const CORNER_RADIUS = 16;
+const COVER_WIDTH = 50;
+const COVER_HEIGHT = 20;
+const CORNER_RADIUS = 20;
 
 const findPlayer = () => {
   const players = Mpris.players;
@@ -33,8 +33,8 @@ const createRoundedAlbumCoverWidget = () =>
       drawingArea.set_size_request(COVER_WIDTH, COVER_HEIGHT);
       self.add(drawingArea);
 
-      // Holds the currently loaded and scaled pixbuf.
-      let currentPixbuf = null;
+      // Holds the original loaded pixbuf (without scaling).
+      let currentPixbufOriginal = null;
       // Holds our fallback icon pixbuf.
       let fallbackPixbuf = null;
 
@@ -42,7 +42,7 @@ const createRoundedAlbumCoverWidget = () =>
       const updateCover = () => {
         const mpris = findPlayer();
         if (!mpris || !mpris.coverPath) {
-          currentPixbuf = null;
+          currentPixbufOriginal = null;
           drawingArea.queue_draw();
           return;
         }
@@ -59,25 +59,21 @@ const createRoundedAlbumCoverWidget = () =>
                   (pixSource, pixRes) => {
                     try {
                       const pixbuf = GdkPixbuf.Pixbuf.new_from_stream_finish(pixSource, pixRes);
-                      currentPixbuf = pixbuf.scale_simple(
-                        COVER_WIDTH,
-                        COVER_HEIGHT,
-                        GdkPixbuf.InterpType.BILINEAR
-                      );
+                      currentPixbufOriginal = pixbuf;
                       drawingArea.queue_draw();
                     } catch (e) {
-                      currentPixbuf = null;
+                      currentPixbufOriginal = null;
                       drawingArea.queue_draw();
                     }
                   }
                 );
               } catch (e) {
-                currentPixbuf = null;
+                currentPixbufOriginal = null;
                 drawingArea.queue_draw();
               }
             });
           } catch (e) {
-            currentPixbuf = null;
+            currentPixbufOriginal = null;
             drawingArea.queue_draw();
           }
         } else {
@@ -85,13 +81,9 @@ const createRoundedAlbumCoverWidget = () =>
           GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
             try {
               const pixbuf = GdkPixbuf.Pixbuf.new_from_file(coverPath);
-              currentPixbuf = pixbuf.scale_simple(
-                COVER_WIDTH,
-                COVER_HEIGHT,
-                GdkPixbuf.InterpType.BILINEAR
-              );
+              currentPixbufOriginal = pixbuf;
             } catch (e) {
-              currentPixbuf = null;
+              currentPixbufOriginal = null;
             }
             drawingArea.queue_draw();
             return GLib.SOURCE_REMOVE;
@@ -112,14 +104,17 @@ const createRoundedAlbumCoverWidget = () =>
         cr.closePath();
         cr.clip();
 
-        if (currentPixbuf) {
-          // Center and paint the loaded cover.
-          const imageWidth = currentPixbuf.get_width();
-          const imageHeight = currentPixbuf.get_height();
-          Gdk.cairo_set_source_pixbuf(cr, currentPixbuf,
-            frameWidth / 2 - imageWidth / 2,
-            frameHeight / 2 - imageHeight / 2
-          );
+        if (currentPixbufOriginal) {
+          // Calculate scale factor to "cover" the widget while preserving aspect ratio.
+          const origWidth = currentPixbufOriginal.get_width();
+          const origHeight = currentPixbufOriginal.get_height();
+          const scaleFactor = Math.max(frameWidth / origWidth, frameHeight / origHeight);
+          const newWidth = Math.ceil(origWidth * scaleFactor);
+          const newHeight = Math.ceil(origHeight * scaleFactor);
+          const offsetX = (frameWidth - newWidth) / 2;
+          const offsetY = (frameHeight - newHeight) / 2;
+          const scaledPixbuf = currentPixbufOriginal.scale_simple(newWidth, newHeight, GdkPixbuf.InterpType.BILINEAR);
+          Gdk.cairo_set_source_pixbuf(cr, scaledPixbuf, offsetX, offsetY);
           cr.paint();
         } else {
           // Load fallback icon (if not loaded already).
@@ -159,7 +154,7 @@ export default () =>
   EventBox({
     className: "onSurface",
     onPrimaryClick: () => {
-      App.toggleWindow('musiccontrols');
+      App.toggleWindow('music');
     },
     setup: (self) => {
       self.hook(Mpris, () => { self.visible = true; });

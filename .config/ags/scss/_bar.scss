@@ -64,13 +64,17 @@ $bar_ws_width_focus_active: 6.045rem;
     }
 }
 .bar-knocks {
-    border-radius: $rounding_large;
-    margin: 0.15rem 0.2rem 0;
-    border: 1px solid $outliner; 
-    min-height: 3.8rem;
-    padding: 0.2rem 0rem;
+    @include menu_accel_fast;
+    border-radius: $rounding_mediumlarge;
+    margin: 0.6rem 0;
+    border: 0.4px solid rgba($outliner, 0.6);
     background-color: $layer0;
-    padding: 0rem 1.1rem;
+    padding: 0.1rem 1rem;
+    box-shadow: 
+    0 4px 2px rgba($shadow, 0.15), /* Lighter, broader blur for depth */
+    0 3px 4px rgba($shadow, 0.2),  /* Subtle mid-distance shadow */
+ 
+;
     &.song-changing {
         animation: multiSweep 2.2s linear;
         animation-iteration-count: 13;
@@ -80,9 +84,14 @@ $bar_ws_width_focus_active: 6.045rem;
 .bar-floating {
     background-color:$layer0;
     @include elevation2;
-    // border: 0.5px solid rgba($outline, 0.6);
+    border: 0.4px solid rgba($outliner, 0.6);
     @include anim-enter;
     @include normal-rounding;
+    box-shadow: 
+    0 5px 3px rgba($shadow, 0.15), /* Lighter, broader blur for depth */
+    0 8px 6px rgba($shadow, 0.2),  /* Subtle mid-distance shadow */
+    // 0 20px 28px rgba(0, 0, 0, 0.05),  /* Subtle mid-distance shadow */
+
 }
 
 .bar-floating-outline {
@@ -490,8 +499,8 @@ $bar_ws_width_focus_active: 6.045rem;
 }
 
 .corner-black {
-    background-color: #000; // Hard code: fake screen corner
-    @include large-rounding;
+    background-color: $black;
+    padding:100px
 }
 
 .bar-wintitle-topdesc {

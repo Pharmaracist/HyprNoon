@@ -16,7 +16,7 @@ export const WindowsTaskbar = Widget.CenterBox({
     css: "margin-left:1.1rem;",
     children: [
       Widget.Button({
-        child: Widget.Icon({ icon: "windows-symbolic", size: 24 }),
+        child: Widget.Icon({ icon: "windows-icon-symbolic", size: 24 }),
         onClicked: () => App.toggleWindow("sideleft"),
       }),
       Widget.Button({

@@ -1,5 +1,9 @@
+# HyprNoon Matugen Config By PharmaRacist
+
 [config]
 reload_apps = true
+
+# Basic Stuff
 
 [config.wallpaper]
 command = "swww"
@@ -8,22 +12,40 @@ set = false
 [templates.ags]
 input_path = "~/.config/matugen/templates/ags.scss"
 output_path = "~/.local/state/ags/scss/_material.scss"
-post_hook = "agsv1 --run-js 'globalThis.handleStyles(true)'"
-
-
-[templates.foot]
-input_path = "~/.config/matugen/templates/foot.ini"
-output_path = "~/.config/foot/colors.ini"
-
+post_hook = "agsv1 --run-js 'globalThis.handleStyles()'"
 
 [templates.rofi]
 input_path = "~/.config/matugen/templates/rofi-colors.rasi"
 output_path = "~/.config/rofi/colors.rasi"
 
-[templates.gradience]
-input_path = "~/.config/matugen/templates/gradience.json"
-output_path = "~/.cache/ags/user/generated/gradience/gradience.json"
-post_hook = "gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both"
+# GTK  
+    
+# >> fallback gradiance mode but abit slower
+# [templates.gradience] 
+# pre_hook = "rm -rf ~/.config/gtk-4.0"
+# input_path = "~/.config/matugen/templates/gradience.json"
+# output_path = "~/.cache/ags/user/generated/gradience/gradience.json"
+# post_hook = "gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both"
+
+[templates.gtk3]
+input_path = '~/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/gtk-3.0/gtk.css'
+
+[templates.gtk4]
+input_path = '~/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/gtk-4.0/gtk.css'
+
+# QT
+
+[templates.qt5ct]
+input_path = "~/.config/matugen/templates/qtct-colors.conf"
+output_path = "~/.config/qt5ct/colors/matugen.conf"
+
+[templates.qt6ct]
+input_path = "~/.config/matugen/templates/qtct-colors.conf"
+output_path = "~/.config/qt6ct/colors/matugen.conf"
+
+# Hyprland
 
 [templates.hyprlock]
 input_path = "~/.config/matugen/templates/hyprlock.conf"
@@ -34,31 +56,58 @@ post_hook = "hyprctl reload"
 input_path = "~/.config/matugen/templates/hyprland-colors.conf"
 output_path = "~/.cache/ags/user/generated/colors.conf"
 
-[templates.qt5ct]
-input_path = "~/.config/matugen/templates/qtct-colors.conf"
-output_path = "~/.config/qt5ct/colors/matugen.conf"
+# Terminals
 
-[templates.qt6ct]
-input_path = "~/.config/matugen/templates/qtct-colors.conf"
-output_path = "~/.config/qt6ct/colors/matugen.conf"
+[templates.foot]
+input_path = "~/.config/matugen/templates/foot.ini"
+output_path = "~/.config/foot/colors.ini"
 
-[templates.kitty]
-input_path = "~/.config/matugen/templates/kitty-colors.conf"
-output_path = "~/.cache/ags/user/generated/kitty-colors.conf"
+# [templates.kitty]
+# input_path = "~/.config/matugen/templates/kitty-colors.conf"
+# output_path = "~/.cache/ags/user/generated/kitty-colors.conf"
+
+# [templates.ghostty]
+# input_path = "~/.config/matugen/templates/ghostty.conf"
+# output_path = "~/.config/ghostty/themes/material.conf"
+# post_hook = "ghostty +reload_config"
+
+# [templates.alacritty]
+# input_path = "~/.config/matugen/templates/alacritty.toml"
+# output_path = '~/.config/alacritty/colors.toml'
 
 [templates.starship]
 input_path = "~/.config/matugen/templates/starship-colors.toml"
 output_path = "~/.config/starship.toml"
 post_hook = "starship init zsh > ~/.zshrc"
 
+# User Defined Apps <WIP>
+    # you can define each used app / fork eg.discord by changing their relative paths
+    
 [templates.heroic]
 input_path = "~/.config/matugen/templates/heroic-theme.css"
 output_path = "~/.cache/ags/user/generated/heroic-colors.css"
 
-# [templates.obsidian]
-# input_path = "~/.config/matugen/templates/obsidian.css"
-# output_path = "/mnt/Data/General-Archive/obsidian/.obsidian/snippets/material-you.css"
+[templates.Telegram]
+input_path = "~/.config/matugen/templates/telegram-colors.tdesktop-theme"
+output_path = "~/.config/telegram-desktop/themes/material-you.tdesktop-theme"
+
+[templates.spicetify]
+input_path = "~/.config/matugen/templates/spicetify-colors.ini"
+output_path = "~/.config/spicetify/Themes/Comfy/colors.ini"
+
+[templates.discord]
+input_path = "~/.config/matugen/templates/discord.css"
+output_path = "~/.config/vesktop/themes/HyprNoon.css"
+
+[templates.obsidian]
+input_path = "~/.config/matugen/templates/obsidian.css"
+output_path = "~/Documents/obsidian/.obsidian/snippets/HyprNoon.css"
 
 [templates.vscode]
 input_path = "~/.config/matugen/templates/vscode-color-theme.json"
 output_path = "~/.windsurf/extensions/theme-material-you/themes/vscode.json"
+
+[templates.pywalfox]
+input_path = '~/.config/matugen/templates/pywalfox-colors.json'
+output_path = '~/.cache/wal/colors.json'
+post_hook = 'pywalfox update'

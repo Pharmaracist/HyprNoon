@@ -11,7 +11,7 @@ import FocusOptionalWorkspaces  from "../focus/workspaces_hyprland.js";
 const expand = () => Widget.Box({ hexpand: true, css: "min-height:0.5rem" });
 
 export const FloatingBar = Widget.CenterBox({
-  className: "bar-floating",
+  className: "bar-floating shadow-window-light ",
   css: `margin: ${userOptions.asyncGet().bar.floatingElevation}rem ${userOptions.asyncGet().bar.floatingWidth}rem;min-height:2rem;padding:0.2rem 0`,
   startWidget: Widget.Box({
     css: "margin-left:1.8rem;",

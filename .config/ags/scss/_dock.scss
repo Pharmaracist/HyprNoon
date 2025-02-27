@@ -1,6 +1,12 @@
 .dock-bg {
     background-color: $layer0;
     padding: 0.92rem;
+    margin-top: 1rem;
+    box-shadow: 
+    0 2px 3px rgba(0, 0, 0, 0.1), /* Lighter, broader blur for depth */
+    0 5px 10px rgba(0, 0, 0, 0.08), /* Lighter, broader blur for depth */
+    0 10px 20px rgba(0, 0, 0, 0.2),  /* Subtle mid-distance shadow */
+   
 }
 .dock-round {
     border-radius: $rounding_mediumlarge $rounding_mediumlarge 0 0;

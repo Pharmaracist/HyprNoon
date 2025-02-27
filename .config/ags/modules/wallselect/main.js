@@ -13,7 +13,7 @@ import ColorPicker from "../bar/modules/color_picker.js";
 
 const { Box, Label, EventBox, Scrollable, Button, Revealer } = Widget;
 const opts = await userOptions.asyncGet().wallselect;
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "wall-rounding" : "elevation";
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "wall-rounding shadow-window" : "elevation shadow-window";
 const CLICK_ACTION_SCRIPT = "matugen image";
 const WALLPAPER_DIR = GLib.get_home_dir() + opts.wallpaperFolder || '/Pictures/Wallpapers';
 const PREVIEW_WIDTH = opts.width || 200;
@@ -48,6 +48,8 @@ const getCacheInfo = (path) => {
 
 // --- Asynchronous preview loader ---
 // Returns a promise that resolves with the scaled pixbuf.
+// --- Asynchronous preview loader ---
+// Returns a promise that resolves with the scaled pixbuf.
 const loadPreviewAsync = (path) => {
   return new Promise((resolve, reject) => {
     try {
@@ -64,8 +66,23 @@ const loadPreviewAsync = (path) => {
             log(`Error loading disk cached image ${diskCachePath}: ${e}`);
           }
         }
-        // Otherwise load the image from the original file.
-        let pixbuf;
+      }
+
+      // Load the image from the original file.
+      let pixbuf;
+      const isGif = path.toLowerCase().endsWith('.gif');
+      
+      if (isGif) {
+        // Handle GIFs: load the first frame using PixbufAnimation.
+        const animation = GdkPixbuf.PixbufAnimation.new_from_file(path);
+        const staticImage = animation.get_static_image(); // Get the first frame.
+        
+        pixbuf = staticImage.scale_simple(
+          PREVIEW_WIDTH,
+          PREVIEW_HEIGHT,
+          GdkPixbuf.InterpType.BILINEAR
+        );
+      } else {
         if (HIGH_QUALITY_PREVIEW) {
           pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
             path,
@@ -81,38 +98,26 @@ const loadPreviewAsync = (path) => {
             GdkPixbuf.InterpType.NEAREST
           );
         }
-        // Save the loaded pixbuf to disk for future use.
+      }
+
+      // Save the loaded pixbuf to disk for future use, if caching is enabled.
+      if (CACHING_MODE === "disk") {
+        const { cachedFileName, format } = getCacheInfo(path);
+        const diskCachePath = DISK_CACHE_DIR + '/' + cachedFileName;
         try {
           pixbuf.savev(diskCachePath, format, [], []);
         } catch (e) {
           log(`Error saving disk cached image ${diskCachePath}: ${e}`);
         }
-        return resolve(pixbuf);
-      } else {
-        // Memory caching mode: load and scale directly.
-        let pixbuf;
-        if (HIGH_QUALITY_PREVIEW) {
-          pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-            path,
-            PREVIEW_WIDTH,
-            PREVIEW_HEIGHT,
-            true
-          );
-        } else {
-          const fullPixbuf = GdkPixbuf.Pixbuf.new_from_file(path);
-          pixbuf = fullPixbuf.scale_simple(
-            PREVIEW_WIDTH,
-            PREVIEW_HEIGHT,
-            GdkPixbuf.InterpType.NEAREST
-          );
-        }
-        return resolve(pixbuf);
       }
+
+      return resolve(pixbuf);
     } catch (e) {
       return reject(e);
     }
   });
 };
+
 
 // --- Caching wallpaper paths ---
 let switchWall = `swww img -t outer --transition-duration 1 --transition-step 255 --transition-fps 120 -f Nearest`;
@@ -198,29 +203,45 @@ const WallpaperPreview = (path) =>
         });
   
         drawingArea.connect("draw", (widget, cr) => {
-          const width = widget.get_allocated_width();
-          const height = widget.get_allocated_height();
-  
-          // Create a rounded clipping path.
-          cr.arc(PREVIEW_CORNER, PREVIEW_CORNER, PREVIEW_CORNER, Math.PI, 1.5 * Math.PI);
-          cr.arc(width - PREVIEW_CORNER, PREVIEW_CORNER, PREVIEW_CORNER, 1.5 * Math.PI, 2 * Math.PI);
-          cr.arc(width - PREVIEW_CORNER, height - PREVIEW_CORNER, PREVIEW_CORNER, 0, 0.5 * Math.PI);
-          cr.arc(PREVIEW_CORNER, height - PREVIEW_CORNER, PREVIEW_CORNER, 0.5 * Math.PI, Math.PI);
-          cr.closePath();
-          cr.clip();
-  
+          const areaWidth = widget.get_allocated_width();
+          const areaHeight = widget.get_allocated_height();
+        
           if (pixbuf) {
-            const imgW = pixbuf.get_width();
-            const imgH = pixbuf.get_height();
-            Gdk.cairo_set_source_pixbuf(cr, pixbuf, width / 2 - imgW / 2, height / 2 - imgH / 2);
+            const imgWidth = pixbuf.get_width();
+            const imgHeight = pixbuf.get_height();
+        
+            // Calculate scale factor to cover the entire area.
+            const scaleFactor = Math.max(areaWidth / imgWidth, areaHeight / imgHeight);
+            const drawWidth = imgWidth * scaleFactor;
+            const drawHeight = imgHeight * scaleFactor;
+        
+            // Center the image in the drawing area.
+            const offsetX = (areaWidth - drawWidth) / 2;
+            const offsetY = (areaHeight - drawHeight) / 2;
+        
+            // Create a rounded clipping path for the drawing area.
+            cr.save();
+            cr.arc(PREVIEW_CORNER, PREVIEW_CORNER, PREVIEW_CORNER, Math.PI, 1.5 * Math.PI);
+            cr.arc(areaWidth - PREVIEW_CORNER, PREVIEW_CORNER, PREVIEW_CORNER, 1.5 * Math.PI, 2 * Math.PI);
+            cr.arc(areaWidth - PREVIEW_CORNER, areaHeight - PREVIEW_CORNER, PREVIEW_CORNER, 0, 0.5 * Math.PI);
+            cr.arc(PREVIEW_CORNER, areaHeight - PREVIEW_CORNER, PREVIEW_CORNER, 0.5 * Math.PI, Math.PI);
+            cr.closePath();
+            cr.clip();
+        
+            // Draw the scaled image so it completely covers the drawing area.
+            Gdk.cairo_set_source_pixbuf(cr, pixbuf, offsetX, offsetY);
             cr.paint();
+        
+            cr.restore();
           }
           return false;
         });
+        
+
       }
     }),
     onClicked: () => {
-        Utils.execAsync(['bash', '-c', `${switchWall} ${path}`]).catch(print);
+        Utils.execAsync(['bash', '-c', `${switchWall} '${path}'`]).catch(print);
         Utils.execAsync(['bash', '-c', `matugen image ${path}`]).catch(print);
         App.closeWindow("wallselect");
     },
@@ -291,19 +312,25 @@ const toggleWindow = () => {
 // --- Monitor the wallpaper directory for changes (patching) ---
 const setupWallpaperMonitor = () => {
   const file = Gio.File.new_for_path(WALLPAPER_DIR);
-  const monitor = file.monitor_directory(Gio.FileMonitorFlags.NONE, null);
+  // Use WATCH_MOVES flag to help catch file moves as well.
+  const monitor = file.monitor_directory(Gio.FileMonitorFlags.WATCH_MOVES, null);
   monitor.connect("changed", (monitor, file, otherFile, eventType) => {
     const changedPath = file.get_path();
+    log(`Wallpaper monitor event: ${eventType} on ${changedPath}`);
     if (
       eventType === Gio.FileMonitorEvent.CHANGED ||
       eventType === Gio.FileMonitorEvent.ATTRIBUTE_CHANGED ||
       eventType === Gio.FileMonitorEvent.CREATED ||
       eventType === Gio.FileMonitorEvent.DELETED ||
-      eventType === Gio.FileMonitorEvent.CHANGES_DONE_HINT
+      eventType === Gio.FileMonitorEvent.CHANGES_DONE_HINT ||
+      eventType === Gio.FileMonitorEvent.MOVED_IN ||
+      eventType === Gio.FileMonitorEvent.MOVED_OUT
     ) {
+      // Clear any cached pixbuf for the changed file.
       if (pixbufCache[changedPath]) {
         delete pixbufCache[changedPath];
       }
+      // Refresh the wallpaper content.
       if (wallpaperContentContainer) {
         createContent().then(content => {
           wallpaperContentContainer.children = [content];
@@ -311,8 +338,18 @@ const setupWallpaperMonitor = () => {
       }
     }
   });
+
+  // Fallback: Periodically refresh the content every 10 seconds.
+  GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 10, () => {
+    if (wallpaperContentContainer) {
+      createContent().then(content => {
+        wallpaperContentContainer.children = [content];
+      });
+    }
+    return GLib.SOURCE_CONTINUE;
+  });
 };
-  
+
 // --- Main window definition ---
 export default () => Widget.Window({
   name: "wallselect",

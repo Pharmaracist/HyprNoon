@@ -22,11 +22,19 @@ $onSecondaryContainer: mix($color7, $color2, 90%);
 
 .osd-music {
     @include menu_decel;
-    min-height: 10.159rem;
     border: 0.2px solid $outliner;
-    // background-color: $layer0;
+    border-radius: $rounding_mediumlarge $rounding_mediumlarge 0 0;
     padding: 0.46rem 1.423rem;
-    // background-color: $layer0; // coherent theme
+    box-shadow: 
+    0 15px 30px rgba(0, 0, 0, 0.3), /* Increased blur and slightly darker */
+    0 10px 10px rgba(0, 0, 0, 0.25), /* Increased blur and slightly darker */
+    0 0 0 2px rgba(0, 0, 0, 0.2); /* Increased spread for the white outline */
+    
+}
+.normal-music {
+    background-color: $layer0; // coherent theme
+}
+.amberoled {
     background: 
     // Layered angular gradients
     linear-gradient(127deg, 
@@ -59,31 +67,19 @@ $onSecondaryContainer: mix($color7, $color2, 90%);
     ),
     // Solid base layer
     linear-gradient($background, $background);
+
 }
 .osd-toprounding {
     border-radius: $rounding_large $rounding_large 0 0 ;
 
 }
-.corner-music {
-    @include large-rounding;
-    background-color: $background
-}
-
-.osd-music-cover-fallback {
-    @include element_decel;
-    @include small-rounding;
-    margin: 1.023rem;
-    min-width: 230px;
-    min-height: 230px;
-    background-color: $layer1;
-    color: $onSecondaryContainer;
+.corner-amberoled {
+    background-color: $music_gradient3;
 }
 
 .osd-music-cover {
-    @include small-rounding;
     @include menu_decel;
-    // Must be -top and -bottom or it'll mess up horizontal spacing
-    margin: 1.023rem;
+    margin: 2.023rem;
     min-width: 230px;
     min-height: 230px;
 }
@@ -91,17 +87,12 @@ $onSecondaryContainer: mix($color7, $color2, 90%);
     border-radius: $rounding_large
 }
 .osd-music-cover-art {
-    @include small-rounding;
-    min-width: 230px;
-    min-height: 230px;
-    margin-right:1rem;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
-                0 6px 6px rgba(0, 0, 0, 0.23),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin:0.8rem;
+    box-shadow: 
+    0 5px 20px rgba(0, 0, 0, 0.1), /* Increased blur and slightly darker */
+    0 4px 8px rgba(0, 0, 0, 0.2), /* Increased blur and slightly darker */
 }
-
 .osd-music-info {
     margin: 1.023rem 0rem;
 }
@@ -138,6 +129,7 @@ $onSecondaryContainer: mix($color7, $color2, 90%);
     padding: 0.205rem;
     background-color: $secondaryContainer;
     color: $onSecondaryContainer;
+    border: 0.6px solid $outliner;
 }
 
 .osd-music-controlbtn {
@@ -145,11 +137,13 @@ $onSecondaryContainer: mix($color7, $color2, 90%);
     min-width: 3.045rem;
     min-height: 3.045rem;
     @include full-rounding;
+    
 }
 
 .osd-music-controlbtn:hover,
 .osd-music-controlbtn:focus {
     background-color: mix($secondaryContainer, $onSecondaryContainer, 90%);
+    border: 0.1px solid $outliner;
 }
 
 .osd-music-controlbtn:active {

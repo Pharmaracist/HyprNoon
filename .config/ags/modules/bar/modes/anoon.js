@@ -1,7 +1,5 @@
-const { Gtk } = imports.gi;
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
-import SpaceLeft from "../modules/spaceleft.js";
 import battery from "../modules/battery.js";
 import BarResources from "../modules/resourcesbar.js";
 import Media from "../modules/music.js";
@@ -10,8 +8,6 @@ import { StatusIcons } from "../../.commonwidgets/statusicons.js";
 import NormalOptionalWorkspaces from "./../normal/workspaces_hyprland.js";
 import kb_layout from "../modules/kb_layout.js";
 import Fetcher from "../modules/fetcher.js";
-import IconWidget from "../modules/icon.js";
-import { Tray } from "../modules/tray.js";
 import ColorPicker from "../modules/color_picker.js";
 import scrolledmodule from "../../.commonwidgets/scrolledmodule.js";
 import PinnedApps from "../modules/pinned_apps.js";
@@ -29,7 +25,7 @@ const RevealOnSideLeft = () => {
                 icon: 'go-previous-symbolic',
                 size: 24,
               }),
-              Widget.Label('Side Left'),
+              Widget.Label('You Look Handsome !'),
             ],
         }),
     });
@@ -38,7 +34,7 @@ const RevealOnSideLeft = () => {
     App.connect('window-toggled', (_, name, visible) => {
         if (name === 'sideleft') {
             if (visible) {
-                Utils.timeout(userOptions.asyncGet().choreographyDelay, () => revealer.revealChild = true);
+                Utils.timeout(0, () => revealer.revealChild = true);
         } else {
             revealer.revealChild = false;
             }
@@ -57,7 +53,7 @@ const RevealOnSideRight = () => {
             css:`padding:0 1.5rem`,
             spacing: 5,
             children: [
-              Widget.Label('Side Right'),
+              Widget.Label('Ooof !!'),
               Widget.Icon({
                   icon: 'go-next-symbolic',
                   size: 22,
@@ -70,7 +66,7 @@ const RevealOnSideRight = () => {
     App.connect('window-toggled', (_, name, visible) => {
         if (name === 'sideright') {
             if (visible) {
-                Utils.timeout(userOptions.asyncGet().choreographyDelay, () => revealer.revealChild = true);
+                Utils.timeout( 0, () => revealer.revealChild = true);
         } else {
             revealer.revealChild = false;
             }
@@ -81,16 +77,7 @@ const RevealOnSideRight = () => {
 };
 
 export const AnoonBar = Widget.CenterBox({
-    css:`margin: 0.5rem 1.5rem;`,
-    startWidget: Widget.Box({
-      vpack: "center",
-      vexpand: true,
-      spacing: 10,
-      children:[ 
-        IconWidget({icon:'nixos-symbolic.svg',size:32,className:'sec-txt'}),
-        await SpaceLeft(),
-      ]
-    }),
+    css:`margin: 0rem 1.5rem;`,
     centerWidget: Widget.Box({
       spacing: 5,
       children: [
@@ -116,22 +103,14 @@ export const AnoonBar = Widget.CenterBox({
                 Widget.Box({
                   css:`min-width:30rem`,
                   className: "bar-knocks",
-                  children: [simpleClock(),StatusIcons(),kb_layout(),BarResources(),battery()],
+                  children: [simpleClock(),StatusIcons({className:"sec-txt"}),kb_layout(),BarResources(),battery()],
                 }),
               ],
             }),
-            Widget.Box({ className: "bar-knocks", children: [Fetcher()] }),
+            Widget.Box({ className: "bar-knocks",hexpand: true, children: [Fetcher()] }),
           ],
         }),
         RevealOnSideRight(),
       ],
-    }),
-    endWidget:Widget.Box({
-        spacing:10,
-        children:[
-            Widget.Box({hexpand:true}),
-            Tray(),
-            IconWidget({icon:'nixos-symbolic.svg',size:32,className:'sec-txt'})
-        ]
     }),
   });

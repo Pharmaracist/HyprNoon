@@ -207,6 +207,7 @@ const ColorSchemeSettings = () => Widget.Box({
                     optionsArr: schemeOptionsArr,
                     initIndex: initSchemeIndex,
                     onChange: async (value, name) => {
+                        await execAsync([`bash`, `-c`, `mkdir -p ${GLib.get_user_state_dir()}/ags/user && sed -i "3s/.*/${value}/"  ${GLib.get_user_state_dir()}/ags/user/colormode.txt`]);
                         await execAsync([`bash`, `-c`, `matugen image ${image} -t ${value}`]);
                           },
                 }),

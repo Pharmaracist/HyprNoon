@@ -56,18 +56,19 @@ const NetworkSpeedIndicator = () => {
 
     const downloadIcon = Widget.Box({ className: 'sec-txt', child: MaterialIcon('download', 'larger') });
     const uploadIcon = Widget.Box({ className: 'sec-txt', child: MaterialIcon('upload', 'larger') });
-    const download = Widget.Box({ hexpand:true, children: [downloadIcon, downloadLabel] });
-    const upload = Widget.Box({ hexpand:true, children: [uploadIcon, uploadLabel] });
+    const download = Widget.Box({ hexpand: true, children: [downloadIcon, downloadLabel] });
+    const upload = Widget.Box({ hexpand: true, children: [uploadIcon, uploadLabel] });
+
     const content = Widget.Box({
         className: 'spacing-h-10',
         css: 'min-width: 15rem;',
-        hpack:'center',
+        hpack: 'center',
         children: [
             Widget.Box({
                 spacing: 6,
                 hpack: 'center',
-                hexpand:true,
-                children: [ download, Widget.Label({ className: 'sec-txt', label: ' ' }), upload],
+                hexpand: true,
+                children: [download, Widget.Label({ className: 'sec-txt', label: ' ' }), upload],
             }),
         ],
     });
@@ -88,16 +89,29 @@ const NetworkSpeedIndicator = () => {
         lastTx = txBytes;
         lastTime = currentTime;
 
-        return true;
+        return true; // Continue the timeout
     };
 
     const updateTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, REFRESH_INTERVAL, update);
 
-    content.connect('destroy', () => {
-        if (updateTimeout) GLib.source_remove(updateTimeout);
-    });
+    // Cleanup function
+    const cleanup = () => {
+        if (updateTimeout) {
+            GLib.source_remove(updateTimeout);
+        }
+        // Explicitly destroy child widgets
+        downloadLabel.destroy();
+        uploadLabel.destroy();
+        downloadIcon.destroy();
+        uploadIcon.destroy();
+    };
 
+    // Connect the cleanup function to the widget's destroy signal
+    content.connect('destroy', cleanup);
+
+    // Initial update
     update();
+
     return content;
 };
 

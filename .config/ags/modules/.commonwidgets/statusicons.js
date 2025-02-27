@@ -266,7 +266,7 @@ export const StatusIcons = (props = {}, monitor = 0) =>
       className: "spacing-h-15",
       children: [
         Widget.Box({
-          className: "spacing-h-10 ",
+          className: "spacing-h-10",
           children: [
             NetworkIndicator(),
             BluetoothIndicator(),

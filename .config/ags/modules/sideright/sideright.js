@@ -35,7 +35,7 @@ import GLib from 'gi://GLib';
 import VPN from './centermodules/vpn.js';
 import taskmanager from './centermodules/taskmanager.js';
 const config = userOptions.asyncGet();
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-r sidebar-round-r "  : "sidebar-r elevation " ;
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-r shadow-window sidebar-round-r "  : "sidebar-r shadow-window elevation " ;
 export const calendarRevealer = Widget.Revealer({
     revealChild: userOptions.asyncGet().sidebar.ModuleCalendar.visible ? true : false,
     child: ModuleCalendar(),

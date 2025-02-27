@@ -113,7 +113,6 @@
     "scaleMethod": "division"
   },
   "music": {
-    "musiccontrols": true,
     "musicDir": "/Music",
     "preferredPlayer": "plasma-browser-integration"
   },
@@ -447,8 +446,9 @@
   },
   "etc": {
     "cava":{
-      "enabled":false
+      "enabled":true
     },
+    "enableAmberol":false,
     "clickCloseRegion": false,
     "cornerRadius": "20",
     "widgetCorners": true,

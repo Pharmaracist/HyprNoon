@@ -42,8 +42,8 @@ configuration {
     alternate-active-background: var(primary-container);
     alternate-background:        var(surface-container);
     alternate-active-foreground: var(on-primary-container);
-    wbg:var(surface);
-    element-bg:var(surface-container-low);
+wbg:#00000090;
+element-bg:#00000025;
     }
 /*****----- Main Window -----*****/
 window {
@@ -172,7 +172,7 @@ element {
     padding:                     10px;
     border:                      0px solid;
     border-radius:               12px;
-    background-color:            @element-bg;
+    background-color:            transparent;
     text-color:                  var(on-primary);
     cursor:                      pointer;
     orientation:                 horizontal;

@@ -2,7 +2,7 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 const { Gtk } = imports.gi;
 
 
-let cornerRadius = userOptions.asyncGet().etc.cornerRadius || 16;
+let cornerRadius = userOptions.asyncGet().etc.cornerRadius;
 
 export const RoundedCorner = (place, props) => Widget.DrawingArea({
     ...props,

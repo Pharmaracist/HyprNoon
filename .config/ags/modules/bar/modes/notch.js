@@ -79,8 +79,8 @@ export const NotchBar = Widget.CenterBox({
         children:[
           RoundedCorner('topright', {className: 'corner'}),
           Widget.Box({
-            className: "bar-notch",
-            css:`min-height: 3.364rem;margin-bottom:0.5rem`,
+            className: "bar-notch shadow-window-light",
+            css:`min-height: 3.364rem;`,
             hpack:"center",
             children: [
               Complex(),

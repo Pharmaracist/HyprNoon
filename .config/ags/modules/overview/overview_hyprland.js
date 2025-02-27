@@ -383,7 +383,7 @@ export default (overviewMonitor = 0) => {
                 })
         },
     });
-    const elevate = userOptions.asyncGet().etc.widgetCorners ? "overview-tasks overview-round"  : "overview-tasks elevation " ;
+    const elevate = userOptions.asyncGet().etc.widgetCorners ? "overview-tasks shadow-window overview-round"  : "overview-tasks shadow-window  elevation " ;
     return Widget.Revealer({
         revealChild: true,
         hpack: userOptions.asyncGet().etc.widgetCorners ? 'fill' : 'center',

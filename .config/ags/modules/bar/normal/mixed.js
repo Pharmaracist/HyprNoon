@@ -233,7 +233,7 @@ export default () => {
                 ...(userOptions.asyncGet().bar.elements.showMusic? [BarGroup({ 
                     child: EventBox({
                     child: BarGroup({ child: musicStuff }),
-                    onPrimaryClick: () => App.toggleWindow('musiccontrols'),
+                    onPrimaryClick: () => App.toggleWindow('music'),
                     onSecondaryClick: () => execAsync(['bash', '-c', 'playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"` &']).catch(print),
                     onMiddleClick: () => execAsync('playerctl play-pause').catch(print),
                     setup: (self) => self.on('button-press-event', (_, event) => {

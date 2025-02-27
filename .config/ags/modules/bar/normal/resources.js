@@ -81,8 +81,8 @@ const BarResource = (
                 .then((output) => {
                   const value = Math.round(Number(output));
                   resourceCircProg.css = `font-size: ${value}px;`;
-                  resourceLabel.label = `${value}%`;
-                  widget.tooltipText = `${name}: ${value}%`;
+                  resourceLabel.label = `  ${value}%`;
+                  widget.tooltipText = `${name}:    ${value}%`;
                 })
                 .catch((error) => {
                   console.error(`Error fetching ${name} data:`, error);

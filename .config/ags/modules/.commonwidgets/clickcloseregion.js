@@ -17,11 +17,11 @@ export const clickCloseRegion = ({
   fillMonitor = "",
 }) => {
   const { width, height } = getMonitorDimensions(monitor, fillMonitor);
-
+  const alpha = userOptions.asyncGet().appearance.layerSmoke ? userOptions.asyncGet().appearance.layerSmokeStrength : 0;
   return EventBox({
     child: Box({
       expand,
-      css: `min-width: ${width}px; min-height: ${height}px;`,
+      css: `background-color:rgba(0,0,0,${alpha}); min-width: ${width}px; min-height: ${height}px;`,
     }),
     setup: (self) =>
       self.on("button-press-event", () =>
