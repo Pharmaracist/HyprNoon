@@ -31,9 +31,6 @@ case $SKIP_SYSUPDATE in
 	*) v sudo pacman -Syu;;
 esac
 
-remove_bashcomments_emptylines ${DEPLISTFILE} ./cache/dependencies_stripped.conf
-readarray -t pkglist < ./cache/dependencies_stripped.conf
-
 # Use yay. Because paru do not support cleanbuild.
 # Also see https://wiki.hyprland.org/FAQ/#how-do-i-update
 if ! command -v yay >/dev/null 2>&1;then
@@ -315,14 +312,6 @@ case $SKIP_HYPRLAND in
 			v cp -f "$base/.config/hypr/hyprland.conf" "$t"
 			existed_hypr_conf=n
 		fi
-		t="$XDG_CONFIG_HOME/hypr/custom"
-		if [ -d $t ]; then
-			echo -e "\e[34m[$0]: \"$t\" already exists, will not do anything.\e[0m"
-		else
-			echo -e "\e[33m[$0]: \"$t\" does not exist yet.\e[0m"
-			# Source is now back to .config/hypr, rsync source path corrected:
-			v rsync -av --delete "$base/.config/hypr/custom/" "$t/"
-		fi
 		;;
 esac
 
@@ -334,23 +323,6 @@ case $SKIP_ROFI in # Assuming you have a SKIP_ROFI variable
 		v rsync -av --delete "$base/.config/rofi/" "$HOME/.config/rofi/" # Target is now $HOME for ~/.config
 		;;
 esac
-
-
-# .local/bin - Package: local-bin
-printf "\e[34m[$0]: Synchronizing .local/bin files...\e[0m\n"
-v rsync -av --delete "$base/.local/bin/" "$XDG_BIN_HOME"
-
-
-# For Wallpapers (Keep rsync as it's not typical dotfile management)
-case $SKIP_WALLPAPERS in
-	true) sleep 0 ;;
-	*)
-		echo -e "\e[34m[$0]: Setting up wallpapers...\e[0m"
-		v mkdir -p "$HOME/Pictures/Wallpapers"
-		v rsync -av "Wallpapers/Lock.jpg" "$HOME/Pictures/Wallpapers/"
-		;;
-esac
-
 
 # Dark mode by default (keep as is)
 v gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
