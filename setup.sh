@@ -2,7 +2,7 @@
 # Online script for install HyprNoon.
 
 me="-->online-setup<--"
-remote_repo=os-guy/HyprNoon
+remote_repo=Pharmaracist/HyprNoon
 set -e
 
 function try { "$@" || sleep 0; }
@@ -48,17 +48,13 @@ git remote get-url origin|grep -q "$remote_repo" || { echo "Dir \"$path\" is not
 x git pull origin main && git submodule update --init --recursive
 echo "$me: Downloaded."
 echo "$me: Running \"install.sh\"."
-x ./install/install.sh || { echo "$me: Error occured when running \"install.sh\"."; exit 1 ; }
+x ./install.sh || { echo "$me: Error occured when running \"install.sh\"."; exit 1 ; }
 
 # Check the exit status of install.sh and delete the cache directory and THIS SCRIPT
 if [ $? -eq 0 ]; then
   # If install.sh was successful (exit code 0), delete the HyprNoon cache directory
   rm -rf "$path"
   echo "Installation completed successfully and HyprNoon cache directory deleted."
-
-  # Self-delete the script itself
-  rm -f "$script_path"
-  echo "This installation script has now deleted itself."
 
 else
   # If install.sh failed (non-zero exit code), indicate failure
