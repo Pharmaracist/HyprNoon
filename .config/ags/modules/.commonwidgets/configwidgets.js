@@ -184,6 +184,12 @@ export const ConfigGap = ({ vertical = true, size = 5, ...rest }) => Box({
     ...rest,
 })
 
+export const ConfigSeparator = () => Box({
+    className: `separator-line`,
+    hexpand:true,
+    hpack: "fill",
+    css:`min-height:0.045rem;margin:1rem 0.5rem`,
+})
 export const ConfigSpinButton = ({
     icon, name, desc = '', initValue,
     minValue = 0, maxValue = 100, step = 1,

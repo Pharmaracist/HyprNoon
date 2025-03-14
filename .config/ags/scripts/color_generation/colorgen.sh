@@ -1,57 +1,51 @@
 #!/usr/bin/env bash
 
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+# Directories
 XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-CONFIG_DIR="$XDG_CONFIG_HOME/ags"
-SCRIPTS_DIR="$XDG_CONFIG_HOME/ags/scripts"
-CACHE_DIR="$XDG_CACHE_HOME/ags"
 STATE_DIR="$XDG_STATE_HOME/ags"
+WALLPAPER_FILE="$STATE_DIR/user/current_wallpaper.txt"
+WALL_JSON_FILE="$STATE_DIR/user/wallpaper.json"
 
-# check if the file $STATE_DIR/user/colormode.txt exists. if not, create it. else, read it to $lightdark
-colormodefile="$STATE_DIR/user/colormode.txt"
-lightdark=""
-transparency=""
-materialscheme=""
-gowall=""
-border=""
+# Read color scheme and light/dark mode settings
+colorscheme=$(sed -n '3p' "$STATE_DIR/user/colormode.txt")
+lightdark=$(sed -n '1p' "$STATE_DIR/user/colormode.txt")
+contrast=0.2 # TODO $(sed -n '8p' "$STATE_DIR/user/colormode.txt")
+# SWWW options for wallpaper transition
+SWWW_OPTIONS="
+    --transition-type wipe \
+    --transition-duration 1 \
+    --transition-step 90 \
+    --transition-fps 60 \
+    -f Nearest
+"
 
-if [ ! -f $colormodefile ]; then
-    echo "dark" > $colormodefile
-    echo "opaque" >> $colormodefile
-    echo "content" >> $colormodefile
-    echo "none" >> $colormodefile
-    echo "noborder" >> $colormodefile
-elif [[ $(wc -l < $colormodefile) -ne 5 || $(wc -w < $colormodefile) -ne 5 ]]; then
-    echo "dark" > $colormodefile
-    echo "opaque" >> $colormodefile
-    echo "content" >> $colormodefile
-    echo "none" >> $colormodefile
-    echo "noborder" >> $colormodefile
-else
-    lightdark=$(sed -n '1p' $colormodefile)
-    transparency=$(sed -n '2p' $colormodefile)
-    materialscheme=$(sed -n '3p' $colormodefile)
-    gowall=$(sed -n '4p' $colormodefile)
-    border=$(sed -n '5p' $colormodefile)
-fi
-
-# Get the color mode
-COLORMODE_FILE_DIR="/tmp/ags/colormode"
-if [ -f "$COLORMODE_FILE_DIR" ]; then
-    colormode=$(sed -n '1p' "$COLORMODE_FILE_DIR")
-    if [[ "$colormode" == "light" ]]; then
-        lightdark="light"
+# Function to set the wallpaper
+main () {
+    # Check if the first argument is provided (image path); otherwise use last stored wallpaper
+    if [[ -n "$1" ]]; then
+        currentwallpaper="$1"
     else
-        lightdark="dark"
+        # Use the wallpaper from current_wallpaper.txt if no argument is provided
+        if [[ -f "$WALLPAPER_FILE" ]]; then
+            currentwallpaper=$(< "$WALLPAPER_FILE")
+        else
+            echo "Error: No wallpaper argument provided and no stored wallpaper found."
+            exit 1
+        fi
     fi
-fi
 
-cd "$CONFIG_DIR/scripts/" || exit
-# Store the image source if it's an image
-if [[ ! "$1" = "#"* ]]; then # this is an image
-    # Store the image path
-    echo "$1" > "$STATE_DIR/user/current_wallpaper.txt"
-fi
-    matugen image "$1" -m "$lightdark" -t "scheme-$materialscheme" &&
-    agsv1 run-js "handleStyles(false);"
+    # Check if the wallpaper file exists
+    if [[ -f "$currentwallpaper" ]]; then
+        # Update the current_wallpaper.txt with the new (or reused) path
+        echo "$currentwallpaper" > "$WALLPAPER_FILE" &
+
+        # Generate color scheme (optional) and set wallpaper
+        swww img $SWWW_OPTIONS "$currentwallpaper" &
+        matugen image "$currentwallpaper" --type "$colorscheme" --mode "$lightdark" --contrast "$contrast" &
+    else
+        echo "Error: Wallpaper file not found at '$currentwallpaper'"
+        exit 1
+    fi
+}
+
+main "$1"

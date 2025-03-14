@@ -1,18 +1,14 @@
 # HyprNoon Matugen Config By PharmaRacist
 
 [config]
-reload_apps = true
+reload_apps = true 
 
-# Basic Stuff
-
-[config.wallpaper]
-command = "swww"
-set = false
+# Basic Stuffs
 
 [templates.ags]
 input_path = "~/.config/matugen/templates/ags.scss"
 output_path = "~/.local/state/ags/scss/_material.scss"
-post_hook = "agsv1 --run-js 'globalThis.handleStyles()'"
+post_hook = "agsv1 --run-js 'globalThis.handleStyles(false)'"
 
 [templates.rofi]
 input_path = "~/.config/matugen/templates/rofi-colors.rasi"
@@ -28,10 +24,12 @@ output_path = "~/.config/rofi/colors.rasi"
 # post_hook = "gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both"
 
 [templates.gtk3]
+# pre_hook = 'rm -rf ~/.config/gtk-3.0'
 input_path = '~/.config/matugen/templates/gtk-colors.css'
 output_path = '~/.config/gtk-3.0/gtk.css'
 
 [templates.gtk4]
+pre_hook = 'rm -rf ~/.config/gtk-4.0'
 input_path = '~/.config/matugen/templates/gtk-colors.css'
 output_path = '~/.config/gtk-4.0/gtk.css'
 
@@ -62,18 +60,18 @@ output_path = "~/.cache/ags/user/generated/colors.conf"
 input_path = "~/.config/matugen/templates/foot.ini"
 output_path = "~/.config/foot/colors.ini"
 
-# [templates.kitty]
-# input_path = "~/.config/matugen/templates/kitty-colors.conf"
-# output_path = "~/.cache/ags/user/generated/kitty-colors.conf"
+[templates.kitty]
+input_path = "~/.config/matugen/templates/kitty-colors.conf"
+output_path = "~/.cache/ags/user/generated/kitty-colors.conf"
 
 # [templates.ghostty]
 # input_path = "~/.config/matugen/templates/ghostty.conf"
 # output_path = "~/.config/ghostty/themes/material.conf"
 # post_hook = "ghostty +reload_config"
 
-# [templates.alacritty]
-# input_path = "~/.config/matugen/templates/alacritty.toml"
-# output_path = '~/.config/alacritty/colors.toml'
+[templates.alacritty]
+input_path = "~/.config/matugen/templates/alacritty.toml"
+output_path = '~/.config/alacritty/colors.toml'
 
 [templates.starship]
 input_path = "~/.config/matugen/templates/starship-colors.toml"
@@ -101,7 +99,7 @@ output_path = "~/.config/vesktop/themes/HyprNoon.css"
 
 [templates.obsidian]
 input_path = "~/.config/matugen/templates/obsidian.css"
-output_path = "~/Documents/obsidian/.obsidian/snippets/HyprNoon.css"
+output_path = "/run/media/pharmaracist/Data/General-Archive/obsidian/.obsidian/snippets/HyprNoon.css"
 
 [templates.vscode]
 input_path = "~/.config/matugen/templates/vscode-color-theme.json"

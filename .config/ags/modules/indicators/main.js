@@ -7,9 +7,8 @@ export default (monitor = 0) => Widget.Window({
     name: `indicator${monitor}`,
     monitor,
     className: 'indicator',
-    layer: 'overlay',
     // exclusivity: 'ignore',
-    // visible: true,
+    layer: 'overlay',
     anchor: ['top'],
     child: Widget.EventBox({
         onHover: () => { //make the widget hide when hovering
@@ -18,11 +17,10 @@ export default (monitor = 0) => Widget.Window({
         child: Widget.Box({
             vertical: true,
             className: 'osd-window',
-            css: 'min-height: 0px;',
             children: [
+                ColorschemeContent(),
                 IndicatorValues(monitor),
                 NotificationPopups(),
-                ColorschemeContent(),
             ]
         })
     }),

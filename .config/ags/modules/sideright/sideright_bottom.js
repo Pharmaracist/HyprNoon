@@ -3,26 +3,25 @@ import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { execAsync, exec } = Utils;
 const { Overlay,Box, EventBox, Label } = Widget;
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
-import {
-    ToggleIconBluetooth,
-    ToggleIconWifi,
-    ModuleNightLight,
-    ModuleIdleInhibitor,
-    //HyprToggleIcon,
-    ModuleReloadIcon,
-    ToggleIconCalendar,
-    ModuleSettingsIcon,
-    ModulePowerIcon,
-    ModuleRawInput,
-    ModuleGameMode,
-    ModuleCloudflareWarp,
-} from "./modules/quicktoggles.js";
+// import {
+//     ToggleIconBluetooth,
+//     ToggleIconWifi,
+//     ModuleNightLight,
+//     ModuleIdleInhibitor,
+//     //HyprToggleIcon,
+//     ModuleReloadIcon,
+//     ToggleIconCalendar,
+//     ModuleSettingsIcon,
+//     ModulePowerIcon,
+//     ModuleRawInput,
+//     ModuleGameMode,
+//     ModuleCloudflareWarp,
+// } from "./modules/quicktoggles.js";
 import ModuleNotificationList from "./centermodules/notificationlist.js";
 import ModuleAudioControls from "./centermodules/audiocontrols.js";
 import ModuleWifiNetworks from "./centermodules/wifinetworks.js";
 import ModulePowerProfiles from './centermodules/powerprofiles.js';
 import ModuleBluetooth from "./centermodules/bluetooth.js";
-import ModuleConfigure from "./centermodules/configure.js";
 import { ModuleCalendar } from "./modules/calendar.js";
 import ModulePrayerTimes from './centermodules/prayertimes.js';
 import { getDistroIcon } from '../.miscutils/system.js';
@@ -78,11 +77,6 @@ const modulesList = {
         contentWidget: ModuleWifiNetworks,
         onFocus: () => execAsync('nmcli dev wifi list').catch(print),
     },
-    liveConfig: {
-        name: getString('Live config'),
-        materialIcon: 'tune',
-        contentWidget: ModuleConfigure,
-    },
     prayerTimes: {
         name: 'Prayer Times',
         materialIcon: 'mosque',
@@ -103,21 +97,21 @@ const getEnabledModules = () => {
 };
 
 
-const togglesBox = Widget.Box({
-    hpack: 'center',
-    spacing:8,
-    css:`margin-top:1rem;`,
-    className: 'sidebar-togglesbox',
-    children: [
-        ToggleIconWifi(),
-        ToggleIconBluetooth(),
-        await ModuleNightLight(),
-        await ModuleGameMode(),
-        ModuleIdleInhibitor(),
-        ModuleSettingsIcon(),
-        await ModuleCloudflareWarp(),
-    ]
-})
+// const togglesBox = Widget.Box({
+//     hpack: 'center',
+//     spacing:8,
+//     css:`margin-top:1rem;`,
+//     className: 'sidebar-togglesbox',
+//     children: [
+//         ToggleIconWifi(),
+//         ToggleIconBluetooth(),
+//         await ModuleNightLight(),
+//         await ModuleGameMode(),
+//         ModuleIdleInhibitor(),
+//         ModuleSettingsIcon(),
+//         await ModuleCloudflareWarp(),
+//     ]
+// })
 
 export const sidebarOptionsStack = ExpandingIconTabContainer({
     tabsHpack: 'center',
@@ -172,7 +166,7 @@ let content = Box({
                 sidebarOptionsStack,
             ],
         }),
-        togglesBox,
+        // togglesBox,
     ]
 });
 export default () => Box({

@@ -1,0 +1,36 @@
+{
+  "decorations": {
+    "topLeft": "╭",
+    "topRight": "╮",
+    "bottomLeft": "╰",
+    "bottomRight": "╯",
+    "topEdge": "─",
+    "bottomEdge": "─",
+    "leftEdge": "│",
+    "rightEdge": "│"
+  },
+  "logo": {
+    "enableLogo": true,
+    "logoPath": "~/.config/lunarfetch/logos/"
+  },
+  "modules": {
+    "show_user": false,
+    "show_cpu": false,
+    "show_gpu": false,
+    "show_memory": true,
+    "show_disk": true,
+    "show_battery": true,
+    "show_os": true,
+    "show_host": true,
+    "show_kernel": true,
+    "show_uptime": true,
+    "show_packages": true,
+    "show_shell": true,
+    "show_resolution": true,
+    "show_de": true,
+    "show_wmTheme": true,
+    "show_theme": true,
+    "show_icons": true,
+    "show_terminal": true
+  }
+}

@@ -2,27 +2,27 @@ import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { execAsync, exec } = Utils;
 const { Overlay,Box, EventBox, Label } = Widget;
+import InlineClock from '../bar/modules/inline_clock.js'
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
-import {
-    ToggleIconBluetooth,
-    ToggleIconWifi,
-    ModuleNightLight,
-    ModuleIdleInhibitor,
-    //HyprToggleIcon,
-    ModuleReloadIcon,
-    ToggleIconCalendar,
-    ModuleSettingsIcon,
-    ModulePowerIcon,
-    ModuleRawInput,
-    ModuleGameMode,
-    ModuleCloudflareWarp,
-} from "./modules/quicktoggles.js";
+// import {
+//     ToggleIconBluetooth,
+//     ToggleIconWifi,
+//     ModuleNightLight,
+//     ModuleIdleInhibitor,
+//     //HyprToggleIcon,
+//     ModuleReloadIcon,
+//     ToggleIconCalendar,
+//     ModuleSettingsIcon,
+//     ModulePowerIcon,
+//     ModuleRawInput,
+//     ModuleGameMode,
+//     ModuleCloudflareWarp,
+// } from "./modules/quicktoggles.js";
 import ModuleNotificationList from "./centermodules/notificationlist.js";
 import ModuleAudioControls from "./centermodules/audiocontrols.js";
 import ModuleWifiNetworks from "./centermodules/wifinetworks.js";
 import ModulePowerProfiles from './centermodules/powerprofiles.js';
 import ModuleBluetooth from "./centermodules/bluetooth.js";
-import ModuleConfigure from "./centermodules/configure.js";
 import { TodoWidget } from './modules/todolist.js';
 import { ModuleCalendar } from "./modules/calendar.js";
 import ModulePrayerTimes from './centermodules/prayertimes.js';
@@ -36,6 +36,7 @@ import GLib from 'gi://GLib';
 import VPN from './centermodules/vpn.js';
 import taskmanager from './centermodules/taskmanager.js';
 import { PrayerTimesWidget } from './modules/prayertimes.js';
+import inline_clock from '../bar/modules/inline_clock.js';
 const config = userOptions.asyncGet();
 const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-r sidebar-bottom"  : "sidebar-r elevation " ;
 const modulesList = {
@@ -75,11 +76,6 @@ const modulesList = {
         contentWidget: ModuleWifiNetworks,
         onFocus: () => execAsync('nmcli dev wifi list').catch(print),
     },
-    liveConfig: {
-        name: getString('Live config'),
-        materialIcon: 'tune',
-        contentWidget: ModuleConfigure,
-    },
     prayerTimes: {
         name: 'Prayer Times',
         materialIcon: 'mosque',
@@ -100,21 +96,21 @@ const getEnabledModules = () => {
 };
 
 
-const togglesBox = Widget.Box({
-    hpack: 'center',
-    spacing:8,
-    css:`margin-top:1rem;`,
-    className: 'sidebar-togglesbox',
-    children: [
-        ToggleIconWifi(),
-        ToggleIconBluetooth(),
-        await ModuleNightLight(),
-        await ModuleGameMode(),
-        ModuleIdleInhibitor(),
-        ModuleSettingsIcon(),
-        await ModuleCloudflareWarp(),
-    ]
-})
+// const togglesBox = Widget.Box({
+//     hpack: 'center',
+//     spacing:8,
+//     css:`margin-top:1rem;`,
+//     className: 'sidebar-togglesbox',
+//     children: [
+//         ToggleIconWifi(),
+//         ToggleIconBluetooth(),
+//         await ModuleNightLight(),
+//         await ModuleGameMode(),
+//         ModuleIdleInhibitor(),
+//         ModuleSettingsIcon(),
+//         await ModuleCloudflareWarp(),
+//     ]
+// })
 
 export const sidebarOptionsStack = ExpandingIconTabContainer({
     tabsHpack: 'center',
@@ -143,31 +139,32 @@ const images = [
 
 let content = Box({
     vertical: true,
-    // vexpand: true,
     children: [
+        // Box({
+        //     hexpand:true,
+        //     hpack:"center",
+        //     vpack:"center",
+        //     child:inline_clock({
+        //     css:`font-size:5rem`,
+        // }),
+        // }),
         Box({vexpand:true}),
         userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('bottomright', {hpack:"end", vpack: 'end', className: 'corner corner-colorscheme'}) : null,
         Box({
         className: `${elevate}`,
         spacing:14,
+        hexpand:true,
         children:[
-            Box({ 
-                vertical:true,
-                vexpand:true,
-                children: [
-                    // ModuleCalendar(),
-                    Box({vexpand:true}),
-                    Box({child:togglesBox,hpack:"center",hexpand:true,vpack:"end"}),
-                  ],
-                }),
             Box({
                 className: 'sidebar-group',
                 vexpand: true,
+                hexpand:true,
                 child:Box({
                     hexpand:true,
                     child:sidebarOptionsStack,
                 }),
             }),
+            ModuleCalendar({vexpand:true}),
        
 
     ]
@@ -177,8 +174,7 @@ let content = Box({
 export default () => Box({
     vexpand: true,
     hexpand: true,
-    // css: `${userOptions.asyncGet().sidebar.extraCss}`,
-    css:`min-width:750px`,
+    css:`min-width:900px`,
     children: [
         userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('bottomright', {hpack: "start", vpack: 'end', className: 'corner corner-colorscheme'}) : null,
         Box({

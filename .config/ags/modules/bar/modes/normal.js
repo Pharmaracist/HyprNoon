@@ -24,7 +24,7 @@ export const NormalBar = Widget.CenterBox({
   centerWidget: Widget.Box({
     // spacing: 3,
     children: [
-      SideModule([...(userOptions.asyncGet().bar.elements.showMusic ? [Music()] : [])]),
+      SideModule([Music()]),
       ScrolledModule({
         hexpand:true,
         children:[

@@ -1,14 +1,16 @@
 "use strict";
 import Gdk from "gi://Gdk";
+import GLib from 'gi://GLib';
 import App from "resource:///com/github/Aylur/ags/app.js";
 import Wallselect from "./modules/wallselect/main.js";
+import * as Utils from 'resource:///com/github/Aylur/ags/utils.js'
 import userOptions from "./modules/.configuration/user_options.js";
 import {
   firstRunWelcome,
   startBatteryWarningService,
 } from "./services/messages.js";
 import { startAutoDarkModeService } from "./services/darkmode.js";
-import {Bar} from "./modules/bar/main.js";
+import { Bar } from "./modules/bar/main.js";
 import Cheatsheet from "./modules/cheatsheet/main.js";
 import DesktopBackground from "./modules/desktopbackground/main.js";
 import Dock from "./modules/dock/main.js";
@@ -19,24 +21,44 @@ import Session from "./modules/session/main.js";
 import SideLeft from "./modules/sideleft/main.js";
 import SideRight from "./modules/sideright/main.js";
 import Recorder from "./modules/indicators/recorder.js";
-import MusicWindow from './modules/music/music.js';
-import overview from "./modules/overview/overview.js";
-import { COMPILED_STYLE_DIR } from "./init.js";
-
+import MusicWindow from './modules/music/main.js';
+import Glance from "./modules/overview/glance.js";
+const COMPILED_STYLE_DIR = `${GLib.get_user_cache_dir()}/ags/user/generated`
 const opts = await userOptions.asyncGet();
+
 const range = (length, start = 1) =>
   Array.from({ length }, (_, i) => i + start);
+
 function forMonitors(widget) {
   const n = Gdk.Display.get_default()?.get_n_monitors() || 1;
   return range(n, 0).map(widget).flat(1);
 }
 
+globalThis['handleStyles'] = () => {
+  // Reset Styles
+  Utils.exec(`mkdir -p "${GLib.get_user_state_dir()}/ags/scss"`);
+  let lightdark = darkMode.value;
+  Utils.writeFileSync(
+    `@mixin symbolic-icon { -gtk-icon-theme: '${opts.icons.symbolicIconTheme[lightdark]}'}`,
+    `${GLib.get_user_state_dir()}/ags/scss/_lib_mixins_overrides.scss`)
+  // Compile and apply
+  async function applyStyle() {
+    Utils.exec(`mkdir -p ${COMPILED_STYLE_DIR}`);
+    Utils.exec(`sass -I "${GLib.get_user_state_dir()}/ags/scss" -I "${App.configDir}/scss/fallback" "${App.configDir}/scss/main.scss" "${COMPILED_STYLE_DIR}/style.css"`);
+    App.resetCss();
+    App.applyCss(`${COMPILED_STYLE_DIR}/style.css`);
+    // console.log('Styles loaded')
+  }
+  applyStyle().catch(print);
+}
+
+
 // Start stuff
-handleStyles(true);
+handleStyles();
+startBatteryWarningService().catch(print);
 startAutoDarkModeService().catch(print);
 firstRunWelcome().catch(print);
-startBatteryWarningService().catch(print);
-let specialWs = `hyprctl dispatch togglespecialworkspace`
+
 // Create bars and corners
 const monitors = Gdk.Display.get_default()?.get_n_monitors() || 1;
 for (let i = 0; i < monitors; i++) {
@@ -48,43 +70,31 @@ for (let i = 0; i < monitors; i++) {
     })
     .catch();
 }
-
-const Windows = () => [
-  SideLeft(),
-  MusicWindow(),
-  Recorder(),
-  SideRight(),
-  overview(),
-  ...(userOptions.asyncGet().indicators.enabled !== false
-    ? [forMonitors(Indicator)]
-    : []),
-  ...(userOptions.asyncGet().session.enabled !== false
-    ? [forMonitors(Session)]
-    : []),
-  ...(userOptions.asyncGet().overview.enabled !== false ? [Overview()] : []),
-  ...(userOptions.asyncGet().cheatsheet.enabled !== false
-    ? [forMonitors(Cheatsheet)]
-    : []),
-  ...(userOptions.asyncGet().desktopBackground.enabled !== false
-    ? [forMonitors(DesktopBackground)]
-    : []),
-  ...(userOptions.asyncGet().wallselect.enabled !== false
-    ? [Wallselect()]
-    : []),
-  ...(userOptions.asyncGet().dock.enabled ? [forMonitors(Dock)] : []),
-  ...(userOptions.asyncGet().appearance.fakeScreenRounding !== 0
-    ? [
-      forMonitors((id) => Corner(id, "top left", true, opts.etc.screencorners.topleft || `agsv1 -t glance`)),
-      forMonitors((id) => Corner(id, "top right", true, opts.etc.screencorners.topright || `${specialWs}`)),
-      forMonitors((id) => Corner(id, "bottom left", true, opts.etc.screencorners.bottomleft || `${specialWs}`)),
-      forMonitors((id) => Corner(id, "bottom right", true, opts.etc.screencorners.bottomright || `agsv1 -t music`)),
-        ]
+let Modules = () => [
+  opts.modules.overview ? Overview() : [],
+  opts.modules.indicators ? forMonitors(Indicator) : [],
+  opts.modules.session ? forMonitors(Session) : [],
+  opts.modules.cheatsheet ? forMonitors(Cheatsheet) : [],
+  opts.modules.desktopBackground ? forMonitors(DesktopBackground) : [],
+  opts.modules.wallselect ? forMonitors(Wallselect) : [],
+  opts.modules.dock ? forMonitors(Dock) : [],
+  opts.modules.music ? forMonitors(MusicWindow) : [],
+  opts.modules.recorder ? Recorder() : [],
+  opts.modules.sideright ? SideRight() : [],
+  opts.modules.glance ? Glance() : [],
+  opts.modules.sideleft ? SideLeft() : [],
+  ...(opts.modules.fakeScreenRounding ?
+    [
+      forMonitors((id) => Corner(id, "top left", true, opts.etc.screencorners.topleft)),
+      forMonitors((id) => Corner(id, "top right", true, opts.etc.screencorners.topright)),
+      forMonitors((id) => Corner(id, "bottom left", true, opts.etc.screencorners.bottomleft)),
+      forMonitors((id) => Corner(id, "bottom right", true, opts.etc.screencorners.bottomright)),
+    ]
     : []),
 ];
 
-
 App.config({
   css: `${COMPILED_STYLE_DIR}/style.css`,
-  stackTraceOnError: false,
-  windows: Windows().flat(1),
+  stackTraceOnError: true,
+  windows: Modules().flat(1),
 });

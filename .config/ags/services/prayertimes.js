@@ -1,7 +1,7 @@
 const { Gio, GLib } = imports.gi;
 import Service from 'resource:///com/github/Aylur/ags/service.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
-const { exec, execAsync } = Utils;
+const { execAsync } = Utils;
 
 class PrayerTimesService extends Service {
     static {
@@ -102,11 +102,12 @@ class PrayerTimesService extends Service {
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
         const year = currentDate.getFullYear();
         const formattedDate = `${day}-${month}-${year}`;
-        const city = userOptions.asyncGet().muslimStuff.city || 'Mekka';
+        const city = userOptions.asyncGet().weather.city;
+        const country = userOptions.asyncGet().weather.country;
         execAsync([
             'curl',
             '-s',
-            `https://api.aladhan.com/v1/timingsByCity/${formattedDate}?city=Sanaa&country=${city}`,
+            `https://api.aladhan.com/v1/timingsByCity/${formattedDate}?city=${city}&country=${country}`,
         ]).then(output => {
             try {
                 const data = JSON.parse(output);

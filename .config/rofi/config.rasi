@@ -23,7 +23,7 @@ configuration {
     background-colour:           var(surface);
     foreground-colour:           var(on-surface);
     alternate-background:        var(surface-container);
-    normal-background:           var(surface);
+    normal-background:           @element-bg;
     normal-foreground:           var(on-surface);
     urgent-background:           var(error);
     urgent-foreground:           var(on-error);
@@ -35,12 +35,12 @@ configuration {
     selected-urgent-foreground:  var(on-error-container);
     selected-active-background:  var(secondary-container);
     selected-active-foreground:  var(on-secondary-container);
-    alternate-normal-background: var(surface-container);
+    alternate-normal-background: @element-bg;
     alternate-normal-foreground: var(on-surface-variant);
     alternate-urgent-background: var(error);
-    alternate-urgent-foreground: var(on-error); 
+    alternate-urgent-foreground: var(on-error);
     alternate-active-background: var(primary-container);
-    alternate-background:        var(surface-container);
+    alternate-background:        @element-bg;
     alternate-active-foreground: var(on-primary-container);
 wbg:#00000090;
 element-bg:#00000025;
@@ -52,7 +52,7 @@ window {
     anchor:                      west;
     fullscreen:                  false;
     width:                       400px;
-    height:                      98.9%;
+    height:                      98.7%;
     x-offset:                    0px;
     y-offset:                    0px;
     enabled:                     true;
@@ -74,7 +74,6 @@ mainbox {
     border:                      0px;
     border-radius:               0px;
     border-color:                var(outline);
-    background-color:            transparent;
     children:                    [ "inputbar", "message", "listview", "mode-switcher" ];
 }
 
@@ -86,7 +85,7 @@ inputbar {
     padding:                     12px;
     border-radius:               25px;
     border-color:                var(outline);
-    background-color:            var(surface-container);
+    background-color:            @element-bg;
     text-color:                  var(on-surface);
     children:                    ["entry","prompt"];
 }
@@ -179,7 +178,7 @@ element {
 }
 
 element.selected {
-    background-color:            var(primary);
+    background-color:            @wbg;
     text-color:                  var(on-primary);
 }
 

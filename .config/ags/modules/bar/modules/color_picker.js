@@ -4,7 +4,6 @@ import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 import { setupCursorHover } from '../../.widgetutils/cursorhover.js';
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
 import { darkMode } from '../../.miscutils/system.js';
-import { image } from '../../indicators/colorscheme.js';
 const LIGHTDARK_FILE = `${GLib.get_user_state_dir()}/ags/user/colormode.txt`;
 
 const schemeOptions = [
@@ -25,7 +24,7 @@ const ColorButton = ({ icon, value, tooltip }) => Widget.Button({
         Utils.execAsync([`bash`, `-c`, 
             `mkdir -p ${GLib.get_user_state_dir()}/ags/user && ` +
             `sed -i "3s/.*/${value}/" ${LIGHTDARK_FILE} && ` +
-            `matugen image ${image} -t ${value}`
+            `matugen image ${currentShellMode} -t ${value}`
         ]).catch(print);
     },
     setup: setupCursorHover,

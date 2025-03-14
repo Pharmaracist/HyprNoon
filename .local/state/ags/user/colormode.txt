@@ -1,4 +1,5 @@
 dark
 transparent
-content
+scheme-tonal-spot
 none
+noborder

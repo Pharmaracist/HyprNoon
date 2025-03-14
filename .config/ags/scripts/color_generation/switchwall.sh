@@ -1,52 +1,56 @@
-#!/usr/bin/env bash
+#!/bin/bash
+# switchwall.sh
+# This script lets the user select a new wallpaper, validates the image,
+# and updates the AGS wallpaper configuration file.
+#
+# Requirements:
+#   - zenity (for GUI file chooser and dialogs)
+#   - ImageMagick (for checking image resolution via `identify`)
+#
+# The script uses a default recommended resolution for monitor 0.
+# You can adjust req_width and req_height as needed.
 
-# Configuration
-CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ags"
-YAD="yad --width 1200 --height 800 --file --add-preview --large-preview --title='Choose wallpaper'"
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-SCRIPTS_DIR="$XDG_CONFIG_HOME/ags/scripts"
-CACHE_DIR="$XDG_CACHE_HOME/ags"
-STATE_DIR="$XDG_STATE_HOME/ags"
-COLORMODE_FILE="$STATE_DIR/user/colormode.txt" # Consistent naming
-LAST_WALLPAPER_FILE="$STATE_DIR/last_wallpaper.txt" # Store last wallpaper path
-FOURTH=$(sed -n '4p' "$COLORMODE_FILE") # Consistent naming
+# Recommended minimum image dimensions (monitor width and height multiplied by WALLPAPER_ZOOM_SCALE)
+req_width=2400  # e.g., 1920 * 1.25
+req_height=1350  # e.g., 1080 * 1.25
 
-# Ensure necessary directories exist
-mkdir -p "$HOME/Pictures/Wallpapers" "$STATE_DIR" # Create STATE_DIR if it doesn't exist
-
-# Validate and set wallpaper
-set_wallpaper() {
-  swww img "$1" --transition-fps 144 --transition-type fade --transition-duration 0.3
-  $CONFIG_DIR/scripts/color_generation/colorgen.sh "$1"
-  echo "$1" > "$LAST_WALLPAPER_FILE" # Save the wallpaper path
-}
-
-# Main
-img="$1"
-
-# Check for --switch argument
-if [[ "$1" == "--switch" ]]; then
-  if [[ -f "$LAST_WALLPAPER_FILE" ]]; then
-    img=$(cat "$LAST_WALLPAPER_FILE")
-  else
-    echo "No last wallpaper found."
-    exit 1
-  fi
-elif [[ -z "$img" ]]; then
-    img=$($YAD)
+# Use Zenity to prompt the user to select an image file
+file=$(zenity --file-selection --title "Select Wallpaper")
+if [[ -z "$file" ]]; then
+  zenity --error --text "No file selected. Exiting."
+  exit 1
 fi
 
-# Make sure the user has selected a valid image
-if [[ -n "$img" && -f "$img" ]]; then
-    if [[ "$FOURTH" != *"none"* ]]; then # Consistent variable name
-        gowall convert "$img" -t "$FOURTH" && 
-        set_wallpaper "$img" # Consistent variable name
-    else
-        set_wallpaper "$img"
-    fi
-else
-    echo "No valid image selected or file does not exist."
-    exit 1
+# Ensure the selected file exists
+if [[ ! -f "$file" ]]; then
+  zenity --error --text "File does not exist."
+  exit 1
 fi
+
+# Validate that the file is an image by checking its MIME type
+mime=$(file --mime-type -b "$file")
+case "$mime" in
+  image/*) ;;  # Valid image
+  *) 
+    zenity --error --text "Selected file is not a valid image."
+    exit 1
+    ;;
+esac
+
+# Retrieve the image's resolution using ImageMagick's identify command
+resolution=$(identify -format "%w %h" "$file" 2>/dev/null)
+if [[ -z "$resolution" ]]; then
+  zenity --error --text "Unable to determine image resolution."
+  exit 1
+fi
+
+config_dir="${XDG_STATE_HOME:-$HOME/.local/state}/ags/user"
+config_file="$config_dir/wallpaper.json"
+
+# Ensure the configuration directory exists
+mkdir -p "$config_dir"
+
+# Update the configuration file with the new wallpaper path.
+# For simplicity, we're writing a JSON array with a single element (for monitor 0).
+echo "[\"$file\"]" > "$config_file"
+exit 0

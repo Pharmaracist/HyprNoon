@@ -1,4 +1,19 @@
 {
+  "modules": {
+    "cheatsheet": true,
+    "bar": true,
+    "sideright": true,
+    "sideleft": true,
+    "music": true,
+    "fakeScreenRounding": true,
+    "desktopBackground": true,
+    "dock": true,
+    "indicators": true,
+    "recorder": true,
+    "glance": true,
+    "overview": true,
+    "session": true
+  },
   "muslim": {
     "enabled": true,
     "prayerTimes": {
@@ -8,14 +23,10 @@
   "indicators": {
     "enabled": true
   },
-  "muslimStuff": {
-    "enabled": true,
-    "city": "Cairo"
-  },
   "wallselect": {
     "enabled": true,
     "wallpaperFolder": "/Pictures/Wallpapers",
-    "cachingMode": "disk",
+    "showPicker": true,
     "width": 200,
     "height": 110,
     "radius": 20,
@@ -24,11 +35,11 @@
   "session": {
     "enabled": true
   },
-  "cheatshhet": {
-    "enabled": true
-  },
   "desktopBackground": {
+    "CurrentMode": "Normal",
     "enabled": true,
+    "enableWisecat": false,
+    "zoomEffect": true,
     "resources": true,
     "visible": false
   },
@@ -38,6 +49,7 @@
     "defaultTemperature": 0.9,
     "enhancements": true,
     "useHistory": true,
+    "useInitMessages": true,
     "safety": true,
     "writingCursor": " ...",
     "proxyUrl": "",
@@ -46,12 +58,12 @@
     ]
   },
   "animations": {
-    "choreographyDelay": 10,
+    "choreographyDelay": 50,
     "durationSmall": 80,
-    "durationLarge": 200
+    "durationLarge": 200,
+    "durationHuge": 400
   },
   "appearance": {
-    "avatar": "avatar.png",
     "autoDarkMode": {
       "enabled": false,
       "from": "18:10",
@@ -62,10 +74,8 @@
       "transition": "slide_up_down",
       "mode": "scroll"
     },
-    "keyboardUseFlag": false,
     "layerSmoke": false,
-    "layerSmokeStrength": 0.2,
-    "fakeScreenRounding": 1
+    "layerSmokeStrength": 0.2
   },
   "apps": {
     "bluetooth": "overskride",
@@ -73,7 +83,8 @@
     "network": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
     "settings": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center",
     "taskManager": "kitty btop",
-    "terminal": "kitty"
+    "terminal": "kitty",
+    "editor": "code"
   },
   "battery": {
     "low": 20,
@@ -101,6 +112,7 @@
     }
   },
   "cheatsheet": {
+    "enabled": true,
     "keybinds": {
       "configPath": ""
     }
@@ -118,7 +130,8 @@
   },
   "overview": {
     "enabled": true,
-    "enableContent": true,
+    "useNameInPrompt": false,
+    "spotlightTheme": true,
     "scale": 0.18,
     "numOfRows": 2,
     "wsNumScale": 0.09,
@@ -126,6 +139,7 @@
   },
   "sidebar": {
     "extraCss": "min-width:450px",
+    "siderightTheme": "sideright_bottom",
     "ModuleCalendar": {
       "enabled": true,
       "visible": false
@@ -140,7 +154,6 @@
         "taskManager",
         "bluetooth",
         "wifiNetworks",
-        "liveConfig",
         "prayerTimes"
       ],
       "vpnGate": {
@@ -165,9 +178,6 @@
       "wifiNetworks": {
         "enabled": false
       },
-      "liveConfig": {
-        "enabled": true
-      },
       "prayerTimes": {
         "enabled": false
       }
@@ -177,6 +187,9 @@
       "repoName": "HyprNoon"
     },
     "ai": {
+      "medicalDictionary": {
+        "apiKey": ""
+      },
       "logo": "deepseek-symbolic",
       "__custom": [
         "extraGptModels"
@@ -209,6 +222,15 @@
           "key_file": "oxygen_key.txt",
           "model": "gpt-4o"
         },
+        "chatGPT": {
+          "name": "OpenAI (GPT-3.5)",
+          "logo_name": "ai-openai-symbolic",
+          "description": "An API from OpenAI')",
+          "base_url": "https://app.oxyapi.uk/v1/chat/completions",
+          "key_get_url": "https://discord.com/invite/kM6MaCqGKA",
+          "key_file": "openai_key.txt",
+          "model": "gpt-3.5"
+        },
         "microsoft-phi-4": {
           "name": "microsoft/phi-4",
           "logo_name": "openrouter-symbolic",
@@ -217,15 +239,6 @@
           "key_get_url": "https://openrouter.ai/keys",
           "key_file": "openrouter_key.txt",
           "model": "microsoft/phi-4"
-        },
-        "mistral-free": {
-          "name": "mistralai/mistral-7b-instruct:free",
-          "logo_name": "openrouter-symbolic",
-          "description": "mistralai/mistral-7b-instruct:free via OpenRouter",
-          "base_url": "https://openrouter.ai/api/v1/chat/completions",
-          "key_get_url": "https://openrouter.ai/keys",
-          "key_file": "openrouter_key.txt",
-          "model": "mistralai/mistral-7b-instruct:free"
         }
       },
       "initMessages": []
@@ -303,14 +316,15 @@
     "dateInterval": 5000,
     "dateFormat": "%d/%m",
     "verticalCLock": {
-      "hours": "%I",
-      "minutes": "%M",
-      "seconds": "%S",
-      "dayTime": "%p"
+      "showHours": true,
+      "showMinutes": true,
+      "showSeconds": false,
+      "showDayTime": false
     }
   },
   "weather": {
     "city": "Cairo",
+    "country": "Egypt",
     "preferredUnit": "C"
   },
   "workspaces": {
@@ -320,6 +334,7 @@
   "dock": {
     "enabled": true,
     "hiddenThickness": 7,
+    "dockSize": 36,
     "pinnedApps": [
       "zen-browser",
       "spotube",
@@ -331,7 +346,8 @@
       "Obisidian",
       "steam",
       "heroic-games-launcher",
-      "org.gnome.Nautilus"
+      "org.gnome.Nautilus",
+      "bottles"
     ],
     "layer": "top",
     "monitorExclusivity": true,
@@ -445,27 +461,23 @@
     }
   },
   "etc": {
-    "cava":{
-      "enabled":true
+    "cava": {
+      "enabled": true
     },
-    "enableAmberol":false,
-    "clickCloseRegion": false,
+    "enableAmberol": false,
+    "nightLightTemp": "6000",
+    "clickCloseRegion": true,
+    "sideLeftPin": true,
     "cornerRadius": "20",
     "widgetCorners": true,
-    "showPassword": true,
     "todoPath": "/mnt/Data/General-Archive/obsidian/HyprNoon.md",
-    "notesPath": "${GLib.get_user_state_dir()}/ags/user/",
     "recordingPath": "/Videos/Records",
     "screencorners": {
-      "debounce": "20",
+      "debounce": "50",
       "topleft": "",
       "topright": "",
       "bottomleft": "",
       "bottomright": ""
-    },
-    "weather": {
-      "cycle": false,
-      "cycleTimeout": "5000"
     }
   }
 }

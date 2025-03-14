@@ -1,15 +1,11 @@
-.overview-window {
-    margin-top: 1.727rem;
-}
-
 .overview-search-box {
-    @include fluent_decel_long;
+    @include fluent_accel;
     min-width: 24.636rem;
     min-height: 3.409rem;
-    margin-bottom:4rem;
+    margin-bottom: 4rem;
     border-radius: 0 0 $rounding_mediumlarge $rounding_mediumlarge;
-    padding: 0rem 2.864rem 0.1rem 1.364rem;
-    border-bottom:0.1px solid $outliner;
+    padding-right: 3.5rem;
+    border-bottom: 0.3px solid $outliner;
     background-color: $background;
     color: $onBackground;
 
@@ -21,14 +17,34 @@
     caret-color: transparent;
 }
 
+.overview-search-box-spotlight {
+    @include anim-enter;
+    min-width: 24.636rem;
+    min-height: 3.409rem;
+    margin-bottom: 4rem;
+    border-radius: $rounding_mediumlarge;
+    padding: 0.2rem 3.5rem 0.2rem 0;
+    border: 0.3px solid $outliner;
+    background-color: $background;
+    color: $onSurfaceVariant;
+
+    selection {
+        background-color: $secondary;
+        color: $onSecondary;
+    }
+
+    caret-color: transparent;
+}
+
 .overview-search-box-extended {
-    min-width: 53rem;
+    min-width: 45rem;
     caret-color: $onSecondaryContainer;
-    margin-bottom:0.4rem;
+    margin-bottom: 0.4rem;
+    padding-left: 1.364rem;
 }
 
 .overview-search-prompt {
-    @include fluent_decel_long;
+    // @include anim-enter;
     color: $subtext;
 
 }
@@ -52,7 +68,7 @@
     @include elevation-border;
     @include elevation2;
     margin: 0.8rem 4rem 4rem 4rem;
-    min-width: 56rem;
+    min-width: 48.5rem;
     padding: 0.682rem;
     background-color: $layer0;
     color: $onLayer0;
@@ -63,7 +79,7 @@
     font-size: 2.386rem;
     min-width: 2.386rem;
     min-height: 2.386rem;
-    
+
 }
 
 .overview-search-results-txt {
@@ -93,9 +109,11 @@
 .overview-search-result-btn:active {
     background-color: $layer2Hover;
 }
+
 .overview-round {
     border-radius: $rounding_mediumlarge $rounding_mediumlarge 0 0;
 }
+
 .overview-tasks {
     border-top: 0.2px solid $outliner;
     padding: 1rem;

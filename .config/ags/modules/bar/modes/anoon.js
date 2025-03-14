@@ -8,9 +8,7 @@ import { StatusIcons } from "../../.commonwidgets/statusicons.js";
 import NormalOptionalWorkspaces from "./../normal/workspaces_hyprland.js";
 import kb_layout from "../modules/kb_layout.js";
 import Fetcher from "../modules/fetcher.js";
-import ColorPicker from "../modules/color_picker.js";
 import scrolledmodule from "../../.commonwidgets/scrolledmodule.js";
-import PinnedApps from "../modules/pinned_apps.js";
 
 const RevealOnSideLeft = () => {
     const revealer = Widget.Revealer({
@@ -79,7 +77,7 @@ const RevealOnSideRight = () => {
 export const AnoonBar = Widget.CenterBox({
     css:`margin: 0rem 1.5rem;`,
     centerWidget: Widget.Box({
-      spacing: 5,
+      spacing: 8,
       children: [
         RevealOnSideLeft(),
         Widget.Box({
@@ -87,8 +85,6 @@ export const AnoonBar = Widget.CenterBox({
           child:scrolledmodule({
             children: [
               Widget.Box({className:"bar-knocks",child:Media()}),
-              Widget.Box({className:"bar-knocks",hexpand:true,hpack:"end",child:ColorPicker()}),
-              Widget.Box({className:"bar-knocks",hexpand:true,hpack:"end",child:PinnedApps()}),
             ]
           })
         }),
@@ -103,7 +99,8 @@ export const AnoonBar = Widget.CenterBox({
                 Widget.Box({
                   css:`min-width:30rem`,
                   className: "bar-knocks",
-                  children: [simpleClock(),StatusIcons({className:"sec-txt"}),kb_layout(),BarResources(),battery()],
+                  spacing: 5,
+                  children: [simpleClock(),StatusIcons({className:"onSurfaceVariant"}),kb_layout(),BarResources(),battery()],
                 }),
               ],
             }),

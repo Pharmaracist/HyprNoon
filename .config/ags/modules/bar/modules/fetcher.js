@@ -35,7 +35,7 @@ export default () => {
             Icon({
                 icon: distroIcon,
                 size: 30,
-                className: 'sec-txt color-primary',
+                className: 'txt-primary',
             }),
             Box({
                 vertical: true,

@@ -2,13 +2,23 @@
 
 # Default wallpaper directory
 WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
-CURRENT_WALLPAPER_FILE="$HOME/.cache/current_wallpaper"
-CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ags"
+CURRENT_WALLPAPER_FILE="$HOME/.local/state/ags/user/current_wallpaper.txt"
 CACHE_DIR="$XDG_CACHE_HOME/ags"
-
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+CONFIG_DIR="$XDG_CONFIG_HOME/ags"
+STATE_DIR="$XDG_STATE_HOME/ags"
+colormodefile="$STATE_DIR/user/colormode.txt"
+SWWW_OPTIONS="
+--transition-type center \
+--transition-duration 1 \
+--transition-step 90 \
+--transition-fps 90 \
+-f Nearest
+"
 # Default settings
-MODE="dark"
-SCHEME="scheme-tonal-spot"
+MODE=$(sed -n '1p' "$colormodefile")
+SCHEME=$(sed -n '3p' "$colormodefile")
 CONTRAST="0"
 
 # Material Symbols Codes
@@ -36,12 +46,10 @@ set_wallpaper() {
     local wallpaper="$1"
     if [ -n "$wallpaper" ] && [ -f "$wallpaper" ]; then
         echo "$wallpaper" > "$CURRENT_WALLPAPER_FILE"
-        debug "Setting wallpaper: $wallpaper with MODE=$MODE SCHEME=$SCHEME CONTRAST=$CONTRAST"
-        swww img -t outer --transition-duration 1 --transition-step 255 --transition-fps 120 -f Nearest $wallpaper 
+        swww img $SWWW_OPTIONS $wallpaper &
         matugen image "$wallpaper" \
             --mode "$MODE" \
-            --type "$SCHEME" \
-            --contrast "$CONTRAST"
+            --type "$SCHEME"
     fi
 }
 
@@ -222,12 +230,20 @@ set_random_wallpaper() {
         set_wallpaper "${wallpapers[$random_index]}"
     fi
 }
+# Function to use color using HyprPicker
+pick() {
+    matugen color hex "$(hyprpicker -a -f hex -n -z -t)"
+}
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
         "--menu")
             show_menu
+            exit 0
+            ;;
+        "--col")
+            pick
             exit 0
             ;;
         "-s")

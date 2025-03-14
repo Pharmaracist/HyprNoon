@@ -170,16 +170,34 @@ const geminiWelcome = Box({
     })
 });
 
+// export const chatContent = Box({
+//     className: 'spacing-v-5',
+//     vertical: true,
+//     setup: (self) => self
+//         .hook(GeminiService, (box, id) => {
+//             const message = GeminiService.messages[id];
+//             if (!message) return;
+//             box.add(ChatMessage(message, MODEL_NAME))
+//         }, 'newMsg')
+//     ,
+// });
 export const chatContent = Box({
     className: 'spacing-v-5',
     vertical: true,
-    setup: (self) => self
-        .hook(GeminiService, (box, id) => {
+    setup: (self) => {
+        // If history is enabled, show all preloaded messages immediately.
+        if (GeminiService.useHistory) {
+            GeminiService.messages.forEach(message => {
+                self.add(ChatMessage(message, MODEL_NAME));
+            });
+        }
+        // Hook for any new messages coming in.
+        self.hook(GeminiService, (box, id) => {
             const message = GeminiService.messages[id];
             if (!message) return;
-            box.add(ChatMessage(message, MODEL_NAME))
-        }, 'newMsg')
-    ,
+            box.add(ChatMessage(message, MODEL_NAME));
+        }, 'newMsg');
+    }
 });
 
 const clearChat = () => {

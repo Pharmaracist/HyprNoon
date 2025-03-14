@@ -8,12 +8,9 @@ import {
     ToggleIconWifi,
     ModuleNightLight,
     ModuleIdleInhibitor,
-    //HyprToggleIcon,
-    ModuleReloadIcon,
     ToggleIconCalendar,
     ModuleSettingsIcon,
     ModulePowerIcon,
-    ModuleRawInput,
     ModuleGameMode,
     ModuleCloudflareWarp,
 } from "./modules/quicktoggles.js";
@@ -22,20 +19,16 @@ import ModuleAudioControls from "./centermodules/audiocontrols.js";
 import ModuleWifiNetworks from "./centermodules/wifinetworks.js";
 import ModulePowerProfiles from './centermodules/powerprofiles.js';
 import ModuleBluetooth from "./centermodules/bluetooth.js";
-import ModuleConfigure from "./centermodules/configure.js";
 import { ModuleCalendar } from "./modules/calendar.js";
 import ModulePrayerTimes from './centermodules/prayertimes.js';
 import { getDistroIcon } from '../.miscutils/system.js';
-import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { ExpandingIconTabContainer } from '../.commonwidgets/tabcontainer.js';
 import { checkKeybind } from '../.widgetutils/keybind.js';
-// import { WWO_CODE, WEATHER_SYMBOL, NIGHT_WEATHER_SYMBOL } from '../.commondata/weather.js';
 import GLib from 'gi://GLib';
-// import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
 import VPN from './centermodules/vpn.js';
 import taskmanager from './centermodules/taskmanager.js';
 const config = userOptions.asyncGet();
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-r shadow-window sidebar-round-r "  : "sidebar-r shadow-window elevation " ;
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-right"  : "sidebar-right shadow-window elevation" ;
 export const calendarRevealer = Widget.Revealer({
     revealChild: userOptions.asyncGet().sidebar.ModuleCalendar.visible ? true : false,
     child: ModuleCalendar(),
@@ -77,11 +70,6 @@ const modulesList = {
         materialIcon: 'wifi',
         contentWidget: ModuleWifiNetworks,
         onFocus: () => execAsync('nmcli dev wifi list').catch(print),
-    },
-    liveConfig: {
-        name: getString('Live config'),
-        materialIcon: 'tune',
-        contentWidget: ModuleConfigure,
     },
     prayerTimes: {
         name: 'Prayer Times',
@@ -167,6 +155,7 @@ const timeRow = Box({
             ]
         }),
         Widget.Box({ hexpand: true }),
+        await ModulePowerIcon()
         ]
 });
 
@@ -177,7 +166,6 @@ const togglesBox = Widget.Box({
     children: [
         ToggleIconWifi(),
         ToggleIconBluetooth(),
-        //await HyprToggleIcon('touchpad_mouse', 'No touchpad while typing', 'input:touchpad:disable_while_typing', {}),
         await ModuleNightLight(),
         await ModuleGameMode(),
         userOptions.asyncGet().sidebar.ModuleCalendar.enabled ? await ToggleIconCalendar() : null, // Add the calendar toggle here
@@ -199,19 +187,19 @@ export const sidebarOptionsStack = ExpandingIconTabContainer({
     }
 });
 const images = [
-    // '1',
-    // '2',
+    '1',
+    '2',
     '3',
     '4',
     '5',
     '6',
-    // '7',
-    // '8',
-    // '9',
-    // '10'
+    '7',
+    '8',
+    '9',
+    '10'
 ];
 
-const randomIndex = Math.floor(Math.random() * images.length);
+const randomIndex = Math.floor(Math.random() * images.length) || '1' ;
 export const selectedImage = images[randomIndex];
 
 const Cat = Widget.Button({
@@ -222,7 +210,7 @@ const Cat = Widget.Button({
     child: Widget.Icon({
         hpack: "end",
         hexpand: "true",
-        icon: selectedImage,
+        icon: selectedImage || '1',
         css: `font-size:7rem;margin-bottom:1rem`,
         className: 'txt sec-txt txt-massive',
     }),
@@ -269,12 +257,18 @@ export default () => Box({
             onMiddleClick: () => App.closeWindow('sideright'),
         }),
         Box({
-            vertical:true,
+            vexpand:true,
             children:[
-                userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('bottomright', {hpack: "end", vpack: 'end', className: 'corner corner-colorscheme'}) : null,
-                content,
-                userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', {hpack:"end", vpack: 'start', className: 'corner corner-colorscheme'}) : null,
-
+                userOptions.asyncGet().etc.widgetCorners ? Box({
+                    vertical:true,
+                    children:[
+                       RoundedCorner('topright', {className: 'corner corner-colorscheme'}),
+                       Box({vexpand:true}),
+                       RoundedCorner('bottomright', {className: 'corner corner-colorscheme'}),
+                        
+                    ]
+                }):null,
+                content
             ]
         })
     ],

@@ -1,0 +1,15 @@
+theme = material
+font-family = "Rubik 10"
+window-decoration = false
+command = fish
+window-padding-balance = true
+window-padding-x = 10
+window-padding-y = 10
+font-style-bold = true
+font-style = Bold
+keybind = ctrl+shift+w=new_split:up
+keybind = ctrl+shift+s=new_split:down
+keybind = ctrl+shift+d=new_split:right
+keybind = ctrl+shift+a=new_split:left
+keybind = ctrl+shift+n=new_tab
+keybind = ctrl+alt+n=new_window

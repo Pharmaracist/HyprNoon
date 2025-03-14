@@ -388,9 +388,11 @@ export default (overviewMonitor = 0) => {
         revealChild: true,
         hpack: userOptions.asyncGet().etc.widgetCorners ? 'fill' : 'center',
         transition: 'slide_down',
-        transitionDuration: userOpts.animations.durationSmall,
+        hexpand:true,
+        transitionDuration: userOpts.animations.durationHuge,
         child:Widget.Box({
             vertical:true,
+            hexpand:true,
             children:[
               Widget.Box({
                 vertical: true,
@@ -403,16 +405,12 @@ export default (overviewMonitor = 0) => {
                      })
             )
         }),
-        Widget.Box({
+        userOptions.asyncGet().etc.widgetCorners ? Widget.Box({
             children:[
-                userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topleft', {className: 'corner corner-colorscheme'}) : null,
+                RoundedCorner('topleft', {className: 'corner corner-colorscheme'}),
                 Widget.Box({hexpand:true}),
-                userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', {className: 'corner corner-colorscheme'}) : null,
-
+                RoundedCorner('topright', {className: 'corner corner-colorscheme'})
             ]
-        })
-
-        ],
-        })
+        }) : null ]})
     });
 }

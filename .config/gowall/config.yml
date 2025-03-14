@@ -1,5 +1,5 @@
 EnableImagePreviewing: false
-OutputFolder: "/Pictures/Wallpapers/"
+OutputFolder: "/.local/state/ags/user/"
 themes:
   - name: "monochrome"
     colors:

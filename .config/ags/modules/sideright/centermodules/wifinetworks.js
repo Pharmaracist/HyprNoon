@@ -134,7 +134,7 @@ const CurrentNetwork = () => {
                 }),
                 Entry({
                     className: 'sidebar-wifinetworks-auth-entry',
-                    visibility: userOptions.asyncGet().etc.showPassword,
+                    visibility: false,
                     onAccept: (self) => {
                         authLock = false;
                         networkAuth.revealChild = false;

@@ -1,0 +1,62 @@
+/*****----- ags_mode_selector.rasi -----*****/
+configuration {
+    /* Ensure icons are enabled */
+    show-icons: true;
+    /* Set the font; adjust to your preference */
+    font: "Iosevka 12";
+}
+
+/*****----- Window -----*****/
+window {
+    /* Adjust the window size and background */
+    width: 400px;
+    /* Use a dark background color; change if needed */
+    background-color: "#2e3440";
+    /* No border */
+    border: 0px;
+    padding: 10px;
+}
+
+/*****----- Listview -----*****/
+listview {
+    /* Use fixed height for a consistent layout */
+    fixed-height: true;
+    /* Space between entries */
+    spacing: 6px;
+    /* Remove any border */
+    border: 0px;
+}
+
+/*****----- Element (List Items) -----*****/
+element {
+    /* Use the second field as the text label */
+    text: "{2}";
+    /* Use the third field as the icon */
+    icon: "{3}";
+    /* Set the icon size; adjust as needed */
+    icon-size: 38px;
+    /* Padding for the element */
+    padding: 5px 10px;
+    /* Margin between elements */
+    margin: 5px 0px;
+    /* Background color for each element */
+    background-color: "transparent";
+    /* Rounded corners */
+    border-radius: 4px;
+}
+
+/*****----- Element Selected -----*****/
+element.selected {
+    /* Change background when an element is selected */
+    background-color: "#4c566a";
+    /* Optionally, change text color */
+    text-color: "#eceff4";
+}
+
+/*****----- Scrollbar (if needed) -----*****/
+scrollbar {
+    handle-width: 5px;
+    handle-color: "#81a1c1";
+    border-radius: 12px;
+}
+

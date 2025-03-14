@@ -6,7 +6,7 @@ export function fileExists(filePath) {
     let file = Gio.File.new_for_path(filePath);
     return file.query_exists(null);
 }
-
+const logo = App.configDir + "/assets/icons/logo-symbolic.svg"
 const FIRST_RUN_FILE = "firstrun.txt";
 const FIRST_RUN_PATH = `${GLib.get_user_state_dir()}/ags/user/${FIRST_RUN_FILE}`;
 const FIRST_RUN_FILE_CONTENT = "Just a file to confirm that you have been greeted ;)";
@@ -26,14 +26,14 @@ async function batteryMessage() {
         if (perc <= userOptions.asyncGet().battery.warnLevels[i] && !charging && !batteryWarned) {
             batteryWarned = true;
             Utils.execAsync(['bash', '-c',
-                `notify-send "${userOptions.asyncGet().battery.warnTitles[i]}" "${userOptions.asyncGet().battery.warnMessages[i]}" -u critical -a '${APP_NAME}' -t 69420 &`
+                `notify-send "${userOptions.asyncGet().battery.warnTitles[i]}" "${userOptions.asyncGet().battery.warnMessages[i]}"  -i ${logo} -u critical -a '${APP_NAME}' -t 69420 &`
             ]).catch(print);
             break;
         }
     }
     if (perc <= userOptions.asyncGet().battery.suspendThreshold) {
         Utils.execAsync(['bash', '-c',
-            `notify-send "Suspending system" "Critical battery level (${perc}% remaining)" -u critical -a '${APP_NAME}' -t 69420 &`
+            `notify-send "Suspending system" "Critical battery level (${perc}% remaining)"-i ${logo} -u critical -a '${APP_NAME}' -t 69420 &`
         ]).catch(print);
         Utils.execAsync('systemctl suspend').catch(print);
     }
@@ -53,7 +53,7 @@ export async function firstRunWelcome() {
                 // Note that we add a little delay to make sure the cool circular progress works
                 Utils.execAsync(['hyprctl', 'keyword', 'bind', "Super,Slash,exec,ags -t cheatsheet"]).catch(print);
                 Utils.execAsync(['bash', '-c',
-                    `sleep 0.5; notify-send "Millis since epoch" "$(date +%s%N | cut -b1-13)"; sleep 0.5; notify-send '${FIRST_RUN_NOTIF_TITLE}' '${FIRST_RUN_NOTIF_BODY}' -a '${APP_NAME}' &`
+                    `sleep 0.5; notify-send  -i ${logo} "Millis since epoch" "$(date +%s%N | cut -b1-13)"; sleep 0.5; notify-send -i ${logo} '${FIRST_RUN_NOTIF_TITLE}' '${FIRST_RUN_NOTIF_BODY}' -a '${APP_NAME}' &`
                 ]).catch(print)
             })
             .catch(print);

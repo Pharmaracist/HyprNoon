@@ -1,10 +1,6 @@
-// $rootTransparency: 0.42; // Transparency = 1 - opacity
-// $transparency: 0.65;
-$rootTransparency: 0.22; // Transparency = 1 - opacity
-$transparency: 0.75;
-
-// Transparent versions
-@if $transparent == True {
+@if $transProfile == Intense  {   // There must be a better way for that but IDC
+  $rootTransparency: 0.42; 
+  $transparency: 0.92;  
   $background: transparentize($background, $rootTransparency);
   $surface: transparentize($surface, $transparency);
   $surfaceDim: transparentize($surfaceDim, $transparency);
@@ -17,8 +13,28 @@ $transparency: 0.75;
   $surfaceVariant: transparentize($surfaceVariant, $transparency);
   $inverseSurface: transparentize($inverseSurface, $transparency);
   $surfaceTint: transparentize($surfaceTint, $transparency);
+  $outliner: transparentize($secondary,$rootTransparency);
 }
-$outliner: $secondary;
+@if $transProfile == Normal {
+  $rootTransparency: 0.22; // Transparency = 1 - opacity
+  $transparency: 0.75;
+  $background: transparentize($background, $rootTransparency);
+  $surface: transparentize($surface, $transparency);
+  $surfaceDim: transparentize($surfaceDim, $transparency);
+  $surfaceBright: transparentize($surfaceBright, $transparency);
+  $surfaceContainerLowest: transparentize($surfaceContainerLowest, $transparency);
+  $surfaceContainerLow: transparentize($surfaceContainerLow, $transparency);
+  $surfaceContainer: transparentize($surfaceContainer, $transparency);
+  $surfaceContainerHigh: transparentize($surfaceContainerHigh, $transparency);
+  $surfaceContainerHighest: transparentize($surfaceContainerHighest, $transparency);
+  $surfaceVariant: transparentize($surfaceVariant, $transparency);
+  $inverseSurface: transparentize($inverseSurface, $transparency);
+  $surfaceTint: transparentize($surfaceTint, $transparency);
+  $outliner: transparentize($secondary,$rootTransparency);
+}
+
+$outliner: transparentize($secondary,0.3);
+
 @if $border != True {
   $outliner: rgba($secondary, 0);
 }
@@ -102,3 +118,31 @@ $sessionColors: (
 $brightnessOnLayer0: $onLayer0;
 $volumeOnLayer0: $onLayer0;
 
+$vibrancy:40%;
+$vibrancyLow:20%;
+@if $vibrant == True {
+  $background: saturate($background, $vibrancyLow);
+  $surface: saturate($surface, $vibrancyLow);
+  $surfaceDim: saturate($surfaceDim, $vibrancyLow);
+  $surfaceBright: saturate($surfaceBright, $vibrancy);
+  $surfaceContainerLowest: saturate($surfaceContainerLowest, $vibrancyLow);
+  $surfaceContainerLow: saturate($surfaceContainerLow, $vibrancy);
+  $surfaceContainer: saturate($surfaceContainer, $vibrancy);
+  $surfaceContainerHigh: saturate($surfaceContainerHigh, $vibrancy);
+  $surfaceContainerHighest: saturate($surfaceContainerHighest, $vibrancy);
+  $surfaceVariant: saturate($surfaceVariant, $vibrancy);
+  $inverseSurface: saturate($inverseSurface, $vibrancy);
+  $surfaceTint: saturate($surfaceTint, $vibrancy);
+  $primary: saturate($primary, $vibrancy);
+  $secondary: saturate($secondary, $vibrancy);
+  $onPrimary: saturate($onPrimary, $vibrancy);
+  $onSecondary: saturate($onSecondary, $vibrancy);
+  $layer0: saturate($layer0, $vibrancy);
+  $onLayer0: saturate($onLayer0, $vibrancy);
+  $layer1: saturate($layer1, $vibrancy);
+  $onLayer1: saturate($onLayer1, $vibrancy);
+  $layer2: saturate($layer2, $vibrancy);
+  $onLayer2: saturate($onLayer2, $vibrancy);
+  $layer3: saturate($layer3, $vibrancy);
+  $onLayer3: saturate($onLayer3, $vibrancy);
+}

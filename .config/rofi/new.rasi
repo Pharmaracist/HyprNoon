@@ -1,0 +1,171 @@
+/*****----- Configuration -----*****/
+configuration {
+    modi:                       "drun,run,filebrowser,window";
+    show-icons:                 true;
+    display-drun:               "";
+    display-run:                "";
+    display-filebrowser:        "";
+    display-window:             "";
+    drun-display-format:        "";
+    window-format:              "";
+}
+
+/*****----- Global Properties -----*****/
+@import                          "colors.rasi"
+@import                          "fonts.rasi"
+* {
+    border-colour:               var(primary);
+    handle-colour:               var(on-surface);
+    background-colour:           var(surface);
+    foreground-colour:           var(on-surface);
+    alternate-background:        var(surface-container);
+    normal-background:           var(surface);
+    normal-foreground:           var(on-surface);
+    urgent-background:           var(error);
+    urgent-foreground:           var(on-error);
+    active-background:           var(primary-container);
+    active-foreground:           var(on-primary-container);
+    selected-normal-background:  var(primary);
+    selected-normal-foreground:  var(on-primary);
+    selected-urgent-background:  var(error-container);
+    selected-urgent-foreground:  var(on-error-container);
+    selected-active-background:  var(secondary-container);
+    selected-active-foreground:  var(on-secondary-container);
+    alternate-normal-background: var(surface-container);
+    alternate-normal-foreground: var(on-surface-variant);
+    alternate-urgent-background: var(error);
+    alternate-urgent-foreground: var(on-error);
+    alternate-active-background: var(primary-container);
+    alternate-background:        var(surface-container);
+    alternate-active-foreground: var(on-primary-container);
+    wbg: #00000090;
+    element-bg: #00000025;
+}
+
+/*****----- Main Window -----*****/
+window {
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       1000px;
+    x-offset:                    0px;
+    y-offset:                    0px;
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               10px;
+    border-color:                @border-colour;
+    cursor:                      "default";
+    background-color:            @background-colour;
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    enabled:                     true;
+    spacing:                     0px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    children:                    [ "listview" ];
+}
+
+/*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     1;
+    lines:                       1;
+    cycle:                       false;
+    dynamic:                     false;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    spacing:                     0px; /* Remove spacing */
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    cursor:                      "default";
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    spacing:                     0px; /* Remove spacing */
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               10px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  transparent;  /* Hide text */
+    cursor:                      pointer;
+    expand:                      true; /* Make the element fill the space */
+}
+element normal.normal {
+    background-color:            var(normal-background);
+    text-color:                  transparent;  /* Hide normal text */
+    expand:                      true; /* Expand icon */
+}
+element normal.urgent {
+    background-color:            var(urgent-background);
+    text-color:                  transparent;  /* Hide urgent text */
+    expand:                      true; /* Expand icon */
+}
+element normal.active {
+    background-color:            var(active-background);
+    text-color:                  transparent;  /* Hide active text */
+    expand:                      true; /* Expand icon */
+}
+element selected.normal {
+    background-color:            var(selected-normal-background);
+    text-color:                  transparent;  /* Hide selected normal text */
+    expand:                      true; /* Expand icon */
+}
+element selected.urgent {
+    background-color:            var(selected-urgent-background);
+    text-color:                  transparent;  /* Hide selected urgent text */
+    expand:                      true; /* Expand icon */
+}
+element selected.active {
+    background-color:            var(selected-active-background);
+    text-color:                  transparent;  /* Hide selected active text */
+    expand:                      true; /* Expand icon */
+}
+element alternate.normal {
+    background-color:            var(alternate-normal-background);
+    text-color:                  transparent;  /* Hide alternate normal text */
+    expand:                      true; /* Expand icon */
+}
+element alternate.urgent {
+    background-color:            var(alternate-urgent-background);
+    text-color:                  transparent;  /* Hide alternate urgent text */
+    expand:                      true; /* Expand icon */
+}
+element alternate.active {
+    background-color:            var(alternate-active-background);
+    text-color:                  transparent;  /* Hide alternate active text */
+    expand:                      true; /* Expand icon */
+}
+element-icon {
+    background-color:            transparent;
+    text-color:                  inherit;
+    padding:0em;
+    margin:0em;
+    size:                        800px;  /* Adjust size to make the icon fill the space */
+    cursor:                      inherit;
+    expand:                      true; /* Make icons fill the space */
+}
+element-text {
+    enabled : false;
+    size:   0em;
+}

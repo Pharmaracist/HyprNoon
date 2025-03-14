@@ -51,6 +51,7 @@ const OptionalOverview = async () => {
 };
 
 const overviewContent = await OptionalOverview();
+const entryTheme = userOptions.asyncGet().overview.spotlightTheme ? 'overview-search-box-spotlight' : 'overview-search-box';
 
 /**
  * @type {Gio.FileMonitor[]}
@@ -97,7 +98,7 @@ export const SearchAndWindows = () => {
     });
 
     const resultsRevealer = Widget.Revealer({
-        transitionDuration: options.animations.durationLarge,
+        transitionDuration: options.animations.durationHuge,
         revealChild: false,
         transition: 'slide_down',
         hpack: 'center',
@@ -107,20 +108,21 @@ export const SearchAndWindows = () => {
 
     const entryPromptRevealer = Widget.Revealer({
         transition: 'crossfade', 
-        transitionDuration: options.animations.durationLarge,
+        transitionDuration: options.animations.durationHuge,
         revealChild: true,
+        hexpand:true,
         hpack: 'start',
         vpack:'start',
         child: Widget.Label({
-            className: 'overview-search-prompt txt-small txt',
-            css:`margin-top:1rem`,
-            label: getString(`hi ${GLib.get_real_name()} ! Wanna Dive!`),
+            className: 'overview-search-prompt txt-small',
+            css: `margin-top:1rem`,
+            label: options.overview.useNameInPrompt ?  getString(`hi ${GLib.get_real_name()} ! Wanna Dive!`) : getString(`Start The Journey`) || null,
         }),
     });
 
     const entryIconRevealer = Widget.Revealer({
         transition: 'crossfade',
-        transitionDuration: options.animations.durationLarge,
+        transitionDuration: options.animations.durationHuge,
         revealChild: false,
         hpack: 'end',
         child: Widget.Label({
@@ -132,9 +134,8 @@ export const SearchAndWindows = () => {
         className: 'overview-search-prompt-box',
         setup: box => box.pack_start(entryIconRevealer, true, true, 0),
     });
-
     const entry = Widget.Entry({
-        className: 'overview-search-box shadow-window txt-small txt',
+        className:  `shadow-window txt-small txt ${entryTheme}`,
         hpack: 'center',
         onAccept: (self) => {
             resultsBox.children[0]?.onClicked();
@@ -208,6 +209,27 @@ export const SearchAndWindows = () => {
             resultsBox.show_all();
         },
     });
+    const SpotlightEntry = () => Widget.Box({
+        vertical:true,
+        css:`margin-top:250px`,
+        hpack: 'center',
+        vpack:'center',
+        children:[
+            Widget.Box({
+                hpack: 'center',
+                children: [
+                    entry,
+                    entryIcon,
+                    Widget.Box({
+                        hpack:"start",
+                        className: 'overview-search-icon-box',
+                        setup: box => box.pack_start(entryPromptRevealer, true, true, 0),
+                    }),
+                ],
+            }),
+        ]
+    })  
+    
     const EntryBarContent = () => Widget.Box({
         vertical:true,
         hpack: 'center',
@@ -237,7 +259,7 @@ export const SearchAndWindows = () => {
                 hexpand:true,
                 vertical:true,
                 children: [
-                    EntryBarContent(),
+                    userOptions.asyncGet().overview.spotlightTheme ? SpotlightEntry() : EntryBarContent() ,
                     resultsRevealer
                 ]
             }),

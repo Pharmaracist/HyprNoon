@@ -41,11 +41,11 @@ export const updateMonitorShellMode = (monitorShellModes, monitor, mode) => {
 // Bar position toggle
 globalThis['toggleBarPosition'] = () => {
     const currentMode = parseInt(currentShellMode.value[0]) || 0;
-    const isVerticalMode = currentMode >= 7;
-    
+    const isVerticalMode = currentMode >= 9;
+
     const currentPosition = barPosition.value;
     let newPosition;
-    
+
     if (isVerticalMode) {
         // Vertical modes can only toggle between left and right
         newPosition = currentPosition === 'left' ? 'right' : 'left';
@@ -53,7 +53,7 @@ globalThis['toggleBarPosition'] = () => {
         // Horizontal modes can only toggle between top and bottom
         newPosition = currentPosition === 'top' ? 'bottom' : 'top';
     }
-    
+
     settings.set_string(KEY_BAR_POSITION, newPosition);
     barPosition.value = newPosition;
 };
@@ -67,6 +67,13 @@ globalThis['getString'] = getString;
 globalThis['currentShellMode'] = currentShellMode;
 globalThis['updateMonitorShellMode'] = updateMonitorShellMode;
 globalThis['barPosition'] = barPosition;
+globalThis.runMatugen = async () => {
+    try {
+        await Utils.execAsync([`bash`, `-c`, `${App.configDir}/scripts/color_generation/colorgen.sh`]);
+    } catch (error) {
+        console.error("Error during color generation:", error);
+    }
+};
 
 // Window controls
 const range = (length, start = 1) => Array.from({ length }, (_, i) => i + start);
@@ -100,19 +107,18 @@ globalThis['closeEverything'] = () => {
     App.closeWindow('glance');
     App.closeWindow('recorder');
     App.closeWindow('wallselect');
-
 };
 
 // Watch for monitor changes and update modes
 Hyprland.connect('notify::monitors', () => {
     const currentModes = currentShellMode.value;
     const newModes = {};
-    
+
     // Keep existing modes for current monitors
     Hyprland.monitors.forEach((_, index) => {
         newModes[index] = currentModes[index];
     });
-    
+
     currentShellMode.value = newModes;
 });
 

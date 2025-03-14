@@ -1,0 +1,82 @@
+// Material You Theme for AGS Shell Lunaris-Project
+
+// Core Colors
+$primary: #81d5cc;
+$onPrimary: #003733;
+$primaryContainer: #00504b;
+$onPrimaryContainer: #9df2e8;
+$secondary: #b1ccc8;
+$onSecondary: #1c3532;
+$secondaryContainer: #324b48;
+$onSecondaryContainer: #cce8e4;
+$tertiary: #afc9e7;
+$onTertiary: #17324a;
+$tertiaryContainer: #2f4961;
+$onTertiaryContainer: #cee5ff;
+$error: #ffb4ab;
+$onError: #690005;
+$errorContainer: #93000a;
+$onErrorContainer: #ffdad6;
+$background: #0e1514;
+$onBackground: #dde4e2;
+$surface: #0e1514;
+$onSurface: #dde4e2;
+
+// Surface Variants
+$surfaceVariant: #3f4947;
+$onSurfaceVariant: #bec9c6;
+$surfaceDim: #0e1514;
+$surfaceBright: #343a39;
+$surfaceContainerLowest: #090f0f;
+$surfaceContainerLow: #161d1c;
+$surfaceContainer: #1a2120;
+$surfaceContainerHigh: #252b2a;
+$surfaceContainerHighest: #303635;
+
+// Other Colors
+$outline: #899391;
+$outlineVariant: #3f4947;
+$shadow: #000000;
+$scrim: #000000;
+$inverseSurface: #dde4e2;
+$inverseOnSurface: #2b3231;
+$inversePrimary: #006a63;
+$surfaceTint: #81d5cc;
+
+// Fixed Colors
+$primaryFixed: #9df2e8;
+$primaryFixedDim: #81d5cc;
+$onPrimaryFixed: #00201d;
+$onPrimaryFixedVariant: #00504b;
+$secondaryFixed: #cce8e4;
+$secondaryFixedDim: #b1ccc8;
+$onSecondaryFixed: #051f1d;
+$onSecondaryFixedVariant: #324b48;
+$tertiaryFixed: #cee5ff;
+$tertiaryFixedDim: #afc9e7;
+$onTertiaryFixed: #001d33;
+$onTertiaryFixedVariant: #2f4961;
+
+// Optional Colors (Check your generator)
+$success: #81d5cc;
+$onSuccess: #003733;
+$successContainer: #00504b;
+$onSuccessContainer: #9df2e8;
+
+// Term Colors
+$term0: $primary;
+$term1: $onPrimary;
+$term2: $primaryContainer;
+$term3: $onPrimaryContainer;
+$term4: $secondary;
+$term5: $onSecondary;
+$term6: $secondaryContainer;
+$term7: $onSecondaryContainer;
+$term8: $tertiary;
+$term9: $onTertiary;
+$term10: $tertiaryContainer;
+$term11: $onTertiaryContainer;
+$term12: $surface;
+$term13: $onSurface;
+$term14: $surfaceVariant;
+$term15: $onSurfaceVariant;
