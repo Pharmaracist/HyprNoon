@@ -63,7 +63,8 @@ const createCorner = (monitor, side) => {
   const cornerWindow = Widget.Window({
     monitor,
     name: `barcorner${side[0]}${monitor}`,
-    layer: "top",
+    exclusivity: 'exclusive',
+    layer: "bottom",
     anchor: [
       getValidPosition(currentShellMode.value[monitor] || "1", barPosition.value),
       verticalModes.has(currentShellMode.value[monitor] || "1")

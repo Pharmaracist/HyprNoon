@@ -2,16 +2,18 @@ import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import WallpaperImage from "./wallpaper.js";
 import SystemWidget from "./onscreenwidgets/system.js";
 import Normal from "./onscreenwidgets/simpleclock.js";
+import WeatherBlock from "./onscreenwidgets/weatherBlock.js";
 import Auva from "./onscreenwidgets/auva.js";
-import ModuleNotificationList from "./onscreenwidgets/notificationlist.js";
-// import { zaWiseCat } from "./onscreenwidgets/zaWizeCat.js";
+import { zaWiseCat } from "./onscreenwidgets/zaWizeCat.js";
+import ResourcesBlock from "./onscreenwidgets/resourcesBlock.js";
 let opts = await userOptions.asyncGet()
-
+import CalendarDay from './onscreenwidgets/calendarDay.js';
+import phoneNotif from "./onscreenwidgets/phoneNotif.js";
 export default (monitor) =>
   Widget.Window({
     name: `desktopbackground${monitor}`,
     layer: "background",
-    exclusivity: 'ignore',
+    // exclusivity: 'ignore',
     visible: opts.desktopBackground.visible ? true : false,
     keymode: "on-demand",
     child: Widget.Overlay({
@@ -23,23 +25,27 @@ export default (monitor) =>
             // Normal(),
             Widget.Box({ hexpand: true }),
             opts.desktopBackground.resources ? SystemWidget() : null,
-            opts.desktopBackground.enableWisecat ? Widget.Box({ vertical: true, children: [zaWiseCat, Widget.Box({ vexpand: true })] }) : null
+            Widget.Box({
+              vertical: true,
+              children: [
+                opts.desktopBackground.enableWisecat ? zaWiseCat : null,
+                Widget.Box({
+                  children: [
+                    CalendarDay(),
+                    WeatherBlock()
+                  ]
+                }),
+                ResourcesBlock(),
+                Widget.Box({ vexpand: true })
+              ]
+            })
           ],
         }),
         Widget.Box({
           hpack: 'end',
           hexpand: true,
           children: [
-            ModuleNotificationList({
-              hexpand: true,
-              hpack: 'end',
-              vpack: 'center',
-              css: `
-              min-height:45rem;
-              min-width:24rem;
-              margin-right:3rem
-              `
-            })
+            phoneNotif()
           ]
         })
       ],

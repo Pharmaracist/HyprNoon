@@ -1,7 +1,7 @@
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { execAsync, exec } = Utils;
-const { Overlay,Box, EventBox, Label } = Widget;
+const { Overlay, Box, EventBox, Label } = Widget;
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
 import {
     ToggleIconBluetooth,
@@ -28,7 +28,7 @@ import GLib from 'gi://GLib';
 import VPN from './centermodules/vpn.js';
 import taskmanager from './centermodules/taskmanager.js';
 const config = userOptions.asyncGet();
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-right"  : "sidebar-right shadow-window elevation" ;
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-right" : "sidebar-right shadow-window elevation";
 export const calendarRevealer = Widget.Revealer({
     revealChild: userOptions.asyncGet().sidebar.ModuleCalendar.visible ? true : false,
     child: ModuleCalendar(),
@@ -98,16 +98,16 @@ const timeRow = Box({
             className: 'txt sec-txt txt-hugerass',
         }),
         Box({
-            vertical:true,
-            children:[
+            vertical: true,
+            children: [
                 Widget.Label({
-                    xalign:0,
+                    xalign: 0,
                     className: 'txt-small sec-txt txt',
-                    label:GLib.get_user_name(),
+                    label: GLib.get_user_name(),
                 }),
                 Widget.Label({
-                    xalign:0,
-                    opacity:0.6,
+                    xalign: 0,
+                    opacity: 0.6,
                     className: 'txt-smallie sec-txt txt',
                     setup: (self) => {
                         const getUptime = async () => {
@@ -156,12 +156,12 @@ const timeRow = Box({
         }),
         Widget.Box({ hexpand: true }),
         await ModulePowerIcon()
-        ]
+    ]
 });
 
 const togglesBox = Widget.Box({
     hpack: 'center',
-    spacing:8,
+    spacing: 8,
     className: 'sidebar-togglesbox',
     children: [
         ToggleIconWifi(),
@@ -199,7 +199,7 @@ const images = [
     '10'
 ];
 
-const randomIndex = Math.floor(Math.random() * images.length) || '1' ;
+const randomIndex = Math.floor(Math.random() * images.length) || '1';
 export const selectedImage = images[randomIndex];
 
 const Cat = Widget.Button({
@@ -218,8 +218,8 @@ const Cat = Widget.Button({
 
 let topArea = Box({
     vertical: true,
-    vpack:"center",
-    css:`margin-bottom:0.5rem`,
+    vpack: "center",
+    css: `margin-bottom:0.5rem`,
     className: 'spacing-v-5',
     children: [
         timeRow,
@@ -233,11 +233,12 @@ let content = Box({
     children: [
         Overlay({
             className: 'spacing-v-5',
-            child:userOptions.asyncGet().sidebar.showAnimeCat ? Cat : Box({css:`min-height:8rem;`,}),
-            overlays:[topArea]
+            child: userOptions.asyncGet().sidebar.showAnimeCat ? Cat : Box({ css: `min-height:8rem;`, }),
+            overlays: [topArea]
         }),
         Box({
             className: 'sidebar-group',
+            css: 'margin-bottom:1rem',
             vexpand: true,
             children: [
                 sidebarOptionsStack,
@@ -257,17 +258,17 @@ export default () => Box({
             onMiddleClick: () => App.closeWindow('sideright'),
         }),
         Box({
-            vexpand:true,
-            children:[
+            vexpand: true,
+            children: [
                 userOptions.asyncGet().etc.widgetCorners ? Box({
-                    vertical:true,
-                    children:[
-                       RoundedCorner('topright', {className: 'corner corner-colorscheme'}),
-                       Box({vexpand:true}),
-                       RoundedCorner('bottomright', {className: 'corner corner-colorscheme'}),
-                        
+                    vertical: true,
+                    children: [
+                        RoundedCorner('topright', { className: 'corner corner-colorscheme' }),
+                        Box({ vexpand: true }),
+                        RoundedCorner('bottomright', { className: 'corner corner-colorscheme' }),
+
                     ]
-                }):null,
+                }) : null,
                 content
             ]
         })

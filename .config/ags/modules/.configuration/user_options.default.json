@@ -7,6 +7,7 @@
     "music": true,
     "fakeScreenRounding": true,
     "desktopBackground": true,
+    "wallpaperSelector": true,
     "dock": true,
     "indicators": true,
     "recorder": true,
@@ -20,11 +21,7 @@
       "city": "Cairo"
     }
   },
-  "indicators": {
-    "enabled": true
-  },
   "wallselect": {
-    "enabled": true,
     "wallpaperFolder": "/Pictures/Wallpapers",
     "showPicker": true,
     "width": 200,
@@ -32,12 +29,8 @@
     "radius": 20,
     "highQualityPreview": true
   },
-  "session": {
-    "enabled": true
-  },
   "desktopBackground": {
     "CurrentMode": "Normal",
-    "enabled": true,
     "enableWisecat": false,
     "zoomEffect": true,
     "resources": true,
@@ -112,7 +105,6 @@
     }
   },
   "cheatsheet": {
-    "enabled": true,
     "keybinds": {
       "configPath": ""
     }
@@ -129,7 +121,6 @@
     "preferredPlayer": "plasma-browser-integration"
   },
   "overview": {
-    "enabled": true,
     "useNameInPrompt": false,
     "spotlightTheme": true,
     "scale": 0.18,
@@ -332,7 +323,6 @@
     "style": "chinese"
   },
   "dock": {
-    "enabled": true,
     "hiddenThickness": 7,
     "dockSize": 36,
     "pinnedApps": [

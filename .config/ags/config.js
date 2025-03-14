@@ -44,7 +44,9 @@ globalThis['handleStyles'] = () => {
   // Compile and apply
   async function applyStyle() {
     Utils.exec(`mkdir -p ${COMPILED_STYLE_DIR}`);
-    Utils.exec(`sass -I "${GLib.get_user_state_dir()}/ags/scss" -I "${App.configDir}/scss/fallback" "${App.configDir}/scss/main.scss" "${COMPILED_STYLE_DIR}/style.css"`);
+    Utils.exec(`
+      sass -I "${GLib.get_user_state_dir()}/ags/scss" "${App.configDir}/scss/main.scss" "${COMPILED_STYLE_DIR}/style.css"
+    `);
     App.resetCss();
     App.applyCss(`${COMPILED_STYLE_DIR}/style.css`);
     // console.log('Styles loaded')
@@ -76,7 +78,7 @@ let Modules = () => [
   opts.modules.session ? forMonitors(Session) : [],
   opts.modules.cheatsheet ? forMonitors(Cheatsheet) : [],
   opts.modules.desktopBackground ? forMonitors(DesktopBackground) : [],
-  opts.modules.wallselect ? forMonitors(Wallselect) : [],
+  opts.modules.wallpaperSelector ? forMonitors(Wallselect) : [],
   opts.modules.dock ? forMonitors(Dock) : [],
   opts.modules.music ? forMonitors(MusicWindow) : [],
   opts.modules.recorder ? Recorder() : [],

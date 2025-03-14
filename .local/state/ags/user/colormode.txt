@@ -1,5 +1,7 @@
 dark
-transparent
+opaque
 scheme-tonal-spot
-none
-noborder
+dracula
+border
+vibrant
+normal

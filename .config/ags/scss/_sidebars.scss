@@ -5,6 +5,7 @@ $sidebar_chat_textboxareaColor: mix($onSurfaceVariant, $surfaceVariant, 40%);
 }
 
 .sidebar-right {
+    @include shadows1;
     @include menu_decel;
     background-color: $background;
     padding: 1.023rem;
@@ -13,6 +14,7 @@ $sidebar_chat_textboxareaColor: mix($onSurfaceVariant, $surfaceVariant, 40%);
 }
 
 .sidebar-left {
+    @include shadows1;
     @include menu_decel;
     background-color: $background;
     border-radius: $rounding_small 0 0 $rounding_small;

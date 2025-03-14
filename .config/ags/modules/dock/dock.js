@@ -1,7 +1,7 @@
 const { Gtk, GLib } = imports.gi;
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
-const { EventBox} = Widget;
+const { EventBox } = Widget;
 import { RoundedCorner } from './../.commonwidgets/cairo_roundedcorner.js';
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
 import Applications from 'resource:///com/github/Aylur/ags/service/applications.js';
@@ -10,14 +10,14 @@ import { setupCursorHover } from '../.widgetutils/cursorhover.js';
 import { getAllFiles } from './icons.js'
 import { substitute } from '../.miscutils/icons.js';
 import { getValidIcon } from '../.miscutils/icon_handling.js';
+let opts = await userOptions.asyncGet()
 
-const icon_files = userOptions.asyncGet().icons.searchPaths.map(e => getAllFiles(e)).flat(1)
-let dockSize = userOptions.asyncGet().dock.dockSize 
-let elevate = userOptions.asyncGet().etc.widgetCorners ? "dock-bg dock-round " : "elevation dock-bg" 
+const icon_files = opts.icons.searchPaths.map(e => getAllFiles(e)).flat(1)
+let dockSize = opts.dock.dockSize
+let elevate = opts.etc.widgetCorners ? "dock-bg dock-round " : "elevation dock-bg"
 let appSpacing = dockSize / 15
 let isPinned = false
 let cachePath = new Map()
-
 let timers = []
 
 function clearTimes() {
@@ -55,8 +55,8 @@ const PinButton = () => Widget.Button({
     child: Widget.Box({
         homogeneous: true,
         child: Widget.Icon({
-            icon:"logo-symbolic",
-            size:dockSize
+            icon: "logo-symbolic",
+            size: dockSize
         })
     }),
     onClicked: (self) => {
@@ -72,7 +72,7 @@ const AppButton = ({ icon, ...rest }) => Widget.Revealer({
     },
     revealChild: false,
     transition: 'slide_right',
-    transitionDuration: userOptions.asyncGet().animations.durationLarge,
+    transitionDuration: opts.animations.durationLarge,
     child: Widget.Button({
         ...rest,
         className: 'dock-app-btn dock-app-btn-animate',
@@ -84,7 +84,7 @@ const AppButton = ({ icon, ...rest }) => Widget.Revealer({
                     className: 'dock-app-icon',
                     child: Widget.Icon({
                         icon: icon,
-                        size:dockSize
+                        size: dockSize
                     }),
                 }),
                 overlays: [Widget.Box({
@@ -153,7 +153,7 @@ const Taskbar = (monitor) => Widget.Box({
             if (!removedButton) return;
             removedButton.revealChild = false;
 
-            Utils.timeout(userOptions.asyncGet().animations.durationLarge, () => {
+            Utils.timeout(opts.animations.durationLarge, () => {
                 removedButton.destroy();
                 box.attribute.map.delete(address);
                 box.children = Array.from(box.attribute.map.values());
@@ -170,14 +170,14 @@ const Taskbar = (monitor) => Widget.Box({
 const PinnedApps = () => Widget.Box({
     class_name: 'dock-apps',
     homogeneous: true,
-    children: userOptions.asyncGet().dock.pinnedApps
+    children: opts.dock.pinnedApps
         .map(term => ({ app: Applications.query(term)?.[0], term }))
         .filter(({ app }) => app)
         .map(({ app, term = true }) => {
-            const icon = userOptions.asyncGet().dock.searchPinnedAppIcons
+            const icon = opts.dock.searchPinnedAppIcons
                 ? getIconPath(app.name, false)  // Don't use cache for pinned apps
                 : app.icon_name || getIconPath(app.name, false);
-                
+
             const newButton = AppButton({
                 icon: icon,
                 onClicked: () => {
@@ -207,24 +207,25 @@ const PinnedApps = () => Widget.Box({
 });
 export default (monitor = 0) => {
     const dockContent = Box({
-        children:[
-            userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('bottomright', {vpack:"end",className: 'corner corner-colorscheme'}) : null,
+        children: [
+            opts.etc.widgetCorners ? RoundedCorner('bottomright', { vpack: "end", className: 'corner corner-colorscheme' }) : null,
             Box({
                 className: `${elevate}`,
-                css:`padding:${dockSize / 85}rem`,
-                children:[
+                css: `padding:${dockSize / 85}rem`,
+                children: [
                     PinButton(),
                     PinnedApps(),
                     DockSeparator(),
                     Taskbar(),
-                ]}),
-            userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('bottomleft',{vpack:"end", className: 'corner corner-colorscheme'}) : null,
+                ]
+            }),
+            opts.etc.widgetCorners ? RoundedCorner('bottomleft', { vpack: "end", className: 'corner corner-colorscheme' }) : null,
         ]
     })
     const dockRevealer = Revealer({
         attribute: {
             'updateShow': self => { // I only use mouse to resize. I don't care about keyboard resize if that's a thing
-                if (userOptions.asyncGet().dock.monitorExclusivity)
+                if (opts.dock.monitorExclusivity)
                     self.revealChild = Hyprland.active.monitor.id === monitor;
                 else
                     self.revealChild = true;
@@ -234,16 +235,16 @@ export default (monitor = 0) => {
         },
         revealChild: false,
         transition: 'slide_up',
-        transitionDuration: userOptions.asyncGet().animations.durationSmall,
+        transitionDuration: opts.animations.durationSmall,
         child: dockContent,
         setup: (self) => {
             const callback = (self, trigger) => {
-                if (!userOptions.asyncGet().dock.trigger.includes(trigger)) return
+                if (!opts.dock.trigger.includes(trigger)) return
                 const flag = self.attribute.updateShow(self)
 
                 if (flag) clearTimes();
 
-                const hidden = userOptions.asyncGet().dock.autoHide.find(e => e["trigger"] === trigger)
+                const hidden = opts.dock.autoHide.find(e => e["trigger"] === trigger)
 
                 if (hidden) {
                     let id = Utils.timeout(hidden.interval, () => {
@@ -269,7 +270,7 @@ export default (monitor = 0) => {
         },
         child: Box({
             homogeneous: true,
-            css: `min-height: ${userOptions.asyncGet().dock.hiddenThickness}px;`,
+            css: `min-height: ${opts.dock.hiddenThickness}px;`,
             children: [dockRevealer],
         }),
         setup: self => self.on("leave-notify-event", () => {

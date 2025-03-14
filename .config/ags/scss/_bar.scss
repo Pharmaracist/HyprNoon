@@ -93,9 +93,7 @@ $bar_ws_width_focus_active: 6.045rem;
     padding: 0rem 1rem;
     box-shadow:
         0 4px 2px rgba($shadow, 0.15),
-        /* Lighter, broader blur for depth */
         0 3px 4px rgba($shadow, 0.2),
-        /* Subtle mid-distance shadow */
     ;
 
     &.song-changing {
@@ -110,22 +108,10 @@ $bar_ws_width_focus_active: 6.045rem;
     border: 0.4px solid rgba($outliner, 0.6);
     @include anim-enter;
     @include normal-rounding;
-    box-shadow:
-        0 5px 3px rgba($shadow, 0.15),
-        /* Lighter, broader blur for depth */
-        0 8px 6px rgba($shadow, 0.2),
-        /* Subtle mid-distance shadow */
-        // 0 20px 28px rgba(0, 0, 0, 0.05),  /* Subtle mid-distance shadow */
+    @include shadows1;
 
 }
 
-.bar-floating-outline {
-    background-color: $layer0;
-    @include elevation2;
-    // border: 0.5px solid rgba($onSurfaceVariant, 0.5);
-    @include anim-enter;
-    @include small-rounding;
-}
 
 .bar-height {
     min-height: 2.827rem;
@@ -136,9 +122,18 @@ $bar_ws_width_focus_active: 6.045rem;
 }
 
 .bar-bg {
+    @include shadows1;
     background-color: $layer0;
-    min-height: 2.827rem;
 }
+
+.bar-floating-outline {
+    @include small-rounding;
+    @include elevation2;
+    @include shadows1;
+    background-color: $background;
+  
+  }
+
 
 .bar-vertical-pinned {
     background-color: $background;
@@ -146,6 +141,7 @@ $bar_ws_width_focus_active: 6.045rem;
 }
 
 .bar-pads {
+    @include shadows1;
     background-color: $layer0;
     @include large-rounding;
 }
@@ -156,7 +152,6 @@ $bar_ws_width_focus_active: 6.045rem;
 }
 
 .bar-bg-nothing {
-    background-color: $layer0;
     min-height: 2px;
 }
 

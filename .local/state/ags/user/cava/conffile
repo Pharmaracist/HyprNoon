@@ -1,0 +1,20 @@
+
+    [general]
+    bars = 60
+    framerate = 30
+    sensitivity = 200
+
+    [input]
+    method = "pulse"
+    source = "auto"
+
+    [output]
+    method = raw
+    raw_target = "/dev/stdout"
+    data_format = "ascii"
+    channels = "stereo"
+    ascii_max_range = 7
+
+    [smoothing]
+    noise_reduction = 0
+    

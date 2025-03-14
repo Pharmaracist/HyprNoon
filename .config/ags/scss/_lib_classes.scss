@@ -4,22 +4,30 @@
             #f4d609 70%, #212121 70%, #212121 80%, #f4d609 80%, #f4d609 90%, #212121 90%, #212121 100%);
     background-repeat: repeat;
 }
+
 .elevation {
-   border-radius: $rounding_medium;
-   margin:0.76rem;
+    border-radius: $rounding_medium;
+    margin: 0.76rem;
 }
+
 .shadow-window {
-    box-shadow: 
-    0 5px 15px rgba($shadow, 0.15), /* Lighter, broader blur for depth */
-    0 14px 25px rgba($shadow, 0.2),  /* Subtle mid-distance shadow */
-    0 20px 28px rgba($shadow, 0.05),  /* Subtle mid-distance shadow */
+    box-shadow:
+        0 5px 15px rgba($shadow, 0.15),
+        /* Lighter, broader blur for depth */
+        0 14px 25px rgba($shadow, 0.2),
+        /* Subtle mid-distance shadow */
+        0 20px 28px rgba($shadow, 0.05),
+        /* Subtle mid-distance shadow */
 }
 
 .shadow-window-light {
-    box-shadow: 
-    0 1px 10px rgba($shadow, 0.15), /* Lighter, broader blur for depth */
-    0 0 25px rgba($shadow, 0.2),  /* Subtle mid-distance shadow */
+    box-shadow:
+        0 1px 10px rgba($shadow, 0.15),
+        /* Lighter, broader blur for depth */
+        0 0 25px rgba($shadow, 0.2),
+        /* Subtle mid-distance shadow */
 }
+
 .test-size {
     min-height: 3rem;
     min-width: 3rem;
@@ -71,9 +79,11 @@
     text-shadow: 1px 2px 20px rgba(0, 0, 0, 0.6);
     // margin: 10px;
 }
+
 .txt-monospace {
     font-family: "Iosevka"
 }
+
 .txt-gigantic {
     @include mainfont;
     font-size: 3rem;
@@ -424,13 +434,16 @@
         .margin-#{$dir}-#{$spacing} {
             margin-#{$dir}: 0.068rem * $spacing;
         }
+
         .padding-#{$dir}-#{$spacing} {
             padding-#{$dir}: 0.068rem * $spacing;
         }
     }
+
     .padding-#{$spacing} {
         padding: 0.068rem * $spacing;
     }
+
     .margin-#{$spacing} {
         padding: 0.068rem * $spacing;
     }
@@ -529,22 +542,27 @@
 .element-accel {
     @include element_accel;
 }
+
 .sec-txt {
-    color:$secondary;
+    color: $secondary;
 }
-.padding01{
+
+.padding01 {
     padding: 0rem 1rem;
 
 }
-.txt-percent{
+
+.txt-percent {
     font-family: Helvetica;
     font-weight: 900;
 }
-.onSurfaceVariant{
+
+.onSurfaceVariant {
     color: $onSurfaceVariant;
 }
+
 .quran-arabic-text {
     font-family: "TE HAFS2 Tharwat Emara", "Noto Naskh Arabic",
         "Noto Sans Arabic", serif;
-        color: $onSurfaceVariant;
+    color: $onSurfaceVariant;
 }

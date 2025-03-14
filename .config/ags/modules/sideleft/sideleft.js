@@ -13,7 +13,7 @@ import { TabContainer } from '../.commonwidgets/tabcontainer.js';
 import { checkKeybind } from '../.widgetutils/keybind.js';
 import { writable } from '../../modules/.miscutils/store.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-left"  : "sidebar-left elevation shadow-window" ;
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-left" : "sidebar-left elevation shadow-window";
 import githubWidget from './github.js';
 const SIDEBARTABS = {
     'apis': {
@@ -35,7 +35,7 @@ const SIDEBARTABS = {
         friendlyName: 'Updates',
     },
 }
-const ORDER = writable ([]);
+const ORDER = writable([]);
 userOptions.subscribe(n => {
     ORDER.set(n.sidebar.pages.order);
 });
@@ -85,20 +85,20 @@ export const WidgetContent = (ORDER) => {
 };
 export const widgetContent = WidgetContent(ORDER.asyncGet());
 export default () => {
-    let unsubscribe = () => {};
+    let unsubscribe = () => { };
 
     const box = Box({
         vexpand: true,
         children: [
             widgetContent,
             userOptions.asyncGet().etc.widgetCorners ? Box({
-                vertical:true,
-                children:[
-                    RoundedCorner('topleft', {className: 'corner'}),         
-                    Box({vexpand:true}),
-                    RoundedCorner('bottomleft', {className: 'corner'}),
+                vertical: true,
+                children: [
+                    RoundedCorner('topleft', { className: 'corner' }),
+                    Box({ vexpand: true }),
+                    RoundedCorner('bottomleft', { className: 'corner' }),
                 ]
-            }):null
+            }) : null
         ],
         setup: (self) => self
             .on('key-press-event', (widget, event) => { // Handle keybinds
@@ -143,7 +143,7 @@ export default () => {
 
     box.on('destroy', unsubscribe);
 
-    unsubscribe = ORDER.subscribe ((n) => {
+    unsubscribe = ORDER.subscribe((n) => {
         // box.remove (widgetContent);
         // widgetContent = WidgetContent (n);
         // box.add (widgetContent);

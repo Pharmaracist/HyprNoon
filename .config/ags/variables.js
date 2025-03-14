@@ -11,6 +11,7 @@ import { init as i18n_init, getString } from './i18n/i18n.js'
 i18n_init()
 Gtk.IconTheme.get_default().append_search_path(`${App.configDir}/assets/icons`);
 Gtk.IconTheme.get_default().append_search_path(`${App.configDir}/assets/anime`);
+Gtk.IconTheme.get_default().append_search_path(`${App.configDir}/assets/addons/icons`);
 
 // Read initial mode from gsettings
 const SCHEMA_ID = 'org.gnome.shell.extensions.ags';

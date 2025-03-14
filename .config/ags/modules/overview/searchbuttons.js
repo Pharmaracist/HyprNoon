@@ -24,14 +24,14 @@ export const NoResultButton = () => searchItem({
 export const DirectoryButton = ({ parentPath, name, type, icon }) => {
     const actionText = Widget.Revealer({
         revealChild: false,
-        transition: "crossfade", 
+        transition: "crossfade",
         transitionDuration: animations.durationLarge,
         child: Widget.Label({
             className: 'overview-search-results-txt txt txt-small txt-action',
             label: 'Open',
         })
     });
-    
+
     const actionTextRevealer = Widget.Revealer({
         revealChild: false,
         transition: "slide_left",
@@ -122,7 +122,7 @@ export const DesktopEntryButton = (app) => {
                             className: 'overview-search-results-icon',
                             homogeneous: true,
                             css: css,
-                            children: isFile ? [] : [Widget.Icon ({
+                            children: isFile ? [] : [Widget.Icon({
                                 icon: app.iconName
                             })],
                         }),
@@ -169,7 +169,7 @@ export const CustomCommandButton = ({ text = '' }) => searchItem({
 });
 
 export const SearchButton = ({ text = '' }) => {
-    const search = searchConfig.engineBaseUrl + text + 
+    const search = searchConfig.engineBaseUrl + text +
         searchConfig.excludedSites.reduce((acc, site) => site ? acc + ` -site:${site}` : acc, '');
 
     return searchItem({
@@ -185,9 +185,9 @@ export const SearchButton = ({ text = '' }) => {
 }
 
 export const WallpaperButton = ({ text = '' }) => {
-    const search = 'https://wallhaven.cc/search?q=' + text;
+    const search = 'https://www.crunchyroll.com/search?q=' + text;
     return searchItem({
-        materialIconName: 'image',
+        materialIconName: 'comic_bubble',
         name: 'Search wallpapers',
         actionName: 'Go',
         content: text,
