@@ -251,7 +251,7 @@ export default () => {
                         'bar-ram-circprog', 'bar-ram-txt', 'bar-ram-icon'),
                     BarResourceGPUTemp('GPU Temperature', 'thermostat',
                             `echo "$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)"`,
-                            'bar-cpu-circprog', 'bar-cpu-txt',
+                            'bar-cpu-circprog', 'bar-cpu-txt'),
                     BarResource(getString('CPU Usage'), 'settings_motion_mode',
                         `LANG=C top -bn1 | grep Cpu | sed 's/\\,/\\./g' | awk '{print $2}'`,
                         'bar-cpu-circprog', 'bar-cpu-txt', 'bar-cpu-icon'),
