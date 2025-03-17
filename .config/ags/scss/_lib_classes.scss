@@ -191,6 +191,10 @@
     @include icon-material;
 }
 
+.icon-tabler {
+    font-family: "tabler-icons";
+}
+
 .icon-nerd {
     @include icon-nerd;
 }

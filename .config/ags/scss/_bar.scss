@@ -45,6 +45,22 @@ $bar_ws_width_focus_active: 6.045rem;
     border-bottom: 0.6px solid $outliner
 }
 
+.island-notification-active {
+    @include fluent_decel_long;
+    @include full-rounding;
+    min-width: 10rem;
+    min-height: 4rem;
+    border-bottom: 0.6px solid $outliner
+}
+
+.island-notification-deactivate {
+    @include fluent_decel_long;
+    @include full-rounding;
+    min-width: 2rem;
+    min-height: 2rem;
+    border-bottom: 0.6px solid $outliner
+}
+
 .bar-resources {
     progressbar {
         @include element_decel;
@@ -131,8 +147,8 @@ $bar_ws_width_focus_active: 6.045rem;
     @include elevation2;
     @include shadows1;
     background-color: $background;
-  
-  }
+
+}
 
 
 .bar-vertical-pinned {
@@ -146,13 +162,32 @@ $bar_ws_width_focus_active: 6.045rem;
     @include large-rounding;
 }
 
+.bar-island {
+    @include fluent_decel_long;
+    @include shadows1;
+    @include full-rounding;
+    background-color: $layer0;
+    margin: 0.8rem 0;
+    padding: 0.6rem 2rem
+}
+
 .bar-bg-focus {
     background-color: $layer0;
-    min-height: 1.364rem;
+    min-height: 1.2rem;
+    padding: 0.3rem 0;
 }
 
 .bar-bg-nothing {
     min-height: 2px;
+}
+
+.bar-battery-percentage {
+    @include titlefont;
+    font-weight: 600;
+    margin-left: 0.05rem;
+    font-size: 0.9rem;
+    color: $timeOnLayer1;
+
 }
 
 .bar-bg-focus-batterylow {
@@ -232,9 +267,8 @@ $bar_ws_width_focus_active: 6.045rem;
 
 .bar-group-pad-vertical {
     @include bar-group-rounding;
-    -gtk-outline-radius: 1.364rem;
     padding: 1rem 0rem;
-    margin: 0rem 0.5rem;
+    margin: 0rem 0.35rem;
 }
 
 .bar-group-pad-music {

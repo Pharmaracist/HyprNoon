@@ -33,9 +33,9 @@ const WeatherWidget = () => {
     const notificationBodyLabel = Widget.Label({
         className: 'txt-small txt-onLayer1',
     });
-    // Use CSS class "spacing-v-4" (for example) to vertically space elements
+    // Center the notification content by adding hpack and vpack.
     const notificationContent = Box({
-        className: 'content-box spacing-v-4', // CSS should handle vertical layout here
+        hpack: 'center',
         children: [
             notificationIcon,
             notificationTitleLabel,
@@ -100,7 +100,6 @@ const WeatherWidget = () => {
         },
         child: Box({
             className: 'complex-status',
-            hexpand: true,
             hpack: 'center',
             child: contentStack,
             setup: self => {

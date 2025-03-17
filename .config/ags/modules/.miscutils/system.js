@@ -7,7 +7,7 @@ export const distroID = exec(`bash -c 'cat /etc/os-release | grep "^ID=" | cut -
 export const isDebianDistro = (distroID == 'linuxmint' || distroID == 'ubuntu' || distroID == 'debian' || distroID == 'zorin' || distroID == 'popos' || distroID == 'raspbian' || distroID == 'kali');
 export const isArchDistro = (distroID == 'arch' || distroID == 'endeavouros' || distroID == 'cachyos' || distroID == 'arcolinux');
 export const hasFlatpak = !!exec(`bash -c 'command -v flatpak'`);
-export const darkMode = Variable(!(Utils.readFile(GLib.get_user_state_dir() + '/ags/user/colormode.txt').split('\n')[0].trim() == 'light'));
+const darkMode = Variable(!(Utils.readFile(GLib.get_user_state_dir() + '/ags/user/colormode.txt').split('\n')[0].trim() == 'light'));
 darkMode.connect('changed', async ({ value }) => {
     try {
         const lightdark = value ? "dark" : "light";

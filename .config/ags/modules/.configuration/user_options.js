@@ -16,7 +16,7 @@ try {
 let optionsOkay = true;
 function overrideConfigRecursive(userOverrides, configOptions = {}, check = true) {
     for (const [key, value] of Object.entries(userOverrides)) {
-        if (key === '__custom' || (configOptions['__custom'] instanceof Array && 
+        if (key === '__custom' || (configOptions['__custom'] instanceof Array &&
             configOptions['__custom'].indexOf(key) >= 0)) {
             configOptions[key] = value;
             continue;
@@ -80,7 +80,7 @@ const monitor = Utils.monitorFile(USER_CONFIG_FOLDER + 'config.json', (file, eve
         const success = update(file.get_path());
         if (success) {
             // Restart AGS on successful config update
-            Utils.execAsync(['bash','-c',`${App.configDir}/scripts/restart_ags.sh`]).catch(print);
+            Utils.execAsync(['bash', '-c', `${App.configDir}/scripts/restart_ags.sh`]).catch(print);
         }
     }
 });

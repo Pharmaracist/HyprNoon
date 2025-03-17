@@ -53,7 +53,7 @@ const BarBattery = () => {
     revealChild: false, // Initially hidden
     child: Label({
       className: "bar-batt-percent",
-      css: "margin-left: 8px;",
+      css: "margin-left: 12px;",
       setup: (self) => self.hook(Battery, () => {
         const chargingText = Battery.charging ? "" : " ";
         self.label = `${Battery.percent}% ${chargingText} `;

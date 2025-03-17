@@ -60,7 +60,7 @@ export const NotchBar = Widget.CenterBox({
   startWidget:
     Widget.Box({
       vpack: 'center',
-      css: "margin-left:2rem;",
+      css: "margin: 0 0 1rem 2rem;",
       spacing: 10,
       children: [
         Battery(),

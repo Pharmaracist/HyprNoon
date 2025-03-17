@@ -51,6 +51,11 @@ $rounding_large: 1.705rem;
         "Material Symbols Sharp";
 }
 
+@mixin icon-tabler {
+    // Tabler Icons
+    font-family: "tabler-icons";
+}
+
 @mixin icon-nerd {
     // Nerd Fonts
     font-family: "SpaceMono NF", "SpaceMono Nerd Font", "JetBrains Mono NF",

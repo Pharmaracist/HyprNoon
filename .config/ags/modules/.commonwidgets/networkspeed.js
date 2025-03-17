@@ -10,7 +10,7 @@ const REFRESH_INTERVAL = 1000;
 const formatSpeed = (bytesPerSec) => {
     if (bytesPerSec === 0) return '0 Mb/s';
     if (!bytesPerSec || isNaN(bytesPerSec)) return '0 Mb/s';
-    
+
     const bitsPerSec = bytesPerSec * 8;
     const mbps = bitsPerSec / 1000000;
     return `${mbps.toFixed(1)} Mb/s`;
@@ -38,10 +38,10 @@ const getNetworkBytes = () => {
 
         const stats = Utils.exec(`ip -s link show ${activeIface}`);
         const lines = stats.split('\n');
-        
+
         const rxBytes = parseInt(lines[3]?.trim().split(/\s+/)[0]) || 0;
         const txBytes = parseInt(lines[5]?.trim().split(/\s+/)[0]) || 0;
-        
+
         return { rxBytes, txBytes };
     } catch (error) {
         return { rxBytes: 0, txBytes: 0 };
@@ -56,7 +56,7 @@ const NetworkSpeedIndicator = () => {
     const speedBox = Widget.Box({
         hpack: 'fill',
         hexpand: true,
-        css:`margin-right:1.5rem`,
+        css: `margin-right:1.5rem`,
         spacing: 6,
         children: [
             download,
@@ -94,8 +94,8 @@ const NetworkSpeedIndicator = () => {
     const content = Widget.Box({
         children: [
             Widget.Box({
-                spacing:8,
-                 children: [networkName, speedRevealer]
+                spacing: 8,
+                children: [networkName, speedRevealer]
             })
         ]
     });

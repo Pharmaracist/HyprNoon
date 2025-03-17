@@ -1,37 +1,57 @@
-# HyprNoon Matugen Config By PharmaRacist
+# HyprNoon's Matugen Config By PharmaRacist
 
 [config]
-reload_apps = true 
+reload_apps = true
 
 # Basic Stuffs
+
+[config.wallpaper]
+command = "swww"
+arguments = [
+    "img",
+    "--transition-step",
+    "90",
+    "--transition-duration",
+    "1.5",
+    "--transition-fps",
+    "144",
+    "--transition-type",
+    "center",
+]
+set = true
 
 [templates.ags]
 input_path = "~/.config/matugen/templates/ags.scss"
 output_path = "~/.local/state/ags/scss/_material.scss"
 post_hook = "agsv1 --run-js 'globalThis.handleStyles(false)'"
 
+# [templates.waybar]
+# input_path = '~/.config/matugen/templates/colors.css'
+# output_path = '~/.config/waybar/colors.css'
+# post_hook = 'killall waybar ; waybar &'
+
 [templates.rofi]
 input_path = "~/.config/matugen/templates/rofi-colors.rasi"
 output_path = "~/.config/rofi/colors.rasi"
 
 # GTK  
-    
+
 # >> fallback gradiance mode but abit slower
-# [templates.gradience] 
-# pre_hook = "rm -rf ~/.config/gtk-4.0"
-# input_path = "~/.config/matugen/templates/gradience.json"
-# output_path = "~/.cache/ags/user/generated/gradience/gradience.json"
-# post_hook = "gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both"
+[templates.gradience]
+pre_hook = "rm -rf ~/.config/gtk-4.0"
+input_path = "~/.config/matugen/templates/gradience.json"
+output_path = "~/.cache/ags/user/generated/gradience/gradience.json"
+post_hook = "gradience-cli apply -p ~/.cache/ags/user/generated/gradience/gradience.json --gtk both &"
 
-[templates.gtk3]
+# [templates.gtk3]
 # pre_hook = 'rm -rf ~/.config/gtk-3.0'
-input_path = '~/.config/matugen/templates/gtk-colors.css'
-output_path = '~/.config/gtk-3.0/gtk.css'
-
-[templates.gtk4]
-pre_hook = 'rm -rf ~/.config/gtk-4.0'
-input_path = '~/.config/matugen/templates/gtk-colors.css'
-output_path = '~/.config/gtk-4.0/gtk.css'
+# input_path = '~/.config/matugen/templates/gtk-colors.css'
+# output_path = '~/.config/gtk-3.0/gtk.css'
+#
+# [templates.gtk4]
+# pre_hook = 'rm -rf ~/.config/gtk-4.0'
+# input_path = '~/.config/matugen/templates/gtk-colors.css'
+# output_path = '~/.config/gtk-4.0/gtk.css'
 
 # QT
 
@@ -79,8 +99,8 @@ output_path = "~/.config/starship.toml"
 post_hook = "starship init zsh > ~/.zshrc"
 
 # User Defined Apps <WIP>
-    # you can define each used app / fork eg.discord by changing their relative paths
-    
+# you can define each used app / fork eg.discord by changing their relative paths
+
 [templates.heroic]
 input_path = "~/.config/matugen/templates/heroic-theme.css"
 output_path = "~/.cache/ags/user/generated/heroic-colors.css"
@@ -99,7 +119,7 @@ output_path = "~/.config/vesktop/themes/HyprNoon.css"
 
 [templates.obsidian]
 input_path = "~/.config/matugen/templates/obsidian.css"
-output_path = "/run/media/pharmaracist/Data/General-Archive/obsidian/.obsidian/snippets/HyprNoon.css"
+output_path = "/mnt/Data/General-Archive/obsidian/.obsidian/snippets/HyprNoon.css"
 
 [templates.vscode]
 input_path = "~/.config/matugen/templates/vscode-color-theme.json"

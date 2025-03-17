@@ -24,10 +24,10 @@ const SysTrayItem = (item, iconSize = userOptions.asyncGet().bar.traySize) => it
 
 export const Tray = ({ iconSize = userOptions.asyncGet().bar.traySize, ...props } = {}) => {
     const trayContent = Box({
-        vertical:true,
-        hexpand:true,
-        hpack:"center",
-        spacing:15,
+        vertical: true,
+        hexpand: true,
+        hpack: "center",
+        spacing: 15,
         setup: (self) => self
             .hook(SystemTray, (self) => {
                 self.children = SystemTray.items.map(item => SysTrayItem(item, iconSize));
@@ -43,10 +43,10 @@ export const Tray = ({ iconSize = userOptions.asyncGet().bar.traySize, ...props 
     });
     return Box({
         ...props,
-        vertical:true,
-        hexpand:true,
-        hpack:"center",
-        spacing:5,
+        vertical: true,
+        hexpand: true,
+        hpack: "center",
+        spacing: 5,
         children: [trayRevealer],
     });
 }

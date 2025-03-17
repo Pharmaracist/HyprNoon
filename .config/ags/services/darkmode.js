@@ -1,7 +1,6 @@
 const { Gio, GLib } = imports.gi;
 import Service from 'resource:///com/github/Aylur/ags/service.js';
 import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
-import { darkMode } from '../modules/.miscutils/system.js';
 const { exec, execAsync } = Utils;
 
 const timeBefore = (time1, time2) => { // Arrays of [hour, minute]

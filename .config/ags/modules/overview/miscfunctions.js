@@ -4,7 +4,6 @@ import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
 const { execAsync, exec } = Utils;
 import Todo from "../../services/todo.js";
 import timers from "../../services/timers.js";
-import { darkMode } from '../.miscutils/system.js';
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
 import userOptions from '../.configuration/user_options.js';
 import { currentShellMode, updateMonitorShellMode } from '../../variables.js';
@@ -138,6 +137,57 @@ export function launchCustomCommand(command) {
                 print(`Error accessing Music directory: ${error}`);
             }
         },
+        '>quran': () => {
+            const quranDir = GLib.get_home_dir() + "/Quran";
+            const supportedFormats = /\.(mp3|wav|ogg|m4a|flac|opus)$/i;
+
+            try {
+                // Get all audio files in the Quran folder
+                const dir = Gio.File.new_for_path(quranDir);
+                const enumerator = dir.enumerate_children(
+                    "standard::*",
+                    Gio.FileQueryInfoFlags.NONE,
+                    null
+                );
+
+                const audioFiles = [];
+                let fileInfo;
+                while ((fileInfo = enumerator.next_file(null))) {
+                    const filename = fileInfo.get_name();
+                    if (filename.match(supportedFormats)) {
+                        audioFiles.push(filename);
+                    }
+                }
+
+                if (audioFiles.length > 0) {
+                    // Choose a random starting index
+                    const randomIndex = Math.floor(Math.random() * audioFiles.length);
+                    // Rearrange the playlist so that it starts with the randomly chosen file
+                    const playlist = audioFiles.slice(randomIndex).concat(audioFiles.slice(0, randomIndex));
+                    // Convert to full file paths
+                    const playlistPaths = playlist.map(file => `${quranDir}/${file}`);
+                    // Kill any running instance of VLC
+                    execAsync(['bash', '-c', 'pkill vlc']).catch(print);
+                    // Build the VLC command with the entire playlist in order
+
+                    const vlcCommand = [
+                        'bash',
+                        '-c',
+                        `vlc --loop --qt-start-minimized ${playlistPaths.map(path => `"${path}"`).join(' ')}`
+                    ];
+
+                    execAsync(vlcCommand).catch(error => {
+                        print(`Error playing playlist: ${error}`);
+                        execAsync(vlcCommand).catch(print);
+                    });
+                } else {
+                    print("No audio files found in Quran Folder");
+                }
+            } catch (error) {
+                print(`Error accessing Quran Folder: ${error}`);
+            }
+        },
+
         '>yt': () => {
             if (!args[0]) return;
             const searchQuery = args.join(' ');

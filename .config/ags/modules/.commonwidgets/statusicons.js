@@ -4,12 +4,12 @@ import Bluetooth from "resource:///com/github/Aylur/ags/service/bluetooth.js";
 import Network from "resource:///com/github/Aylur/ags/service/network.js";
 import Notifications from "resource:///com/github/Aylur/ags/service/notifications.js";
 import { MaterialIcon } from "./materialicon.js";
-
+let opts = await userOptions.asyncGet()
 export const NotificationIndicator = (notifCenterName = "sideright") => {
   const widget = Widget.Revealer({
     transition: "slide_left",
-    className: "onSurfaceVariant",
-    transitionDuration: userOptions.asyncGet().animations.durationSmall,
+    className: "",
+    transitionDuration: opts.animations.durationSmall,
     revealChild: false,
     setup: (self) =>
       self
@@ -65,14 +65,14 @@ export const NotificationIndicator = (notifCenterName = "sideright") => {
 export const BluetoothIndicator = () =>
   Widget.Stack({
     transition: "crossfade",
-    transitionDuration: userOptions.asyncGet().animations.durationSmall,
+    transitionDuration: opts.animations.durationSmall,
     children: {
       false: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "bluetooth_disabled",
       }),
       true: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "bluetooth",
       }),
     },
@@ -84,14 +84,14 @@ export const BluetoothIndicator = () =>
 
 const BluetoothDevices = () =>
   Widget.Box({
-    className: "spacing-h-5",
+    className: "spacing-h-5 ",
     setup: (self) =>
       self.hook(
         Bluetooth,
         (self) => {
           self.children = Bluetooth.connected_devices.map((device) => {
             return Widget.Box({
-              className: "bar-bluetooth-device spacing-h-5",
+              className: "bar-bluetooth-device  spacing-h-5",
               vpack: "center",
               tooltipText: device.name,
               children: [
@@ -99,7 +99,7 @@ const BluetoothDevices = () =>
                 ...(device.batteryPercentage
                   ? [
                     Widget.Label({
-                      className: "txt-smallie",
+                      className: "txt-smallie ",
                       label: `${device.batteryPercentage}`,
                       setup: (self) => {
                         self.hook(
@@ -125,23 +125,23 @@ const BluetoothDevices = () =>
 const NetworkWiredIndicator = () =>
   Widget.Stack({
     transition: "crossfade",
-    transitionDuration: userOptions.asyncGet().animations.durationSmall,
+    transitionDuration: opts.animations.durationSmall,
     children: {
       fallback: SimpleNetworkIndicator(),
       unknown: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "wifi_off",
       }),
       disconnected: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "signal_wifi_off",
       }),
       connected: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "lan",
       }),
       connecting: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "settings_ethernet",
       }),
     },
@@ -164,44 +164,45 @@ const SimpleNetworkIndicator = () =>
         const icon = Network[Network.primary || "wifi"]?.iconName;
         self.icon = icon || "";
         self.visible = icon;
+        self.toggleClassName = "txt-norm "
       }),
   });
 
 const NetworkWifiIndicator = () =>
   Widget.Stack({
     transition: "crossfade",
-    transitionDuration: userOptions.asyncGet().animations.durationSmall,
+    transitionDuration: opts.animations.durationSmall,
     children: {
       disabled: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "wifi_off",
       }),
       disconnected: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "signal_wifi_off",
       }),
       connecting: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "settings_ethernet",
       }),
       0: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "signal_wifi_0_bar",
       }),
       1: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "network_wifi_1_bar",
       }),
       2: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "network_wifi_2_bar",
       }),
       3: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "network_wifi_3_bar",
       }),
       4: Widget.Label({
-        className: "txt-norm icon-material",
+        className: "txt-norm icon-material ",
         label: "signal_wifi_4_bar",
       }),
     },
@@ -224,7 +225,7 @@ export const NetworkIndicator = (props = {},) =>
   Widget.Stack({
     ...props,
     transition: "slide_up_down",
-    transitionDuration: userOptions.asyncGet().animations.durationSmall,
+    transitionDuration: opts.animations.durationSmall,
     children: {
       fallback: SimpleNetworkIndicator(),
       wifi: NetworkWifiIndicator(),
@@ -245,25 +246,18 @@ export const NetworkIndicator = (props = {},) =>
 export const bluetoothPill = (props = {}) =>
   Widget.Box({
     ...props,
-    child: Widget.Box({
-      className: "onSurfaceVariant spacing-h-15",
-      children: [
-        Widget.Box({
-          className: "onSurfaceVariant spacing-h-10 ",
-          children: [
-            BluetoothDevices(),
-            BluetoothIndicator(),
-          ],
-        }),
-      ],
-    }),
+    spacing: 15,
+    className: "",
+    children: [
+      BluetoothDevices(),
+      BluetoothIndicator(),
+    ],
   });
 
 export const StatusIcons = (props = {}, monitor = 0) =>
   Widget.Box({
     ...props,
     child: Widget.Box({
-      className: "spacing-h-15",
       children: [
         Widget.Box({
           className: "spacing-h-10",

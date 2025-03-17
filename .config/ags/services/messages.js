@@ -6,6 +6,7 @@ export function fileExists(filePath) {
     let file = Gio.File.new_for_path(filePath);
     return file.query_exists(null);
 }
+let opts = await userOptions.asyncGet()
 const logo = App.configDir + "/assets/icons/logo-symbolic.svg"
 const FIRST_RUN_FILE = "firstrun.txt";
 const FIRST_RUN_PATH = `${GLib.get_user_state_dir()}/ags/user/${FIRST_RUN_FILE}`;
@@ -22,16 +23,16 @@ async function batteryMessage() {
         batteryWarned = false;
         return;
     }
-    for (let i = userOptions.asyncGet().battery.warnLevels.length - 1; i >= 0; i--) {
-        if (perc <= userOptions.asyncGet().battery.warnLevels[i] && !charging && !batteryWarned) {
+    for (let i = opts.battery.warnLevels.length - 1; i >= 0; i--) {
+        if (perc <= opts.battery.warnLevels[i] && !charging && !batteryWarned) {
             batteryWarned = true;
             Utils.execAsync(['bash', '-c',
-                `notify-send "${userOptions.asyncGet().battery.warnTitles[i]}" "${userOptions.asyncGet().battery.warnMessages[i]}"  -i ${logo} -u critical -a '${APP_NAME}' -t 69420 &`
+                `notify-send "${opts.battery.warnTitles[i]}" "${opts.battery.warnMessages[i]}"  -i ${logo} -u critical -a '${APP_NAME}' -t 69420 &`
             ]).catch(print);
             break;
         }
     }
-    if (perc <= userOptions.asyncGet().battery.suspendThreshold) {
+    if (perc <= opts.battery.suspendThreshold) {
         Utils.execAsync(['bash', '-c',
             `notify-send "Suspending system" "Critical battery level (${perc}% remaining)"-i ${logo} -u critical -a '${APP_NAME}' -t 69420 &`
         ]).catch(print);
