@@ -27,6 +27,7 @@ export default (monitor) =>
             opts.desktopBackground.resources ? SystemWidget() : null,
             Widget.Box({
               vertical: true,
+              css: 'margin-right:0.6rem',
               children: [
                 opts.desktopBackground.enableWisecat ? zaWiseCat : null,
                 Widget.Box({
@@ -41,13 +42,13 @@ export default (monitor) =>
             })
           ],
         }),
-        Widget.Box({
-          hpack: 'end',
-          hexpand: true,
-          children: [
-            phoneNotif()
-          ]
-        })
+        // Widget.Box({
+        //   hpack: 'end',
+        //   hexpand: true,
+        //   children: [
+        //     phoneNotif()
+        //   ]
+        // })
       ],
       setup: (self) => {
         self.set_overlay_pass_through(self.get_children()[1], true);

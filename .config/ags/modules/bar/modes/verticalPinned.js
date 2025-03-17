@@ -1,9 +1,7 @@
-const { Gtk } = imports.gi;
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import BarBattery from "../vertical_modules/battery.js";
 import { StatusIcons } from "../vertical_modules/statusicons.js";
 import VerticalClock from "../vertical_modules/vertical_clock.js"
-import VerticalPinnedApps from "../vertical_modules/vertical_pinned_apps.js";
 import BarToggles from "../vertical_modules/bar_toggles.js"
 import KbLayout from "../modules/kb_layout.js";
 import VerticalOptionalWorkspace from "../vertical_modules/workspaces_hyprland.js"
@@ -30,14 +28,7 @@ export const VerticalBarPinned = Widget.CenterBox({
       })
     ],
   }),
-  centerWidget:
-    ScrolledModule({
-      hpack: "center",
-      children: [
-        Widget.Box({ className: "bar-group-pad-vertical bar-group", child: VerticalOptionalWorkspace() }),
-        Widget.Box({ className: "bar-group-pad-vertical bar-group", child: VerticalPinnedApps() }),
-      ]
-    }),
+  centerWidget: await VerticalOptionalWorkspace(),
   endWidget:
     Widget.Box({
       hpack: "center",

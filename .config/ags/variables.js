@@ -68,7 +68,8 @@ globalThis['getString'] = getString;
 globalThis['currentShellMode'] = currentShellMode;
 globalThis['updateMonitorShellMode'] = updateMonitorShellMode;
 globalThis['barPosition'] = barPosition;
-globalThis.runMatugen = async () => {
+globalThis['applyColor'] = await Utils.execAsync([`bash`, `-c`, `${App.configDir}/scripts/color_generation/applycolor.sh`]);
+globalThis['runMatugen'] = async () => {
     try {
         await Utils.execAsync([`bash`, `-c`, `${App.configDir}/scripts/color_generation/colorgen.sh`]);
     } catch (error) {

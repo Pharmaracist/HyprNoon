@@ -61,6 +61,7 @@ $sidebar_chat_textboxareaColor: mix($onSurfaceVariant, $surfaceVariant, 40%);
 
 .sidebar-iconbutton:active {
     background-color: $layer1Active;
+    color: $onPrimary
 }
 
 .sidebar-button-active {
@@ -71,10 +72,14 @@ $sidebar_chat_textboxareaColor: mix($onSurfaceVariant, $surfaceVariant, 40%);
 .sidebar-button-active:hover,
 .sidebar-button-active:focus {
     background-color: mix($primary, $layer1Hover, 70%);
+    color: $onPrimary;
+
 }
 
 .sidebar-button-active:active {
     background-color: mix($primary, $layer1Active, 40%);
+    color: $onPrimary;
+
 }
 
 .sidebar-buttons-separator {

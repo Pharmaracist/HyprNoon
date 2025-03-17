@@ -1,5 +1,4 @@
-/*
-* GTK Colors
+/* GTK Colors
 * Generated with Matugen For HyprNoon
 */
 
@@ -16,8 +15,11 @@
 @define-color view_fg_color {{colors.on_surface.default.hex}};
 @define-color card_bg_color {{colors.surface.default.hex}};
 @define-color card_fg_color {{colors.on_surface.default.hex}};
-@define-color sidebar_bg_color {{colors.primary_fixed_dim.default.hex}} ;
-@define-color sidebar_fg_color{{colors.surface.default.hex}} ;
+@define-color sidebar_bg_color {{colors.primary_container.default.hex}} ;
+@define-color sidebar_fg_color{{colors.on_primary_container.default.hex}} ;
+@define-color sidebar_border_color @window_bg_color;
+@define-color sidebar_backdrop_color @window_bg_color;
+
 @define-color sidebar_border_color @window_bg_color;
 @define-color sidebar_backdrop_color @window_bg_color;
 

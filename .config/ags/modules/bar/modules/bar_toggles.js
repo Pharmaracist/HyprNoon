@@ -2,7 +2,7 @@ import Audio from "resource:///com/github/Aylur/ags/service/audio.js";
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import { MaterialIcon } from "../../.commonwidgets/materialicon.js";
 // import { languages } from "../../.commonwidgets/statusicons_languages.js";
-const { GLib } = imports.gi;
+let opts = await userOptions.asyncGet()
 
 export const MicIndicator = () =>
   Widget.Button({
@@ -14,7 +14,7 @@ export const MicIndicator = () =>
       children: [
         Widget.Stack({
           transition: "slide_up_down",
-          transitionDuration: userOptions.asyncGet().animations.durationSmall,
+          transitionDuration: opts.animations.durationSmall,
           children: {
             true: MaterialIcon("mic_off", "norm"),
             false: MaterialIcon("mic", "norm"),
@@ -38,7 +38,7 @@ export const SpeakerIndicator = () =>
       children: [
         Widget.Stack({
           transition: "slide_up_down",
-          transitionDuration: userOptions.asyncGet().animations.durationSmall,
+          transitionDuration: opts.animations.durationSmall,
           children: {
             true: MaterialIcon("volume_off", "norm"),
             false: MaterialIcon("volume_up", "norm"),
@@ -53,7 +53,7 @@ export const SpeakerIndicator = () =>
     }),
   });
 
- const BarToggles = (props = {}, monitor = 0) =>
+const BarToggles = (props = {}, monitor = 0) =>
   Widget.Box({
     ...props,
     child: Widget.Box({

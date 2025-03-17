@@ -18,22 +18,11 @@ const date = Variable("", {
   ],
 });
 
-const InLineClock = () =>
-  Widget.EventBox({
-    onPrimaryClick: () => {
-      App.toggleWindow("sideright");
-    },
-    child: Widget.Box({
-      vpack: "center",
-      className: "onSurfaceVariant txt-bold techfont",
-      tooltipText: date.bind(),
-      children: [
-        Widget.Label({
-          css:`font-size:16.5px;`,
-          className: "onSurfaceVariant txt-bold txt-monospace",
-          label: time.bind(),
-        }),
-      ],
-    }),
+const InLineClock = (props = {}) =>
+  Widget.Label({
+    label: time.bind(),
+    tooltipText: date.bind(),
+    className: 'bar-time',
+    ...props,
   });
 export default () => InLineClock();

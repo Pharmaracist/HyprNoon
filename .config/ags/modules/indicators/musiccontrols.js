@@ -9,7 +9,7 @@ const { Box, EventBox, Icon, Scrollable, Label, Button, Revealer } = Widget;
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
 import { fileExists } from '../.miscutils/files.js';
 import { AnimatedCircProg } from "../.commonwidgets/cairo_circularprogress.js";
-import { darkMode, hasPlasmaIntegration } from '../.miscutils/system.js';
+import { hasPlasmaIntegration } from '../.miscutils/system.js';
 import CavaService from '../../services/cava.js';
 import clickCloseRegion from '../.commonwidgets/clickcloseregion.js';
 const COMPILED_STYLE_DIR = `${GLib.get_user_cache_dir()}/ags/user/generated`
@@ -17,7 +17,7 @@ const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode
 const colorMode = Utils.exec(`bash -c "sed -n '1p' '${LIGHTDARK_FILE_LOCATION}'"`);
 const lightDark = (colorMode == "light") ? '-l' : '';
 const COVER_COLORSCHEME_SUFFIX = '_colorscheme.css';
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "osd-round osd-music" : "elevation osd-music" ;
+const elevate = userOptions.asyncGet().etc.widgetCorners ? "osd-round osd-music" : "elevation osd-music";
 
 var lastCoverPath = '';
 
@@ -125,14 +125,14 @@ const CoverArt = ({ player, ...rest }) => {
     const coverArtDrawingArea = Widget.DrawingArea({ className: 'osd-music-cover-art' });
     const coverArtDrawingAreaStyleContext = coverArtDrawingArea.get_style_context();
 
-    const fallbackCoverArt = Box({ 
+    const fallbackCoverArt = Box({
         className: 'osd-music-cover-fallback',
         homogeneous: true,
         children: [
             Label({
-            className: 'icon-material txt-gigantic txt-thin',
-            label: 'music_note',
-        })]
+                className: 'icon-material txt-gigantic txt-thin',
+                label: 'music_note',
+            })]
     });
 
     const realCoverArt = Box({
@@ -180,29 +180,29 @@ const CoverArt = ({ player, ...rest }) => {
                         coverArtDrawingArea.queue_draw();
                     }).catch(print)
             },
-          'updateCover': (self) => {
-    if (!player || player.trackTitle == "" || !player.coverPath) {
-        self.css = `background-image: none;`;
-        return;
-    }
+            'updateCover': (self) => {
+                if (!player || player.trackTitle == "" || !player.coverPath) {
+                    self.css = `background-image: none;`;
+                    return;
+                }
 
-    const coverPath = player.coverPath;
-    const stylePath = `${player.coverPath}${darkMode.value ? '' : '-l'}${COVER_COLORSCHEME_SUFFIX}`;
-    if (player.coverPath == lastCoverPath) {
-        Utils.timeout(300, () => {
-            self.attribute.showImage(self, coverPath);
-            self.css = `background-image: url('${coverPath}');`;
-        });
-    } else {
-        lastCoverPath = player.coverPath;
-        if (fileExists(stylePath)) {
-            self.attribute.showImage(self, coverPath)
-            self.css = `background-image: url('${coverPath}');`;
-        } else {
-            self.css = `background-image: url('${coverPath}');`;
-        }
-    }
-},
+                const coverPath = player.coverPath;
+                const stylePath = `${player.coverPath}${darkMode.value ? '' : '-l'}${COVER_COLORSCHEME_SUFFIX}`;
+                if (player.coverPath == lastCoverPath) {
+                    Utils.timeout(300, () => {
+                        self.attribute.showImage(self, coverPath);
+                        self.css = `background-image: url('${coverPath}');`;
+                    });
+                } else {
+                    lastCoverPath = player.coverPath;
+                    if (fileExists(stylePath)) {
+                        self.attribute.showImage(self, coverPath)
+                        self.css = `background-image: url('${coverPath}');`;
+                    } else {
+                        self.css = `background-image: url('${coverPath}');`;
+                    }
+                }
+            },
         },
         setup: (self) => self.hook(player, (self) => {
             // When the player's cover-path changes, update the cover art.
@@ -316,9 +316,9 @@ const TrackTime = ({ player, ...rest }) => {
                 }),
             ],
         }),
-       // The hook monitors whether a valid player exists.
-       // If not, the track time widget remains hidden.
-       setup : (self) => self.hook(Mpris, (self) => {
+        // The hook monitors whether a valid player exists.
+        // If not, the track time widget remains hidden.
+        setup: (self) => self.hook(Mpris, (self) => {
             if (!player)
                 self.revealChild = false; // Hide track time when no player is available.
             else
@@ -399,7 +399,7 @@ const CavaVisualizer = () => {
             if (cavaHook > 0) {
                 CavaService.disconnect(cavaHook);
             }
-        } catch (e) {}
+        } catch (e) { }
 
         cavaHook = null;
 
@@ -423,8 +423,8 @@ const CavaVisualizer = () => {
 
             const checkAndUpdateCava = () => {
                 const player = Mpris.getPlayer();
-                const shouldRun = musicControlsWindow.visible && 
-                                player?.playBackStatus === 'Playing';
+                const shouldRun = musicControlsWindow.visible &&
+                    player?.playBackStatus === 'Playing';
 
                 if (shouldRun) {
                     startCava();
@@ -455,7 +455,7 @@ const CavaVisualizer = () => {
 const MusicControlsWidget = (player) => Box({
     className: `${elevate}`,
     css: `min-height: 9.5rem;`,
-    vexpand:false,
+    vexpand: false,
     children: [
         Widget.Overlay({
             child: Box({
@@ -507,37 +507,37 @@ const MusicControlsWidget = (player) => Box({
 const content = Widget.Box({
     hexpand: false,
     vexpand: false,
-    children:[
-        userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', {className: 'corner corner-music'}) : null,
+    children: [
+        userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topright', { className: 'corner corner-music' }) : null,
         Box({
             vexpand: false,
             hexpand: false,
             spacing: 25, // Added spacing property here
             css: `min-height:10rem; min-width:55rem`,
             children: Mpris.bind("players")
-            .as(players =>
-                players.map(player => MusicControlsWidget(player))
-            )
+                .as(players =>
+                    players.map(player => MusicControlsWidget(player))
+                )
         }),
-        userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topleft', {className: 'corner corner-music'}) : null,
+        userOptions.asyncGet().etc.widgetCorners ? RoundedCorner('topleft', { className: 'corner corner-music' }) : null,
     ]
 });
 export default () => PopupWindow({
     keymode: 'on-demand',
     anchor: ['top'],
-    exclusivity:"ignore",
+    exclusivity: "ignore",
     layer: 'top',
     name: 'musiccontrols',
-    child:Box({
-            children:[
-        Box({
-            vertical: true,
-            children:[
-                content,
-                clickCloseRegion({ name: 'musiccontrols', multimonitor: false, fillMonitor: 'vertical' }),
-            ]
-        }),
-        // clickCloseRegion({ name: 'musiccontrols', multimonitor: false, fillMonitor: 'horizontal' }), 
-    ]
-})
+    child: Box({
+        children: [
+            Box({
+                vertical: true,
+                children: [
+                    content,
+                    clickCloseRegion({ name: 'musiccontrols', multimonitor: false, fillMonitor: 'vertical' }),
+                ]
+            }),
+            // clickCloseRegion({ name: 'musiccontrols', multimonitor: false, fillMonitor: 'horizontal' }), 
+        ]
+    })
 });

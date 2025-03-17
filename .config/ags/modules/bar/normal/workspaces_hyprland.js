@@ -8,7 +8,7 @@ import * as Utils from 'resource:///com/github/Aylur/ags/utils.js'
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 const { Box, DrawingArea, EventBox } = Widget;
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
-
+let opts = await userOptions.asyncGet()
 const dummyWs = Box({ className: 'bar-ws' }); // Not shown. Only for getting size props
 const dummyActiveWs = Box({ className: 'bar-ws bar-ws-active' }); // Not shown. Only for getting size props
 const dummyOccupiedWs = Box({ className: 'bar-ws bar-ws-occupied' }); // Not shown. Only for getting size props
@@ -61,7 +61,7 @@ const WorkspaceContents = (count = 10) => {
             workspaceMask: 0,
             workspaceGroup: 0,
             updateMask: (self) => {
-                const offset = Math.floor((Hyprland.active.workspace.id - 1) / count) * userOptions.asyncGet().workspaces.shown;
+                const offset = Math.floor((Hyprland.active.workspace.id - 1) / count) * opts.workspaces.shown;
                 // if (self.attribute.initialized) return; // We only need this to run once
                 const workspaces = Hyprland.workspaces;
                 let workspaceMask = 0;
@@ -94,7 +94,7 @@ const WorkspaceContents = (count = 10) => {
             })
             .hook(Hyprland, (self) => self.attribute.updateMask(self), 'notify::workspaces')
             .on('draw', Lang.bind(area, (area, cr) => {
-                const offset = Math.floor((Hyprland.active.workspace.id - 1) / count) * userOptions.asyncGet().workspaces.shown;
+                const offset = Math.floor((Hyprland.active.workspace.id - 1) / count) * opts.workspaces.shown;
 
                 const allocation = area.get_allocation();
                 const { width, height } = allocation;
@@ -182,10 +182,10 @@ const WorkspaceContents = (count = 10) => {
                         cr.setSourceRGBA(inactivecolors.red, inactivecolors.green, inactivecolors.blue, inactivecolors.alpha);
 
                     // Convert number to selected style
-                    const numberStyle = userOptions.asyncGet().workspaces.style || 'arabic';
+                    const numberStyle = opts.workspaces.style || 'arabic';
                     const displayNumber = convertNumber(i + offset, numberStyle);
                     layout.set_text(displayNumber, -1);
-                    
+
                     const [layoutWidth, layoutHeight] = layout.get_pixel_size();
                     const x = -workspaceRadius + (workspaceDiameter * i) - (layoutWidth / 2);
                     const y = (height - layoutHeight) / 2;
@@ -203,7 +203,7 @@ export default () => EventBox({
     // onScrollDown: () => Hyprland.messageAsync(`dispatch workspace +1`).catch(print),
     onMiddleClick: () => toggleWindowOnAllMonitors('osk'),
     onSecondaryClick: () => App.toggleWindow('overview'),
-    hexpand:true,
+    hexpand: true,
     attribute: {
         clicked: false,
         ws_group: 0,
@@ -211,12 +211,12 @@ export default () => EventBox({
     child: Box({
         homogeneous: true,
         className: 'bar-group-margin',
-        hexpand:true,
+        hexpand: true,
         children: [Box({
             // className: 'bar-group bar-group-standalone bar-group-pad',
             css: 'min-width: 2px;',
-            hexpand:true,
-            children: [WorkspaceContents(userOptions.asyncGet().workspaces.shown)],
+            hexpand: true,
+            children: [WorkspaceContents(opts.workspaces.shown)],
         })]
     }),
     setup: (self) => {
@@ -225,7 +225,7 @@ export default () => EventBox({
             if (!self.attribute.clicked) return;
             const [_, cursorX, cursorY] = event.get_coords();
             const widgetWidth = self.get_allocation().width;
-            const wsId = Math.ceil(cursorX * userOptions.asyncGet().workspaces.shown / widgetWidth);
+            const wsId = Math.ceil(cursorX * opts.workspaces.shown / widgetWidth);
             Utils.execAsync([`${App.configDir}/scripts/hyprland/workspace_action.sh`, 'workspace', `${wsId}`])
                 .catch(print);
         })
@@ -234,7 +234,7 @@ export default () => EventBox({
                 self.attribute.clicked = true;
                 const [_, cursorX, cursorY] = event.get_coords();
                 const widgetWidth = self.get_allocation().width;
-                const wsId = Math.ceil(cursorX * userOptions.asyncGet().workspaces.shown / widgetWidth);
+                const wsId = Math.ceil(cursorX * opts.workspaces.shown / widgetWidth);
                 Utils.execAsync([`${App.configDir}/scripts/hyprland/workspace_action.sh`, 'workspace', `${wsId}`])
                     .catch(print);
             }

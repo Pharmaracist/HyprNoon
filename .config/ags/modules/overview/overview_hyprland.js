@@ -18,10 +18,9 @@ import { monitors } from '../.commondata/hyprlanddata.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
 // Cache user options
-const userOpts = userOptions.asyncGet();
-const NUM_OF_WORKSPACES_SHOWN = 5 * userOpts.overview.numOfRows;
+const opts = await userOptions.asyncGet()
+const NUM_OF_WORKSPACES_SHOWN = 5 * opts.overview.numOfRows;
 const TARGET = [Gtk.TargetEntry.new('text/plain', Gtk.TargetFlags.SAME_APP, 0)];
-
 const overviewTick = Variable(false);
 
 export default (overviewMonitor = 0) => {
@@ -51,10 +50,10 @@ export default (overviewMonitor = 0) => {
     })
 
     const Window = ({ address, at: [x, y], size: [w, h], workspace: { id }, class: c, initialClass, monitor, title, xwayland }, screenCoords) => {
-        const scale = userOpts.overview.scale || 0.24;
+        const scale = opts.overview.scale || 0.24;
         const revealInfoCondition = (Math.min(w, h) * scale > 70);
         if (w <= 0 || h <= 0 || (c === '' && title === '')) return null;
-        
+
         // Screen coordinate adjustments
         if (screenCoords.x != 0) x -= screenCoords.x;
         if (screenCoords.y != 0) y -= screenCoords.y;
@@ -68,7 +67,7 @@ export default (overviewMonitor = 0) => {
         if (x + w > monitors[monitor].width) w = monitors[monitor].width - x;
         if (y + h > monitors[monitor].height) h = monitors[monitor].height - y;
 
-        if(c.length == 0) c = initialClass;
+        if (c.length == 0) c = initialClass;
         const iconName = substitute(c);
         const iconSize = Math.min(w, h) * scale / 2.5;
         const appIcon = iconExists(iconName) ? Widget.Icon({
@@ -117,7 +116,7 @@ export default (overviewMonitor = 0) => {
                             thisWorkspace: Number(id)
                         }),
                         ContextMenuWorkspaceArray({
-                            label: "Swap windows with workspace", 
+                            label: "Swap windows with workspace",
                             actionFunc: swapWorkspace,
                             thisWorkspace: Number(id)
                         }),
@@ -184,8 +183,8 @@ export default (overviewMonitor = 0) => {
                     const newCss = `
                         margin-left: ${Math.round(x)}px;
                         margin-top: ${Math.round(y)}px;
-                        margin-right: -${Math.round(x + (widget.attribute.w * userOpts.overview.scale))}px;
-                        margin-bottom: -${Math.round(y + (widget.attribute.h * userOpts.overview.scale))}px;
+                        margin-right: -${Math.round(x + (widget.attribute.w * opts.overview.scale))}px;
+                        margin-bottom: -${Math.round(y + (widget.attribute.h * opts.overview.scale))}px;
                     `;
                     widget.css = newCss;
                     fixed.pack_start(widget, false, false, 0);
@@ -195,8 +194,8 @@ export default (overviewMonitor = 0) => {
                     const newCss = `
                         margin-left: ${Math.round(x)}px;
                         margin-top: ${Math.round(y)}px;
-                        margin-right: -${Math.round(x + (widget.attribute.w * userOpts.overview.scale))}px;
-                        margin-bottom: -${Math.round(y + (widget.attribute.h * userOpts.overview.scale))}px;
+                        margin-right: -${Math.round(x + (widget.attribute.w * opts.overview.scale))}px;
+                        margin-bottom: -${Math.round(y + (widget.attribute.h * opts.overview.scale))}px;
                     `;
                     widget.css = newCss;
                 },
@@ -207,8 +206,8 @@ export default (overviewMonitor = 0) => {
             className: 'overview-tasks-workspace-number',
             label: `${index}`,
             css: `
-                margin: ${Math.min(monitors[overviewMonitor].width, monitors[overviewMonitor].height) * userOpts.overview.scale * userOpts.overview.wsNumMarginScale}px;
-                font-size: ${monitors[overviewMonitor].height * userOpts.overview.scale * userOpts.overview.wsNumScale}px;
+                margin: ${Math.min(monitors[overviewMonitor].width, monitors[overviewMonitor].height) * opts.overview.scale * opts.overview.wsNumMarginScale}px;
+                font-size: ${monitors[overviewMonitor].height * opts.overview.scale * opts.overview.wsNumScale}px;
             `,
             setup: (self) => self.hook(Hyprland.active.workspace, (self) => {
                 const currentGroup = Math.floor((Hyprland.active.workspace.id - 1) / NUM_OF_WORKSPACES_SHOWN);
@@ -221,8 +220,8 @@ export default (overviewMonitor = 0) => {
             className: 'overview-tasks-workspace',
             vpack: 'center',
             css: `
-                min-width: ${1 + Math.round(monitors[overviewMonitor].width * userOpts.overview.scale)}px;
-                min-height: ${1 + Math.round(monitors[overviewMonitor].height * userOpts.overview.scale)}px;
+                min-width: ${1 + Math.round(monitors[overviewMonitor].width * opts.overview.scale)}px;
+                min-height: ${1 + Math.round(monitors[overviewMonitor].height * opts.overview.scale)}px;
             `,
             children: [Widget.EventBox({
                 hexpand: true,
@@ -275,8 +274,8 @@ export default (overviewMonitor = 0) => {
                     c.attribute.h = clientJson.size[1];
                     c.attribute.updateIconSize(c);
                     fixed.attribute.move(c,
-                        Math.max(0, clientJson.at[0] * userOpts.overview.scale),
-                        Math.max(0, clientJson.at[1] * userOpts.overview.scale)
+                        Math.max(0, clientJson.at[0] * opts.overview.scale),
+                        Math.max(0, clientJson.at[1] * opts.overview.scale)
                     );
                     return;
                 }
@@ -284,8 +283,8 @@ export default (overviewMonitor = 0) => {
             const newWindow = Window(clientJson, screenCoords);
             if (newWindow === null) return;
             fixed.attribute.put(newWindow,
-                Math.max(0, newWindow.attribute.x * userOpts.overview.scale),
-                Math.max(0, newWindow.attribute.y * userOpts.overview.scale)
+                Math.max(0, newWindow.attribute.x * opts.overview.scale),
+                Math.max(0, newWindow.attribute.y * opts.overview.scale)
             );
             clientMap.set(clientJson.address, newWindow);
         };
@@ -301,7 +300,7 @@ export default (overviewMonitor = 0) => {
         return widget;
     };
 
-    const arr = (s, n) => Array.from({length: n}, (_, i) => s + i);
+    const arr = (s, n) => Array.from({ length: n }, (_, i) => s + i);
 
     const OverviewRow = ({ startWorkspace, workspaces, windowName = 'overview' }) => Widget.Box({
         children: arr(startWorkspace, workspaces).map(Workspace),
@@ -336,7 +335,7 @@ export default (overviewMonitor = 0) => {
             updateWorkspace: (box, id) => {
                 const offset = Math.floor((Hyprland.active.workspace.id - 1) / NUM_OF_WORKSPACES_SHOWN) * NUM_OF_WORKSPACES_SHOWN;
                 if (!(offset + startWorkspace <= id && id <= offset + startWorkspace + workspaces)) return;
-                
+
                 Hyprland.messageAsync('j/clients').then(clients => {
                     const allClients = JSON.parse(clients);
                     const kids = box.get_children();
@@ -383,34 +382,35 @@ export default (overviewMonitor = 0) => {
                 })
         },
     });
-    const elevate = userOptions.asyncGet().etc.widgetCorners ? "overview-tasks shadow-window overview-round"  : "overview-tasks shadow-window  elevation " ;
+    const elevate = opts.etc.widgetCorners ? "overview-tasks shadow-window overview-round" : "overview-tasks shadow-window  elevation ";
     return Widget.Revealer({
         revealChild: true,
-        hpack: userOptions.asyncGet().etc.widgetCorners ? 'fill' : 'center',
+        hpack: opts.etc.widgetCorners ? 'fill' : 'center',
         transition: 'slide_down',
-        hexpand:true,
-        transitionDuration: userOpts.animations.durationHuge,
-        child:Widget.Box({
-            vertical:true,
-            hexpand:true,
-            children:[
-              Widget.Box({
-                vertical: true,
-                hexpand:true,
-                className: `${elevate}`,
-                children: Array.from({ length: userOpts.overview.numOfRows }, (_, index) =>
-                    OverviewRow({
-                        startWorkspace: 1 + index * 5,
-                        workspaces: 5,
-                     })
-            )
-        }),
-        userOptions.asyncGet().etc.widgetCorners ? Widget.Box({
-            children:[
-                RoundedCorner('topleft', {className: 'corner corner-colorscheme'}),
-                Widget.Box({hexpand:true}),
-                RoundedCorner('topright', {className: 'corner corner-colorscheme'})
-            ]
-        }) : null ]})
+        hexpand: true,
+        transitionDuration: opts.animations.durationHuge,
+        child: Widget.Box({
+            vertical: true,
+            hexpand: true,
+            children: [
+                Widget.Box({
+                    vertical: true,
+                    hexpand: true,
+                    className: `${elevate}`,
+                    children: Array.from({ length: opts.overview.numOfRows }, (_, index) =>
+                        OverviewRow({
+                            startWorkspace: 1 + index * 5,
+                            workspaces: 5,
+                        })
+                    )
+                }),
+                opts.etc.widgetCorners ? Widget.Box({
+                    children: [
+                        RoundedCorner('topleft', { className: 'corner corner-colorscheme' }),
+                        Widget.Box({ hexpand: true }),
+                        RoundedCorner('topright', { className: 'corner corner-colorscheme' })
+                    ]
+                }) : null]
+        })
     });
 }

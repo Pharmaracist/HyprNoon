@@ -13,7 +13,8 @@ import { TabContainer } from '../.commonwidgets/tabcontainer.js';
 import { checkKeybind } from '../.widgetutils/keybind.js';
 import { writable } from '../../modules/.miscutils/store.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-left" : "sidebar-left elevation shadow-window";
+let opts = await userOptions.asyncGet();
+const elevate = opts.etc.widgetCorners ? "sidebar-left" : "sidebar-left elevation";
 import githubWidget from './github.js';
 const SIDEBARTABS = {
     'apis': {
@@ -77,6 +78,7 @@ export const WidgetContent = (ORDER) => {
         names: CONTENTS.map((item) => item.friendlyName),
         children: CONTENTS.map((item) => item.content),
         className: `${elevate}`,
+        css: opts.etc.widgetCorners ? null : 'border-radius:1.159rem',
         setup: (self) => self.hook(App, (self, currentName, visible) => {
             if (currentName === 'sideleft')
                 self.toggleClassName('sidebar-pinned', pinButton.attribute.enabled && visible);
@@ -91,7 +93,7 @@ export default () => {
         vexpand: true,
         children: [
             widgetContent,
-            userOptions.asyncGet().etc.widgetCorners ? Box({
+            opts.etc.widgetCorners ? Box({
                 vertical: true,
                 children: [
                     RoundedCorner('topleft', { className: 'corner' }),
@@ -102,13 +104,13 @@ export default () => {
         ],
         setup: (self) => self
             .on('key-press-event', (widget, event) => { // Handle keybinds
-                if (checkKeybind(event, userOptions.asyncGet().keybinds.sidebar.pin))
+                if (checkKeybind(event, opts.keybinds.sidebar.pin))
                     pinButton.attribute.toggle(pinButton);
-                else if (checkKeybind(event, userOptions.asyncGet().keybinds.sidebar.cycleTab))
+                else if (checkKeybind(event, opts.keybinds.sidebar.cycleTab))
                     widgetContent.cycleTab();
-                else if (checkKeybind(event, userOptions.asyncGet().keybinds.sidebar.nextTab))
+                else if (checkKeybind(event, opts.keybinds.sidebar.nextTab))
                     widgetContent.nextTab();
-                else if (checkKeybind(event, userOptions.asyncGet().keybinds.sidebar.prevTab))
+                else if (checkKeybind(event, opts.keybinds.sidebar.prevTab))
                     widgetContent.prevTab();
 
                 if (widgetContent.attribute.names[widgetContent.attribute.shown.value] == 'APIs') { // If api tab is focused
@@ -127,11 +129,11 @@ export default () => {
                         buffer.place_cursor(buffer.get_iter_at_offset(-1));
                     }
                     // Switch API type
-                    else if (checkKeybind(event, userOptions.asyncGet().keybinds.sidebar.apis.nextTab)) {
+                    else if (checkKeybind(event, opts.keybinds.sidebar.apis.nextTab)) {
                         const toSwitchTab = widgetContent.attribute.children[widgetContent.attribute.shown.value];
                         toSwitchTab.nextTab();
                     }
-                    else if (checkKeybind(event, userOptions.asyncGet().keybinds.sidebar.apis.prevTab)) {
+                    else if (checkKeybind(event, opts.keybinds.sidebar.apis.prevTab)) {
                         const toSwitchTab = widgetContent.attribute.children[widgetContent.attribute.shown.value];
                         toSwitchTab.prevTab();
                     }

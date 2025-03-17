@@ -7,7 +7,8 @@ const { execAsync } = Utils;
 import { setupCursorHover } from '../.widgetutils/cursorhover.js';
 import { showColorScheme } from '../../variables.js';
 import { MaterialIcon } from '../.commonwidgets/materialicon.js';
-import { darkMode } from '../.miscutils/system.js';
+import { gowallArr } from '../.commondata/colorschemes.js';
+import { schemeOptionsArr } from '../.commondata/colorschemes.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
 const ColorBox = ({
     name = 'Color',
@@ -76,34 +77,6 @@ function calculateSchemeInitIndex(optionsArr, searchValue = 'content') {
     const columnIndex = result % optionsArr[0].length;
     return [rowIndex, columnIndex];
 }
-const gowallArr = [
-    [
-        { name: getString('Catppuccin'), value: 'catppuccin' },
-        { name: getString('Nord'), value: 'nord' },
-        { name: getString('Dracula'), value: 'dracula' },
-        { name: getString('Tokyo'), value: 'tokyo-night' },
-        { name: getString('Everforest'), value: 'everforest' },
-        { name: getString('Gruvbox'), value: 'gruvbox' },
-        { name: getString('One Dark'), value: 'onedark' },
-        { name: getString('Solarized'), value: 'solarized' },
-        { name: getString('Cyber'), value: 'cyberpunk' },
-        { name: getString('B&W'), value: 'monochrome' },
-    ],
-];
-const schemeOptionsArr = [
-    [
-        { name: getString('Tonal Spot'), value: 'scheme-tonal-spot' },
-        { name: getString('Fruit Salad'), value: 'scheme-fruit-salad' },
-        { name: getString('Fidelity'), value: 'scheme-fidelity' },
-        { name: getString('Rainbow'), value: 'scheme-rainbow' },
-        { name: getString('Neutral'), value: 'scheme-neutral' },
-        { name: getString('Monochrome'), value: 'scheme-monochrome' },
-        { name: getString('Expressive'), value: 'scheme-expressive' },
-        { name: getString('Content'), value: 'scheme-content' },
-    ]
-
-];
-
 export const LIGHTDARK_FILE_LOCATION = `${GLib.get_user_state_dir()}/ags/user/colormode.txt`;
 
 export const initTransparency = Utils.exec(`bash -c "sed -n \'2p\' ${LIGHTDARK_FILE_LOCATION}"`);

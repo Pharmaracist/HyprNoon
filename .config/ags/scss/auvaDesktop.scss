@@ -166,10 +166,10 @@
     @include shadows1;
     @include normal-rounding;
     min-width: 31.3rem;
-    min-height: 11rem;
+    min-height: 10rem;
     margin: 1rem 2.5rem 0rem 0rem;
     background-color: $background;
-    color: $onSurface
+    color: $onSurface;
 }
 
 .add-resources-circprog-main {

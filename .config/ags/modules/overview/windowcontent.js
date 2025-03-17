@@ -16,7 +16,7 @@ import { checkKeybind } from '../.widgetutils/keybind.js';
 import GeminiService from '../../services/gemini.js';
 import { Writable, writable, waitLastAction } from '../.miscutils/store.js';
 import { RoundedCorner } from '../.commonwidgets/cairo_roundedcorner.js';
-
+let opts = userOptions.asyncGet()
 // Добавляем математические функции
 const { abs, sin, cos, tan, cot, asin, acos, atan, acot } = Math;
 const pi = Math.PI;
@@ -51,7 +51,7 @@ const OptionalOverview = async () => {
 };
 
 const overviewContent = await OptionalOverview();
-const entryTheme = userOptions.asyncGet().overview.spotlightTheme ? 'overview-search-box-spotlight' : 'overview-search-box';
+const entryTheme = opts.overview.spotlightTheme ? 'overview-search-box-spotlight' : 'overview-search-box';
 
 /**
  * @type {Gio.FileMonitor[]}
@@ -62,9 +62,9 @@ let monitors = [];
  */
 let waitToRereadDesktop = null;
 
-const watchersOption = writable ([]);
+const watchersOption = writable([]);
 
-watchersOption.subscribe (/*** @param {string[]} paths */ (paths) => {
+watchersOption.subscribe(/*** @param {string[]} paths */(paths) => {
     for (const monitor of monitors) {
         monitor.cancel();
     }
@@ -72,8 +72,8 @@ watchersOption.subscribe (/*** @param {string[]} paths */ (paths) => {
     monitors = [];
 
     for (const path of paths) {
-        const monitor = Utils.monitorFile (expandTilde(path), () => {
-            waitToRereadDesktop = waitLastAction (waitToRereadDesktop, 500, () => {
+        const monitor = Utils.monitorFile(expandTilde(path), () => {
+            waitToRereadDesktop = waitLastAction(waitToRereadDesktop, 500, () => {
                 Applications.reload();
                 waitToRereadDesktop = null;
             });
@@ -82,19 +82,19 @@ watchersOption.subscribe (/*** @param {string[]} paths */ (paths) => {
     }
 });
 
-userOptions.subscribe ((n) => {
-    watchersOption.set (n.search.watchers ?? []);
+userOptions.subscribe((n) => {
+    watchersOption.set(n.search.watchers ?? []);
 });
 
 export const SearchAndWindows = () => {
     let _appSearchResults = [];
-    const options = userOptions.asyncGet();
-    
+    const options = opts;
+
     const resultsBox = Widget.Box({
         className: 'overview-search-results shadow-window ',
-        css:`margin-top:0.3rem`,
+        css: `margin-top:0.3rem`,
         vertical: true,
-        vexpand:true,
+        vexpand: true,
     });
 
     const resultsRevealer = Widget.Revealer({
@@ -102,21 +102,21 @@ export const SearchAndWindows = () => {
         revealChild: false,
         transition: 'slide_down',
         hpack: 'center',
-        vexpand:true,
+        vexpand: true,
         child: resultsBox,
     });
 
     const entryPromptRevealer = Widget.Revealer({
-        transition: 'crossfade', 
+        transition: 'crossfade',
         transitionDuration: options.animations.durationHuge,
         revealChild: true,
-        hexpand:true,
+        hexpand: true,
         hpack: 'start',
-        vpack:'start',
+        vpack: 'start',
         child: Widget.Label({
             className: 'overview-search-prompt txt-small',
             css: `margin-top:1rem`,
-            label: options.overview.useNameInPrompt ?  getString(`hi ${GLib.get_real_name()} ! Wanna Dive!`) : getString(`Start The Journey`) || null,
+            label: options.overview.useNameInPrompt ? getString(`hi ${GLib.get_real_name()} ! Wanna Dive!`) : getString(`Start The Journey`) || null,
         }),
     });
 
@@ -135,7 +135,7 @@ export const SearchAndWindows = () => {
         setup: box => box.pack_start(entryIconRevealer, true, true, 0),
     });
     const entry = Widget.Entry({
-        className:  `shadow-window txt-small txt ${entryTheme}`,
+        className: `shadow-window txt-small txt ${entryTheme}`,
         hpack: 'center',
         onAccept: (self) => {
             resultsBox.children[0]?.onClicked();
@@ -167,11 +167,11 @@ export const SearchAndWindows = () => {
 
             if (options.search.enableFeatures.mathResults && couldBeMath(text)) {
                 try {
-                    resultsBox.add(CalculationResultButton({ 
+                    resultsBox.add(CalculationResultButton({
                         result: eval(text.replace(/\^/g, "**")),
-                        text: text 
+                        text: text
                     }));
-                } catch {}
+                } catch { }
             }
 
             if (options.search.enableFeatures.directorySearch && isDir) {
@@ -188,10 +188,10 @@ export const SearchAndWindows = () => {
                 .forEach(app => resultsBox.add(DesktopEntryButton(app)));
 
             // Добавляем команды
-            if (options.search.enableFeatures.commands && !isAction && 
-                !hasUnterminatedBackslash(text) && 
+            if (options.search.enableFeatures.commands && !isAction &&
+                !hasUnterminatedBackslash(text) &&
                 exec(`bash -c "command -v ${text.split(' ')[0]}"`) !== '') {
-                resultsBox.add(ExecuteCommandButton({ 
+                resultsBox.add(ExecuteCommandButton({
                     command: text,
                     terminal: text.startsWith('sudo')
                 }));
@@ -202,7 +202,7 @@ export const SearchAndWindows = () => {
                 resultsBox.add(AiButton({ text }));
             if (options.search.enableFeatures.webSearch)
                 resultsBox.add(SearchButton({ text }));
-                resultsBox.add(WallpaperButton({ text }));
+            resultsBox.add(WallpaperButton({ text }));
             if (resultsBox.children.length === 0)
                 resultsBox.add(NoResultButton());
 
@@ -210,56 +210,56 @@ export const SearchAndWindows = () => {
         },
     });
     const SpotlightEntry = () => Widget.Box({
-        vertical:true,
-        css:`margin-top:250px`,
+        vertical: true,
+        css: `margin-top:250px`,
         hpack: 'center',
-        vpack:'center',
-        children:[
+        vpack: 'center',
+        children: [
             Widget.Box({
                 hpack: 'center',
                 children: [
                     entry,
                     entryIcon,
                     Widget.Box({
-                        hpack:"start",
+                        hpack: "start",
                         className: 'overview-search-icon-box',
                         setup: box => box.pack_start(entryPromptRevealer, true, true, 0),
                     }),
                 ],
             }),
         ]
-    })  
-    
+    })
+
     const EntryBarContent = () => Widget.Box({
-        vertical:true,
-        hpack: 'center',
-        children:[
+        vertical: true,
+        hpack: 'fill',
+        children: [
             Widget.Box({
-                hpack: 'center',
+                hpack: 'fill',
                 children: [
-                    RoundedCorner('topright', {vpack:'start',className: 'corner corner-colorscheme'}),
+                    RoundedCorner('topright', { vpack: 'start', className: 'corner corner-colorscheme' }),
                     entry,
                     entryIcon,
                     Widget.Box({
-                        hpack:"start",
+                        hexpand: true,
                         className: 'overview-search-icon-box',
                         setup: box => box.pack_start(entryPromptRevealer, true, true, 0),
                     }),
-                    RoundedCorner('topleft', {vpack:'start',className: 'corner corner-colorscheme'}),
+                    RoundedCorner('topleft', { vpack: 'start', className: 'corner corner-colorscheme' }),
                 ],
             }),
         ]
-    })  
+    })
     return Widget.Box({
         vertical: true,
         hpack: 'center',
         children: [
             Widget.Box({
                 hpack: 'center',
-                hexpand:true,
-                vertical:true,
+                hexpand: true,
+                vertical: true,
                 children: [
-                    userOptions.asyncGet().overview.spotlightTheme ? SpotlightEntry() : EntryBarContent() ,
+                    opts.overview.spotlightTheme ? SpotlightEntry() : EntryBarContent(),
                     resultsRevealer
                 ]
             }),
@@ -284,7 +284,7 @@ export const SearchAndWindows = () => {
                     entry.set_text(entry.get_text().slice(0, pos));
                     entry.set_position(pos);
                 }
-                else if (!(modstate & Gdk.ModifierType.CONTROL_MASK) && 
+                else if (!(modstate & Gdk.ModifierType.CONTROL_MASK) &&
                     keyval >= 32 && keyval <= 126 && widget !== entry) {
                     Utils.timeout(1, () => {
                         entry.grab_focus();

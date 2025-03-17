@@ -11,7 +11,7 @@ const AudioFileButton = (filename, filepath) => Widget.Button({
             ["xdg-open", filepath],
             Gio.SubprocessFlags.NONE,
         );
-        proc.wait_async(null, () => {});
+        proc.wait_async(null, () => { });
     },
     child: Widget.Box({
         homogeneous: false,
@@ -50,7 +50,7 @@ const AudioFiles = ({ directory = GLib.get_home_dir() + "/Music" } = {}) => {
                 Gio.FileQueryInfoFlags.NONE,
                 null,
             );
-            
+
             let fileInfo;
             while ((fileInfo = enumerator.next_file(null)) !== null) {
                 const filename = fileInfo.get_name();
@@ -87,7 +87,7 @@ const AudioFiles = ({ directory = GLib.get_home_dir() + "/Music" } = {}) => {
         setup: self => {
             // Initial file list population
             updateFileList();
-            
+
             // Setup file monitoring
             setupFileMonitor(self);
 

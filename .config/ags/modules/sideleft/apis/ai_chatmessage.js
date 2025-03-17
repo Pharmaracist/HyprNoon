@@ -7,7 +7,6 @@ const { Box, Button, Label, Icon, Scrollable, Stack } = Widget;
 const { execAsync, exec } = Utils;
 import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
 import md2pango from '../../.miscutils/md2pango.js';
-import { darkMode } from "../../.miscutils/system.js";
 
 const LATEX_DIR = `${GLib.get_user_cache_dir()}/ags/media/latex`;
 const CUSTOM_SOURCEVIEW_SCHEME_PATH = `${App.configDir}/assets/themes/sourceviewtheme${darkMode.value ? '' : '-light'}.xml`;
@@ -221,16 +220,16 @@ const Divider = () => Box({
 
 const updateContentAndBlockType = (contentBox, i, type, typeObj, text) => {
     const kids = contentBox.get_children();
-    if (i < kids.length) { 
+    if (i < kids.length) {
         if (kids[i].attribute.type != type) {
-            kids[i] = typeObj (text);
+            kids[i] = typeObj(text);
         }
         else {
             kids[i].attribute.updateText(text);
         }
     }
     else {
-        contentBox.add (typeObj (text));
+        contentBox.add(typeObj(text));
     }
 }
 
@@ -253,7 +252,7 @@ const MessageContent = (content) => {
                 let inCode = false;
                 let i = 0;
                 let lang = 'txt';
-                const LangCodeBlock = (text) => CodeBlock (text, lang);
+                const LangCodeBlock = (text) => CodeBlock(text, lang);
                 for (const [index, line] of lines.entries()) {
                     // Code blocks
                     const codeBlockRegex = /^\s*```([a-zA-Z0-9]+)?\n?/;
@@ -266,17 +265,17 @@ const MessageContent = (content) => {
                                 // '```XXX ' <- line
                                 const _line = line.trim()
                                 if (_line.length <= 3) { lang = 'txt'; }
-                                else { lang = _line.substr (3).trim(); }
+                                else { lang = _line.substr(3).trim(); }
                                 // add text block with prev data, bcz we will create code block
                                 // blockContent contains the prev content
                                 if (blockContent) {
                                     const text = md2pango(blockContent);
-                                    updateContentAndBlockType (contentBox, i, 'text', TextBlock, text);
+                                    updateContentAndBlockType(contentBox, i, 'text', TextBlock, text);
                                     //contentBox.add(CodeBlock('', codeBlockRegex.exec(line)[1]));
                                 }
                             }
                             else {
-                                updateContentAndBlockType (contentBox, i, 'code', LangCodeBlock, blockContent);
+                                updateContentAndBlockType(contentBox, i, 'code', LangCodeBlock, blockContent);
                             }
 
                             // next element
@@ -293,7 +292,7 @@ const MessageContent = (content) => {
                         //const currentLabel = kids.length < i ? kids[i] : undefined;
                         const blockContent = lines.slice(lastProcessed, index).join('\n');
                         const text = md2pango(blockContent);
-                        updateContentAndBlockType (contentBox, i, 'text', TextBlock, text);
+                        updateContentAndBlockType(contentBox, i, 'text', TextBlock, text);
                         contentBox.add(Divider());
                         lastProcessed = index + 1;
 
@@ -308,7 +307,7 @@ const MessageContent = (content) => {
                         updateContentAndBlockType(contentBox, i, 'text', TextBlock, `${md2pango(blockContent)}${useCursor ? userOptions.asyncGet().ai.writingCursor : ''}`);
                     else
                         updateContentAndBlockType(contentBox, i, 'code', LangCodeBlock, blockContent);
-                    
+
                     i++;
                 }
                 // Debug: plain text

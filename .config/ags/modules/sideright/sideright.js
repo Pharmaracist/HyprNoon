@@ -27,10 +27,10 @@ import { checkKeybind } from '../.widgetutils/keybind.js';
 import GLib from 'gi://GLib';
 import VPN from './centermodules/vpn.js';
 import taskmanager from './centermodules/taskmanager.js';
-const config = userOptions.asyncGet();
-const elevate = userOptions.asyncGet().etc.widgetCorners ? "sidebar-right" : "sidebar-right shadow-window elevation";
+const opts = await userOptions.asyncGet();
+const elevate = opts.etc.widgetCorners ? "sidebar-right" : " elevation sidebar-right";
 export const calendarRevealer = Widget.Revealer({
-    revealChild: userOptions.asyncGet().sidebar.ModuleCalendar.visible ? true : false,
+    revealChild: opts.sidebar.ModuleCalendar.visible ? true : false,
     child: ModuleCalendar(),
     transition: 'slide_up',
 });
@@ -78,12 +78,12 @@ const modulesList = {
     },
 };
 
-// Get enabled modules from config
+// Get enabled modules from opts
 const getEnabledModules = () => {
-    const enabledModules = config.sidebar.centerModules.enabled || [];
+    const enabledModules = opts.sidebar.centerModules.enabled || [];
     return enabledModules
         .filter(moduleId => {
-            const moduleConfig = config.sidebar.centerModules[moduleId];
+            const moduleConfig = opts.sidebar.centerModules[moduleId];
             return moduleConfig && moduleConfig.enabled;
         })
         .map(moduleId => modulesList[moduleId])
@@ -155,6 +155,7 @@ const timeRow = Box({
             ]
         }),
         Widget.Box({ hexpand: true }),
+        ModuleSettingsIcon(),
         await ModulePowerIcon()
     ]
 });
@@ -168,9 +169,8 @@ const togglesBox = Widget.Box({
         ToggleIconBluetooth(),
         await ModuleNightLight(),
         await ModuleGameMode(),
-        userOptions.asyncGet().sidebar.ModuleCalendar.enabled ? await ToggleIconCalendar() : null, // Add the calendar toggle here
+        opts.sidebar.ModuleCalendar.enabled ? await ToggleIconCalendar() : null, // Add the calendar toggle here
         ModuleIdleInhibitor(),
-        ModuleSettingsIcon(),
         await ModuleCloudflareWarp(),
     ]
 })
@@ -230,10 +230,11 @@ let content = Box({
     vertical: true,
     vexpand: true,
     className: `${elevate}`,
+    css: opts.etc.widgetCorners ? null : 'border-radius:1.159rem',
     children: [
         Overlay({
             className: 'spacing-v-5',
-            child: userOptions.asyncGet().sidebar.showAnimeCat ? Cat : Box({ css: `min-height:8rem;`, }),
+            child: opts.sidebar.showAnimeCat ? Cat : Box({ css: `min-height:8rem;`, }),
             overlays: [topArea]
         }),
         Box({
@@ -244,13 +245,13 @@ let content = Box({
                 sidebarOptionsStack,
             ],
         }),
-        userOptions.asyncGet().sidebar.ModuleCalendar.enabled ? calendarRevealer : null
+        opts.sidebar.ModuleCalendar.enabled ? calendarRevealer : null
     ]
 });
 export default () => Box({
     vexpand: true,
     hexpand: true,
-    css: `${userOptions.asyncGet().sidebar.extraCss}`,
+    css: `${opts.sidebar.extraCss}`,
     children: [
         EventBox({
             onPrimaryClick: () => App.closeWindow('sideright'),
@@ -260,7 +261,7 @@ export default () => Box({
         Box({
             vexpand: true,
             children: [
-                userOptions.asyncGet().etc.widgetCorners ? Box({
+                opts.etc.widgetCorners ? Box({
                     vertical: true,
                     children: [
                         RoundedCorner('topright', { className: 'corner corner-colorscheme' }),
@@ -275,10 +276,10 @@ export default () => Box({
     ],
     setup: (self) => self
         .on('key-press-event', (widget, event) => { // Handle keybinds
-            if (checkKeybind(event, userOptions.asyncGet().keybinds.sidebar.options.nextTab)) {
+            if (checkKeybind(event, opts.keybinds.sidebar.options.nextTab)) {
                 sidebarOptionsStack.nextTab();
             }
-            else if (checkKeybind(event, userOptions.asyncGet().keybinds.sidebar.options.prevTab)) {
+            else if (checkKeybind(event, opts.keybinds.sidebar.options.prevTab)) {
                 sidebarOptionsStack.prevTab();
             }
         })

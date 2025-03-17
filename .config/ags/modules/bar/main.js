@@ -10,7 +10,7 @@ import { AnoonBar } from "./modes/anoon.js";
 import { WindowsTaskbar } from "./modes/windows.js";
 import { VerticalBar } from "./modes/vertical.js";
 import { VerticalBarPinned } from "./modes/verticalPinned.js";
-import { IslandBar } from "./modes/macLike.js";
+import { IslandBar } from "./modes/island.js";
 import { NotchBar } from "./modes/notch.js";
 import { SaadiBar } from "./modes/saadi.js";
 
@@ -121,7 +121,7 @@ export const BarCornerTopleft = (monitor = 0) => createCorner(monitor, "left");
 export const BarCornerTopright = (monitor = 0) => createCorner(monitor, "right");
 
 export const Bar = async (monitor = 0) => {
-  const opts = userOptions.asyncGet();
+  const opts = await userOptions.asyncGet();
   const mode = currentShellMode.value[monitor] || "1";
 
   const corners = ["left", "right"].map((side) => createCorner(monitor, side));

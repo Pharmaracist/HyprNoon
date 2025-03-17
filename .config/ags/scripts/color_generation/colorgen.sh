@@ -9,13 +9,14 @@ WALL_JSON_FILE="$STATE_DIR/user/wallpaper.json"
 # Read color scheme and light/dark mode settings
 colorscheme=$(sed -n '3p' "$STATE_DIR/user/colormode.txt")
 lightdark=$(sed -n '1p' "$STATE_DIR/user/colormode.txt")
-contrast=0.2 # TODO $(sed -n '8p' "$STATE_DIR/user/colormode.txt")
+contrast=0.3 # TODO $(sed -n '8p' "$STATE_DIR/user/colormode.txt")
+
 # SWWW options for wallpaper transition
 SWWW_OPTIONS="
     --transition-type wipe \
-    --transition-duration 1 \
+    --transition-duration 2 \
     --transition-step 90 \
-    --transition-fps 60 \
+    --transition-fps 100 \
     -f Nearest
 "
 
@@ -36,12 +37,9 @@ main () {
 
     # Check if the wallpaper file exists
     if [[ -f "$currentwallpaper" ]]; then
-        # Update the current_wallpaper.txt with the new (or reused) path
         echo "$currentwallpaper" > "$WALLPAPER_FILE" &
-
-        # Generate color scheme (optional) and set wallpaper
-        swww img $SWWW_OPTIONS "$currentwallpaper" &
         matugen image "$currentwallpaper" --type "$colorscheme" --mode "$lightdark" --contrast "$contrast" &
+        # swww img $SWWW_OPTIONS "$currentwallpaper" &
     else
         echo "Error: Wallpaper file not found at '$currentwallpaper'"
         exit 1

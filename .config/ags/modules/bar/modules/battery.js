@@ -71,7 +71,7 @@ const BatteryContent = () => {
     let timeoutId = 0;
 
     const percentageLabel = Label({
-        className: "sec-txt bar-date",
+        className: "sec-txt bar-battery-percentage",
         setup: (self) => self.hook(Battery, (label) => {
             label.label = `${Battery.percent.toFixed(0)}`;
         }),

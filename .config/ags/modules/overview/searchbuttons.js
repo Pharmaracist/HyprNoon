@@ -9,7 +9,7 @@ import GeminiService from '../../services/gemini.js';
 import ChatGPTService from '../../services/gpt.js';
 
 // Кэшируем часто используемые опции
-const options = userOptions.asyncGet();
+const options = await userOptions.asyncGet();
 const animations = options.animations;
 const searchConfig = options.search;
 const aiConfig = options.ai;

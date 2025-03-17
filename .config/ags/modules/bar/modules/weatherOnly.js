@@ -1,19 +1,19 @@
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import { MaterialIcon } from "../../.commonwidgets/materialicon.js";
-import WeatherService  from '../../../services/weather.js';
+import WeatherService from '../../../services/weather.js';
 
 const WeatherOnly = () => {
-    const weatherIcon = MaterialIcon('device_thermostat', 'large weather-icon txt-norm txt-onLayer1');
-    
+    const weatherIcon = MaterialIcon('device_thermostat', 'large weather-icon txt-norm onSurfaceVariant');
+
     const tempLabel = Widget.Label({
-        className: "txt-norm txt-onLayer1",
+        className: "txt-norm onSurfaceVariant",
         setup: self => self.hook(WeatherService, () => {
             self.label = WeatherService.temperature;
         })
     });
 
     const feelsLikeLabel = Widget.Label({
-        className: "txt-norm txt-onLayer1",
+        className: "txt-norm onSurfaceVariant",
         setup: self => self.hook(WeatherService, () => {
             self.label = `Feels ${WeatherService.feelsLike}`;
         })

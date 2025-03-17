@@ -8,7 +8,7 @@ import * as Utils from 'resource:///com/github/Aylur/ags/utils.js'
 import Widget from 'resource:///com/github/Aylur/ags/widget.js';
 const { Box, DrawingArea, EventBox } = Widget;
 import Hyprland from 'resource:///com/github/Aylur/ags/service/hyprland.js';
-
+let opts = await userOptions.asyncGet()
 const dummyWs = Box({ className: 'bar-ws' }); // Not shown. Only for getting size props
 const dummyActiveWs = Box({ className: 'bar-ws bar-ws-active' }); // Not shown. Only for getting size props
 const dummyOccupiedWs = Box({ className: 'bar-ws bar-ws-occupied' }); // Not shown. Only for getting size props
@@ -55,15 +55,12 @@ const convertNumber = (number, style = 'arabic') => {
 // Font size = workspace id
 const WorkspaceContents = (count = 10) => {
     return DrawingArea({
-        className: 'bar-ws-container',
-        hexpand: true,
-        hpack: "center",
         attribute: {
             initialized: false,
             workspaceMask: 0,
             workspaceGroup: 0,
             updateMask: (self) => {
-                const offset = Math.floor((Hyprland.active.workspace.id - 1) / count) * userOptions.asyncGet().workspaces.shown;
+                const offset = Math.floor((Hyprland.active.workspace.id - 1) / count) * opts.workspaces.shown;
                 // if (self.attribute.initialized) return; // We only need this to run once
                 const workspaces = Hyprland.workspaces;
                 let workspaceMask = 0;
@@ -96,7 +93,7 @@ const WorkspaceContents = (count = 10) => {
             })
             .hook(Hyprland, (self) => self.attribute.updateMask(self), 'notify::workspaces')
             .on('draw', Lang.bind(area, (area, cr) => {
-                const offset = Math.floor((Hyprland.active.workspace.id - 1) / count) * userOptions.asyncGet().workspaces.shown;
+                const offset = Math.floor((Hyprland.active.workspace.id - 1) / count) * opts.workspaces.shown;
 
                 const allocation = area.get_allocation();
                 const { width, height } = allocation;
@@ -117,7 +114,7 @@ const WorkspaceContents = (count = 10) => {
                 const activeWorkspaceStyleContext = dummyActiveWs.get_style_context();
                 const activebg = activeWorkspaceStyleContext.get_property('background-color', Gtk.StateFlags.NORMAL);
                 const activefg = activeWorkspaceStyleContext.get_property('color', Gtk.StateFlags.NORMAL);
-                
+
                 // Set minimum width and height
                 area.set_size_request(workspaceDiameter, workspaceDiameter * count);
                 const widgetStyleContext = area.get_style_context();
@@ -186,10 +183,10 @@ const WorkspaceContents = (count = 10) => {
                         cr.setSourceRGBA(inactivecolors.red, inactivecolors.green, inactivecolors.blue, inactivecolors.alpha);
 
                     // Convert number to selected style
-                    const numberStyle = userOptions.asyncGet().workspaces.style || 'arabic';
+                    const numberStyle = opts.workspaces.style || 'arabic';
                     const displayNumber = convertNumber(i + offset, numberStyle);
                     layout.set_text(displayNumber, -1);
-                    
+
                     const [layoutWidth, layoutHeight] = layout.get_pixel_size();
                     const x = (width - layoutWidth) / 2;
                     const y = -workspaceRadius + (workspaceDiameter * i) - (layoutHeight / 2);
@@ -202,34 +199,25 @@ const WorkspaceContents = (count = 10) => {
     })
 }
 
-export default () => EventBox({
+export default async () => EventBox({
     // onScrollUp: () => Hyprland.messageAsync(`dispatch workspace -1`).catch(print),
     // onScrollDown: () => Hyprland.messageAsync(`dispatch workspace +1`).catch(print),
     onMiddleClick: () => toggleWindowOnAllMonitors('osk'),
     onSecondaryClick: () => App.toggleWindow('overview'),
-    vexpand: true,
-    vpack: 'center',
     attribute: {
         clicked: false,
         ws_group: 0,
     },
-    child: Box({
-        homogeneous: true,
-        vexpand: true,
-        children: [
-            Box({
-                vexpand: true,
-                children: [WorkspaceContents(userOptions.asyncGet().workspaces.shown)],
-            })
-        ]
-    }),
+    className: "bar-group-pad-vertical bar-group",
+    hpack: 'center',
+    child: await WorkspaceContents(opts.workspaces.shown),
     setup: (self) => {
         self.add_events(Gdk.EventMask.POINTER_MOTION_MASK);
         self.on('motion-notify-event', (self, event) => {
             if (!self.attribute.clicked) return;
             const [_, cursorX, cursorY] = event.get_coords();
             const widgetHeight = self.get_allocation().height;
-            const wsId = Math.ceil(cursorY * userOptions.asyncGet().workspaces.shown / widgetHeight);
+            const wsId = Math.ceil(cursorY * opts.workspaces.shown / widgetHeight);
             Utils.execAsync([`${App.configDir}/scripts/hyprland/workspace_action.sh`, 'workspace', `${wsId}`])
                 .catch(print);
         })
@@ -238,7 +226,7 @@ export default () => EventBox({
                 self.attribute.clicked = true;
                 const [_, cursorX, cursorY] = event.get_coords();
                 const widgetHeight = self.get_allocation().height;
-                const wsId = Math.ceil(cursorY * userOptions.asyncGet().workspaces.shown / widgetHeight);
+                const wsId = Math.ceil(cursorY * opts.workspaces.shown / widgetHeight);
                 Utils.execAsync([`${App.configDir}/scripts/hyprland/workspace_action.sh`, 'workspace', `${wsId}`])
                     .catch(print);
             }

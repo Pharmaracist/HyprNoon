@@ -6,7 +6,7 @@ const { Box, EventBox, Icon, Overlay, Label, Button, Revealer } = Widget;
 import { MaterialIcon } from './materialicon.js';
 import { setupCursorHover } from "../.widgetutils/cursorhover.js";
 import { AnimatedCircProg } from "./cairo_circularprogress.js";
-
+let opts = await userOptions.asyncGet()
 function guessMessageType(summary) {
     const str = summary.toLowerCase();
     if (str.includes('reboot')) return 'restart_alt';
@@ -31,11 +31,11 @@ const getFriendlyNotifTimeString = (timeObject) => {
     if (messageTime.compare(oneMinuteAgo) > 0)
         return getString('Now');
     else if (messageTime.get_day_of_year() == GLib.DateTime.new_now_local().get_day_of_year())
-        return messageTime.format(userOptions.asyncGet().time.format);
+        return messageTime.format(opts.time.format);
     else if (messageTime.get_day_of_year() == GLib.DateTime.new_now_local().get_day_of_year() - 1)
         return getString('Yesterday');
     else
-        return messageTime.format(userOptions.asyncGet().time.dateFormat);
+        return messageTime.format(opts.time.dateFormat);
 }
 
 const NotificationIcon = (notifObject) => {
@@ -93,10 +93,10 @@ export default ({
     const destroyWithAnims = () => {
         widget.sensitive = false;
         notificationBox.setCss(middleClickClose);
-        Utils.timeout(userOptions.asyncGet().animations.durationSmall, () => {
+        Utils.timeout(opts.animations.durationSmall, () => {
             if (wholeThing) wholeThing.revealChild = false;
         }, wholeThing);
-        Utils.timeout(userOptions.asyncGet().animations.durationSmall * 2, () => {
+        Utils.timeout(opts.animations.durationSmall * 2, () => {
             command();
             if (wholeThing) {
                 wholeThing.destroy();
@@ -149,7 +149,7 @@ export default ({
         },
         revealChild: false,
         transition: 'slide_down',
-        transitionDuration: userOptions.asyncGet().animations.durationLarge,
+        transitionDuration: opts.animations.durationLarge,
         child: Box({ // Box to make sure css-based spacing works
             homogeneous: true,
         }),
@@ -158,7 +158,7 @@ export default ({
     const display = Gdk.Display.get_default();
     const notifTextPreview = Revealer({
         transition: 'slide_down',
-        transitionDuration: userOptions.asyncGet().animations.durationSmall,
+        transitionDuration: opts.animations.durationSmall,
         revealChild: true,
         child: Label({
             xalign: 0,
@@ -173,7 +173,7 @@ export default ({
     });
     const notifTextExpanded = Revealer({
         transition: 'slide_up',
-        transitionDuration: userOptions.asyncGet().animations.durationSmall,
+        transitionDuration: opts.animations.durationSmall,
         revealChild: false,
         child: Box({
             vertical: true,
@@ -322,17 +322,17 @@ export default ({
     const maxOffset = 10.227;
     const endMargin = 20.455;
     const disappearHeight = 6.818;
-    const leftAnim1 = `transition: ${userOptions.asyncGet().animations.durationSmall}ms cubic-bezier(0.05, 0.7, 0.1, 1);
+    const leftAnim1 = `transition: ${opts.animations.durationSmall}ms cubic-bezier(0.05, 0.7, 0.1, 1);
                        margin-left: -${Number(maxOffset + endMargin)}rem;
                        margin-right: ${Number(maxOffset + endMargin)}rem;
                        opacity: 0;`;
 
-    const rightAnim1 = `transition: ${userOptions.asyncGet().animations.durationSmall}ms cubic-bezier(0.05, 0.7, 0.1, 1);
+    const rightAnim1 = `transition: ${opts.animations.durationSmall}ms cubic-bezier(0.05, 0.7, 0.1, 1);
                         margin-left:   ${Number(maxOffset + endMargin)}rem;
                         margin-right: -${Number(maxOffset + endMargin)}rem;
                         opacity: 0;`;
 
-    const middleClickClose = `transition: ${userOptions.asyncGet().animations.durationSmall}ms cubic-bezier(0.85, 0, 0.15, 1);
+    const middleClickClose = `transition: ${opts.animations.durationSmall}ms cubic-bezier(0.85, 0, 0.15, 1);
                               margin-left:   ${Number(maxOffset + endMargin)}rem;
                               margin-right: -${Number(maxOffset + endMargin)}rem;
                               opacity: 0;`;
@@ -417,10 +417,10 @@ export default ({
                         self.setCss(leftAnim1);
                         widget.sensitive = false;
                     }
-                    Utils.timeout(userOptions.asyncGet().animations.durationSmall, () => {
+                    Utils.timeout(opts.animations.durationSmall, () => {
                         if (wholeThing) wholeThing.revealChild = false;
                     }, wholeThing);
-                    Utils.timeout(userOptions.asyncGet().animations.durationSmall * 2, () => {
+                    Utils.timeout(opts.animations.durationSmall * 2, () => {
                         command();
                         if (wholeThing) {
                             wholeThing.destroy();
@@ -449,7 +449,7 @@ export default ({
     if (isPopup) Utils.timeout(popupTimeout, () => {
         if (wholeThing) {
             wholeThing.revealChild = false;
-            Utils.timeout(userOptions.asyncGet().animations.durationSmall, () => {
+            Utils.timeout(opts.animations.durationSmall, () => {
                 if (wholeThing) {
                     wholeThing.destroy();
                     wholeThing = null;
