@@ -1,26 +1,17 @@
 import PopupWindow from "../.widgethacks/popupwindow.js";
-import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import WallSelect from "./wallpaper_selector.js";
-import clickCloseRegion from "../.commonwidgets/clickcloseregion.js";
-import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
-const { Box } = Widget;
 
 export default () =>
   PopupWindow({
     keymode: "on-demand",
-    anchor: ["left", "top", "right"],
     name: "wallselect",
-    child: Box({
-      vertical: true,
-      children: [
-        WallSelect(),
-        userOptions.asyncGet().etc.clickCloseRegion
-          ? clickCloseRegion({
-              name: "wallselect",
-              multimonitor: false,
-              fillMonitor: "vertical",
-            })
-          : null,
-      ],
-    }),
+    child: WallSelect(),
+    setup: (self) => {
+      self.hook(barPosition, () => {
+        self.anchor = [horizontalAnchor(), "left", "right"];
+        self.exclusivity = ["top", "bottom"].includes(barPosition.value)
+          ? "normal"
+          : "ignore";
+      });
+    },
   });

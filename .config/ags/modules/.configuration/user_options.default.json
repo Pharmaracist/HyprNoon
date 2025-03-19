@@ -46,9 +46,7 @@
     "safety": true,
     "writingCursor": " ...",
     "proxyUrl": "",
-    "__custom": [
-      "extraGptModels"
-    ]
+    "__custom": ["extraGptModels"]
   },
   "animations": {
     "choreographyDelay": 50,
@@ -82,16 +80,8 @@
   "battery": {
     "low": 20,
     "critical": 10,
-    "warnLevels": [
-      20,
-      15,
-      5
-    ],
-    "warnTitles": [
-      "Low battery",
-      "Very low battery",
-      "Critical Battery"
-    ],
+    "warnLevels": [20, 15, 5],
+    "warnTitles": ["Low battery", "Very low battery", "Critical Battery"],
     "warnMessages": [
       "Plug in the charger",
       "You there?",
@@ -121,6 +111,7 @@
     "preferredPlayer": "plasma-browser-integration"
   },
   "overview": {
+    "maxResults": 5,
     "useNameInPrompt": false,
     "spotlightTheme": true,
     "scale": 0.18,
@@ -182,9 +173,7 @@
         "apiKey": ""
       },
       "logo": "deepseek-symbolic",
-      "__custom": [
-        "extraGptModels"
-      ],
+      "__custom": ["extraGptModels"],
       "extraGptModels": {
         "zuki": {
           "name": "ZoukiJourney API",
@@ -235,24 +224,13 @@
       "initMessages": []
     },
     "pages": {
-      "order": [
-        "apis",
-        "tools",
-        "github"
-      ],
+      "order": ["apis", "tools", "github"],
       "apis": {
-        "order": [
-          "gpt",
-          "gemini",
-          "quran",
-          "translater"
-        ]
+        "order": ["gpt", "gemini", "quran", "translater"]
       }
     },
     "translater": {
-      "__custom": [
-        "languages"
-      ],
+      "__custom": ["languages"],
       "from": "auto",
       "to": "ar",
       "languages": {
@@ -277,9 +255,7 @@
       "webSearch": true
     },
     "engineBaseUrl": "https://www.google.com/search?q=",
-    "excludedSites": [
-      "quora.com"
-    ]
+    "excludedSites": ["quora.com"]
   },
   "timers": {
     "presets": [
@@ -342,10 +318,7 @@
     "layer": "top",
     "monitorExclusivity": true,
     "searchPinnedAppIcons": false,
-    "trigger": [
-      "client-added",
-      "client-removed"
-    ],
+    "trigger": ["client-added", "client-removed"],
     "autoHide": [
       {
         "trigger": "client-added",
@@ -358,13 +331,8 @@
     ]
   },
   "icons": {
-    "__custom": [
-      "substitutions",
-      "regexSubstitutions"
-    ],
-    "searchPaths": [
-      ""
-    ],
+    "__custom": ["substitutions", "regexSubstitutions"],
+    "searchPaths": [""],
     "symbolicIconTheme": {
       "dark": "Adwaita",
       "light": "Adwaita"

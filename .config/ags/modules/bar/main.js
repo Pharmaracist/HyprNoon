@@ -30,7 +30,7 @@ const verticalModes = new Map([
   ["9", [await VerticalBar, false, "Vertical Bar"]],
   ["10", [await VerticalBarPinned, true, "Vertical Bar Pinned"]],
 ]);
-
+globalThis["verticalModes"];
 const modes = new Map([...horizontalModes, ...verticalModes]);
 
 const shouldShowCorners = (monitor) => {
@@ -42,9 +42,11 @@ const shouldShowCorners = (monitor) => {
 const getValidPosition = (mode, currentPos) => {
   const isVerticalMode = verticalModes.has(mode);
   if (isVerticalMode) {
-    return (currentPos === 'left' || currentPos === 'right') ? currentPos : 'left';
+    return currentPos === "left" || currentPos === "right"
+      ? currentPos
+      : "left";
   } else {
-    return (currentPos === 'top' || currentPos === 'bottom') ? currentPos : 'top';
+    return currentPos === "top" || currentPos === "bottom" ? currentPos : "top";
   }
 };
 
@@ -52,30 +54,46 @@ const createCorner = (monitor, side) => {
   const getCornerStyle = (pos, isVert) => {
     if (isVert) {
       return pos === "left"
-        ? side === "left" ? "topleft" : "bottomleft"
-        : side === "left" ? "topright" : "bottomright";
+        ? side === "left"
+          ? "topleft"
+          : "bottomleft"
+        : side === "left"
+        ? "topright"
+        : "bottomright";
     }
     return pos === "top"
-      ? side === "left" ? "topleft" : "topright"
-      : side === "left" ? "bottomleft" : "bottomright";
+      ? side === "left"
+        ? "topleft"
+        : "topright"
+      : side === "left"
+      ? "bottomleft"
+      : "bottomright";
   };
 
   const cornerWindow = Widget.Window({
     monitor,
     name: `barcorner${side[0]}${monitor}`,
-    exclusivity: 'exclusive',
+    exclusivity: "exclusive",
     layer: "bottom",
     anchor: [
-      getValidPosition(currentShellMode.value[monitor] || "1", barPosition.value),
+      getValidPosition(
+        currentShellMode.value[monitor] || "1",
+        barPosition.value
+      ),
       verticalModes.has(currentShellMode.value[monitor] || "1")
-        ? side === "left" ? "top" : "bottom"
-        : side
+        ? side === "left"
+          ? "top"
+          : "bottom"
+        : side,
     ],
     exclusivity: "normal",
     visible: shouldShowCorners(monitor),
     child: RoundedCorner(
       getCornerStyle(
-        getValidPosition(currentShellMode.value[monitor] || "1", barPosition.value),
+        getValidPosition(
+          currentShellMode.value[monitor] || "1",
+          barPosition.value
+        ),
         verticalModes.has(currentShellMode.value[monitor] || "1")
       ),
       { className: "corner" }
@@ -90,8 +108,13 @@ const createCorner = (monitor, side) => {
 
         // First update visibility
         if (shouldShow) {
-          self.child = RoundedCorner(getCornerStyle(pos, isVert), { className: "corner" });
-          self.anchor = [pos, isVert ? side === "left" ? "top" : "bottom" : side];
+          self.child = RoundedCorner(getCornerStyle(pos, isVert), {
+            className: "corner",
+          });
+          self.anchor = [
+            pos,
+            isVert ? (side === "left" ? "top" : "bottom") : side,
+          ];
           self.show_all();
         }
         self.visible = shouldShow;
@@ -118,7 +141,8 @@ const getAnchor = (monitor, mode) => {
 };
 
 export const BarCornerTopleft = (monitor = 0) => createCorner(monitor, "left");
-export const BarCornerTopright = (monitor = 0) => createCorner(monitor, "right");
+export const BarCornerTopright = (monitor = 0) =>
+  createCorner(monitor, "right");
 
 export const Bar = async (monitor = 0) => {
   const opts = await userOptions.asyncGet();
@@ -130,8 +154,7 @@ export const Bar = async (monitor = 0) => {
   for (const [key, [component]] of modes) {
     try {
       children[key] = component;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   const stack = Widget.Stack({
