@@ -2,18 +2,18 @@ import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import WallpaperImage from "./wallpaper.js";
 import SystemWidget from "./onscreenwidgets/system.js";
 import Normal from "./onscreenwidgets/simpleclock.js";
+import ScrolledModule from "./../.commonwidgets/scrolledmodule.js";
 import WeatherBlock from "./onscreenwidgets/weatherBlock.js";
 import Auva from "./onscreenwidgets/auva.js";
 import { zaWiseCat } from "./onscreenwidgets/zaWizeCat.js";
 import ResourcesBlock from "./onscreenwidgets/resourcesBlock.js";
-let opts = await userOptions.asyncGet()
-import CalendarDay from './onscreenwidgets/calendarDay.js';
+let opts = await userOptions.asyncGet();
+import CalendarDay from "./onscreenwidgets/calendarDay.js";
 import phoneNotif from "./onscreenwidgets/phoneNotif.js";
 export default (monitor) =>
   Widget.Window({
     name: `desktopbackground${monitor}`,
     layer: "background",
-    // exclusivity: 'ignore',
     visible: opts.desktopBackground.visible ? true : false,
     keymode: "on-demand",
     child: Widget.Overlay({
@@ -21,25 +21,32 @@ export default (monitor) =>
       overlays: [
         Widget.Box({
           children: [
-            Auva(),
-            // Normal(),
+            ScrolledModule({
+              children: [Auva(), Normal()],
+            }),
             Widget.Box({ hexpand: true }),
-            opts.desktopBackground.resources ? SystemWidget() : null,
             Widget.Box({
               vertical: true,
-              css: 'margin-right:0.6rem',
               children: [
-                opts.desktopBackground.enableWisecat ? zaWiseCat : null,
-                Widget.Box({
+                ScrolledModule({
+                  hpack: "end",
+                  hexpand: true,
                   children: [
-                    CalendarDay(),
-                    WeatherBlock()
-                  ]
+                    Widget.Box({
+                      vertical: true,
+                      children: [
+                        Widget.Box({
+                          children: [CalendarDay(), WeatherBlock()],
+                        }),
+                        ResourcesBlock(),
+                      ],
+                    }),
+                    zaWiseCat,
+                  ],
                 }),
-                ResourcesBlock(),
-                Widget.Box({ vexpand: true })
-              ]
-            })
+                Widget.Box({ vexpand: true }),
+              ],
+            }),
           ],
         }),
         // Widget.Box({
