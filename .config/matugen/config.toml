@@ -123,7 +123,7 @@ output_path = "/mnt/Data/General-Archive/obsidian/.obsidian/snippets/HyprNoon.cs
 
 [templates.vscode]
 input_path = "~/.config/matugen/templates/vscode-color-theme.json"
-output_path = "~/.windsurf/extensions/theme-material-you/themes/vscode.json"
+output_path = "~/.vscode/extensions/hyprluna/themes/HyprLuna-color-theme.json"
 
 [templates.pywalfox]
 input_path = '~/.config/matugen/templates/pywalfox-colors.json'

@@ -1,0 +1,42 @@
+// Reset
+*:not(popover) {
+    all: unset;
+}
+
+// Colors
+@import "mode";
+@import "material";
+@import "./colors";
+@import "./lib_mixins";
+@import "lib_mixins_overrides";
+@import "./lib_classes";
+@import "./common";
+// Components
+@import "./bar";
+@import "./cheatsheet";
+@import "./desktopbackground";
+@import "./dock";
+@import "./osd";
+@import "./overview";
+@import "./sidebars";
+@import "./session";
+@import "./notifications";
+@import "./wallpaper";
+@import "./music";
+@import "./auvaDesktop";
+
+// Classes for interaction
+.growingRadial {
+    transition: 300ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.fadingRadial {
+    transition: 50ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.sidebar-pinned {
+    font-size: medium;
+    margin-right: 0rem;
+    min-width: 400px;
+    border: 0 solid #000;
+}
