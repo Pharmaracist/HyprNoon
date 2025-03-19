@@ -7,8 +7,6 @@ export default (id = "") =>
   PopupWindow({
     name: `glance${id}`,
     keymode: "on-demand",
-    exclusivity: "ignore",
-    anchor: ["top", "left", "right"],
     child: Widget.Box({
       vertical: true,
       vexpand: true,
@@ -23,4 +21,12 @@ export default (id = "") =>
           : null,
       ],
     }),
+    setup: (self) => {
+      self.hook(barPosition, () => {
+        self.anchor = [horizontalAnchor(), "left", "right"];
+        self.exclusivity = ["top", "bottom"].includes(barPosition.value)
+          ? "normal"
+          : "ignore";
+      });
+    },
   });

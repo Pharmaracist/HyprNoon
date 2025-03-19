@@ -1,6 +1,5 @@
 import PopupWindow from "../.widgethacks/popupwindow.js";
 import WallSelect from "./wallpaper_selector.js";
-
 export default () =>
   PopupWindow({
     keymode: "on-demand",

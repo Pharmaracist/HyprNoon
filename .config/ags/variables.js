@@ -84,10 +84,8 @@ const opposites = {
 };
 
 const horizontalComputeAnchor = () =>
-  horizontalAnchorMapping[barPosition.value] || "bottom";
-
-const verticalComputeAnchor = () =>
-  verticalAnchorMapping[barPosition.value] || "right";
+  horizontalAnchorMapping[barPosition.value];
+const verticalComputeAnchor = () => verticalAnchorMapping[barPosition.value];
 
 const antiVerticalAnchor = () => opposites[verticalComputeAnchor()];
 const antiHorizontalAnchor = () => opposites[horizontalComputeAnchor()];
