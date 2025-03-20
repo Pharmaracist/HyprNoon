@@ -4,24 +4,26 @@ $sidebar_chat_textboxareaColor: mix($onSurfaceVariant, $surfaceVariant, 40%);
   padding: 0.341rem;
 }
 
-.sidebar-right {
+.sidebar-right-bg {
   @include shadows1;
   @include menu_decel;
   background-color: $background;
   padding: 1.023rem;
   border-radius: 0 $rounding_small $rounding_small 0;
-  min-width: 410px;
+  min-width: 420px;
 }
 
-.sidebar-left {
+.sidebar-left-bg {
   @include shadows1;
   @include menu_decel;
   background-color: $background;
   border-radius: $rounding_small 0 0 $rounding_small;
   padding: 1.023rem;
-  min-width: 410px;
+  min-width: 420px;
 }
-
+.sidebar-round {
+  @include normal-rounding;
+}
 .sidebar-group {
   @include normal-rounding;
   @include group-padding;

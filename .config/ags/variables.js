@@ -7,7 +7,8 @@ import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 const { exec, execAsync } = Utils;
 
 import { init as i18n_init, getString } from "./i18n/i18n.js";
-//init i18n, Load language file
+
+// Init i18n, Load language file
 i18n_init();
 Gtk.IconTheme.get_default().append_search_path(`${App.configDir}/assets/icons`);
 Gtk.IconTheme.get_default().append_search_path(`${App.configDir}/assets/anime`);
@@ -19,6 +20,7 @@ Gtk.IconTheme.get_default().append_search_path(
 const SCHEMA_ID = "org.gnome.shell.extensions.ags";
 const KEY_BAR_MODE = "bar-mode";
 const KEY_BAR_POSITION = "bar-position";
+const KEY_USE_CORNERS = "use-corners"; // New schema key for UseCorners
 const settings = new Gio.Settings({ schema_id: SCHEMA_ID });
 
 const getInitialMode = () => {
@@ -34,6 +36,13 @@ export const currentShellMode = Variable(getInitialMode());
 export const barPosition = Variable(
   settings.get_string(KEY_BAR_POSITION) || "top"
 );
+
+// Initialize UseCorners variable directly
+const getInitialUseCorners = () => {
+  return settings.get_boolean(KEY_USE_CORNERS) || false; // Read the boolean value, default to false
+};
+export const useCorners = Variable(getInitialUseCorners());
+globalThis["useCorners"] = useCorners;
 
 // Mode switching
 export const updateMonitorShellMode = (monitorShellModes, monitor, mode) => {
@@ -62,6 +71,7 @@ globalThis["toggleBarPosition"] = () => {
   settings.set_string(KEY_BAR_POSITION, newPosition);
   barPosition.value = newPosition;
 };
+
 const horizontalAnchorMapping = {
   top: "top",
   left: "top",
@@ -180,3 +190,26 @@ Utils.timeout(0, () => {
   const modes = currentShellMode.value;
   currentShellMode.value = { ...modes };
 });
+
+// Toggle UseCorners function
+export const toggleUseCorners = () => {
+  const newValue = !useCorners.value; // Toggle the current boolean value
+  useCorners.value = newValue; // Update the variable
+  settings.set_boolean(KEY_USE_CORNERS, newValue); // Save the new value to gsettings
+  print(`UseCorners toggled: ${newValue}`); // Optional: Print status for debugging
+};
+
+// Expose toggleUseCorners globally for external access
+globalThis["toggleUseCorners"] = () => toggleUseCorners();
+
+// Handle --run-js argument for toggleUseCorners (similar to bar method)
+const handleArgs = (args) => {
+  if (args.includes("toggleUseCorners")) {
+    toggleUseCorners();
+  }
+};
+
+// Execute function based on args
+if (typeof ARGV !== "undefined") {
+  handleArgs(ARGV);
+}

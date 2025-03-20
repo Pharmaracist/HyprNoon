@@ -28,9 +28,6 @@ import GLib from "gi://GLib";
 import VPN from "./centermodules/vpn.js";
 import taskmanager from "./centermodules/taskmanager.js";
 const opts = await userOptions.asyncGet();
-const elevate = opts.etc.widgetCorners
-  ? "sidebar-right"
-  : " elevation sidebar-right";
 export const calendarRevealer = Widget.Revealer({
   revealChild: true,
   child: ModuleCalendar(),
@@ -226,8 +223,6 @@ let topArea = Box({
 let content = Box({
   vertical: true,
   vexpand: true,
-  className: `${elevate}`,
-  css: opts.etc.widgetCorners ? null : "border-radius:1.159rem",
   children: [
     Overlay({
       className: "spacing-v-5",
@@ -242,6 +237,12 @@ let content = Box({
     }),
     opts.sidebar.ModuleCalendar.enabled ? calendarRevealer : null,
   ],
+  setup: (self) =>
+    self.hook(useCorners, () => {
+      self.className = useCorners.value
+        ? "sidebar-right-bg"
+        : "sidebar-right-bg sidebar-round elevation";
+    }),
 });
 export default () =>
   Box({
@@ -257,20 +258,24 @@ export default () =>
       Box({
         vexpand: true,
         children: [
-          opts.etc.widgetCorners
-            ? Box({
-                vertical: true,
-                children: [
-                  RoundedCorner("topright", {
-                    className: "corner corner-colorscheme",
-                  }),
-                  Box({ vexpand: true }),
-                  RoundedCorner("bottomright", {
-                    className: "corner corner-colorscheme",
-                  }),
-                ],
-              })
-            : null,
+          Box({
+            vertical: true,
+            setup: (self) => {
+              self.hook(useCorners, () => {
+                self.children = useCorners.value
+                  ? [
+                      RoundedCorner("topright", {
+                        className: "corner corner-colorscheme",
+                      }),
+                      Box({ vexpand: true }),
+                      RoundedCorner("bottomright", {
+                        className: "corner corner-colorscheme",
+                      }),
+                    ]
+                  : [];
+              });
+            },
+          }),
           content,
         ],
       }),

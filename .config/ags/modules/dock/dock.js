@@ -247,24 +247,51 @@ const PinnedApps = () =>
   });
 export default (monitor = 0) => {
   const dockContent = Box({
+    vertical: true,
     children: [
-      opts.etc.widgetCorners
-        ? RoundedCorner("bottomright", {
-            vpack: "end",
-            className: "corner corner-colorscheme",
-          })
-        : null,
       Box({
-        className: `${elevate}`,
-        css: `padding:${dockSize / 85}rem`,
-        children: [PinButton(), PinnedApps(), DockSeparator(), Taskbar()],
+        children: [
+          Box({
+            setup: (self) => {
+              self.hook(useCorners, () => {
+                self.children = useCorners.value
+                  ? [
+                      RoundedCorner("bottomright", {
+                        className: "corner corner-colorscheme",
+                        vpack: "end",
+                      }),
+                    ]
+                  : [];
+              });
+            },
+          }),
+          Box({
+            css: `padding:${dockSize / 85}rem`,
+            children: [PinButton(), PinnedApps(), DockSeparator(), Taskbar()],
+            setup: (self) => {
+              self.hook(useCorners, () => {
+                self.className = useCorners.value
+                  ? "dock-bg"
+                  : "dock-bg elevation sidebar-round";
+              });
+            },
+          }),
+          Box({
+            setup: (self) => {
+              self.hook(useCorners, () => {
+                self.children = useCorners.value
+                  ? [
+                      RoundedCorner("bottomleft", {
+                        className: "corner corner-colorscheme",
+                        vpack: "end",
+                      }),
+                    ]
+                  : [];
+              });
+            },
+          }),
+        ],
       }),
-      opts.etc.widgetCorners
-        ? RoundedCorner("bottomleft", {
-            vpack: "end",
-            className: "corner corner-colorscheme",
-          })
-        : null,
     ],
   });
   const dockRevealer = Revealer({

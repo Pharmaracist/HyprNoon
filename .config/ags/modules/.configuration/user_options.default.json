@@ -427,7 +427,6 @@
     "clickCloseRegion": true,
     "sideLeftPin": true,
     "cornerRadius": "20",
-    "widgetCorners": true,
     "todoPath": "/mnt/Data/General-Archive/obsidian/HyprNoon.md",
     "recordingPath": "/Videos/Records",
     "screencorners": {

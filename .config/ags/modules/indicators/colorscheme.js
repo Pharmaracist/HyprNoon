@@ -303,17 +303,12 @@ const ColorSchemeSettings = () =>
       }),
     ],
   });
-const topLeftCorner = RoundedCorner("topleft", {
-  className: "corner corner-colorscheme",
-});
-const topRightCorner = RoundedCorner("topright", {
-  className: "corner corner-colorscheme",
-});
 const ColorschemeContent = () =>
   Widget.Box({
+    hpack: "fill",
     children: [
       Widget.Box({
-        className: "osd-colorscheme osd-round spacing-v-5",
+        className: "osd-colorscheme elevation sidebar-round",
         vertical: true,
         hpack: "center",
         children: [
@@ -374,14 +369,39 @@ const ColorschemeContent = () =>
           }),
           ColorSchemeSettingsRevealer(),
         ],
+        setup: (self) =>
+          self.hook(useCorners, () => {
+            self.className = useCorners.value
+              ? "osd-colorscheme"
+              : "osd-colorscheme osd-elevation sidebar-round";
+          }),
       }),
     ],
   });
+const CornerBox = (corner, vpack) =>
+  Widget.Box({
+    setup: (self) =>
+      self.hook(useCorners, () => {
+        self.children = useCorners.value
+          ? [
+              RoundedCorner(corner, {
+                vpack,
+                className: "corner-colorscheme corner",
+              }),
+            ]
+          : [];
+      }),
+  });
+
 const BorderedColorSchemeContent = () =>
   Widget.Box({
-    className: "bordered-corner-colorscheme ",
-    children: [topRightCorner, ColorschemeContent(), topLeftCorner],
+    children: [
+      CornerBox("topright", "start"),
+      ColorschemeContent(),
+      CornerBox("topleft", "start"),
+    ],
   });
+
 const isHoveredColorschemeSettings = Variable(false);
 
 export default () =>
