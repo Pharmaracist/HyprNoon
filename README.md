@@ -1,7 +1,7 @@
 <div align="center">
     <h1>☀️ HyprNoon ☀️ by Pharmaracist</h1>
     <p align="center">
-      <img width="40%" src="resources/logo.svg">
+      <img width="90%" src="resources/logo.svg">
     </p>
 </div>
 
