@@ -13,11 +13,11 @@ const createClassWindow = async () => {
       await import("resource:///com/github/Aylur/ags/service/hyprland.js")
     ).default;
 
-    const baseCSS = 'transition: opacity 0.1s ease-in-out;';
+    const baseCSS = "transition: opacity 0.1s ease-in-out;";
 
     return Widget.Label({
       className: " txt-norm onSurfaceVariant",
-      css: baseCSS + 'opacity: 1;',
+      css: baseCSS + "opacity: 1;",
       setup: (self) => {
         let timeoutId = 0;
 
@@ -29,12 +29,13 @@ const createClassWindow = async () => {
           }
 
           // Start fade out
-          self.css = baseCSS + 'opacity: 0;';
+          self.css = baseCSS + "opacity: 0;";
 
           // Schedule text update and fade in
           timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 200, () => {
-            self.label = Hyprland.active.client.class || DEFAULT_WORKSPACE_LABEL;
-            self.css = baseCSS + 'opacity: 1;';
+            self.label =
+              Hyprland.active.client.class || DEFAULT_WORKSPACE_LABEL;
+            self.css = baseCSS + "opacity: 1;";
             timeoutId = 0;
             return GLib.SOURCE_REMOVE;
           });

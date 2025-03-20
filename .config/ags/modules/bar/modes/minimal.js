@@ -14,24 +14,19 @@ const createMinimalBar = async () => {
     css: "padding-left: 1.8rem;",
     startWidget: Box({
       spacing: 20,
-      children: [
-        await BarBattery(),
-        await NormalOptionalWorkspaces(),
-      ],
+      children: [await BarBattery(), await NormalOptionalWorkspaces()],
     }),
     centerWidget: Box({
+      hpack: "center",
+      css: "margin:0 3rem",
       children: [
-        RoundedCorner('topright', { className: 'corner-bar-minimal' }),
-        ScrolledModule({
-          hpack: 'center',
-          className: 'minimal-notch',
-          children: [
-            media(),
-            Clock({ hexpand: true, css: 'padding:0 4rem', hpack: 'fill' }),
-          ]
+        RoundedCorner("topright", { className: "corner-bar-minimal" }),
+        Clock({
+          hexpand: true,
+          className: "minimal-notch",
         }),
-        RoundedCorner('topleft', { className: 'corner-bar-minimal' }),
-      ]
+        RoundedCorner("topleft", { className: "corner-bar-minimal" }),
+      ],
     }),
     endWidget: Indicators(),
   });

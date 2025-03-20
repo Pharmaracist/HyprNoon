@@ -9,7 +9,6 @@ STATE_DIR="$XDG_STATE_HOME/ags"
 COLORMODE_FILE="$STATE_DIR/user/colormode.txt"
 
 cd "$CONFIG_DIR" || exit 1
-
 # Read the colormode file into an array (0-indexed)
 mapfile -t lines < "$COLORMODE_FILE"
 
@@ -55,6 +54,12 @@ else
     vibrant=True
 fi
 
+if [[ "${lines[2]}" == *"scheme-monochrome"* ]]; then 
+    monochrome=True
+else 
+    monochrome=False
+fi
+
 # Update _mode.scss only if needed
 scss_file="$STATE_DIR/scss/_mode.scss"
 if [ -s "$scss_file" ]; then
@@ -63,6 +68,7 @@ if [ -s "$scss_file" ]; then
         -e "s/\$transparent:.*;/\$transparent:${ags_transparency};/" \
         -e "s/\$vibrant:.*;/\$vibrant:${vibrant};/" \
         -e "s/\$transProfile:.*;/\$transProfile:${transProfile};/" \
+        -e "s/\$monochrome:.*;/\$monochrome:${monochrome};/" \
         "$scss_file"
 else
     {
@@ -70,9 +76,10 @@ else
       echo "\$transparent:$ags_transparency;"
       echo "\$vibrant:$vibrant;"
       echo "\$transProfile:$transProfile;"
+      echo "\$monochrome:$monochrome;"
+
     } > "$scss_file"
 fi
-
 transparency() {
     # Hyprland Transparency
     local hypr_config="$XDG_CONFIG_HOME/hypr/hyprland/rules/default.conf"

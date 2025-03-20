@@ -1,10 +1,10 @@
 "use strict";
 
 import Gdk from "gi://Gdk";
-import GLib from 'gi://GLib';
+import GLib from "gi://GLib";
 import App from "resource:///com/github/Aylur/ags/app.js";
-import Wallselect from "./modules/wallselect/main.js";
-import * as Utils from 'resource:///com/github/Aylur/ags/utils.js';
+import Wallselect from "./modules/wallselect/wallpaper_selector.js";
+import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 import userOptions from "./modules/.configuration/user_options.js";
 import {
   firstRunWelcome,
@@ -22,7 +22,7 @@ import Session from "./modules/session/main.js";
 import SideLeft from "./modules/sideleft/main.js";
 import SideRight from "./modules/sideright/main.js";
 import Recorder from "./modules/indicators/recorder.js";
-import MusicWindow from './modules/music/main.js';
+import MusicWindow from "./modules/music/main.js";
 import Glance from "./modules/overview/glance.js";
 
 const COMPILED_STYLE_DIR = `${GLib.get_user_cache_dir()}/ags/user/generated`;
@@ -46,7 +46,7 @@ startAllServices
       return range(n, 0).map(widget).flat(1);
     }
 
-    globalThis['handleStyles'] = () => {
+    globalThis["handleStyles"] = () => {
       Utils.exec(`mkdir -p "${GLib.get_user_state_dir()}/ags/scss"`);
       let lightdark = darkMode.value;
       Utils.writeFileSync(
@@ -57,14 +57,16 @@ startAllServices
       async function applyStyle() {
         Utils.exec(`mkdir -p ${COMPILED_STYLE_DIR}`);
         Utils.exec(`
-          sass -I "${GLib.get_user_state_dir()}/ags/scss" "${App.configDir}/scss/main.scss" "${COMPILED_STYLE_DIR}/style.css"
+          sass -I "${GLib.get_user_state_dir()}/ags/scss" "${
+          App.configDir
+        }/scss/main.scss" "${COMPILED_STYLE_DIR}/style.css"
         `);
         App.resetCss();
         App.applyCss(`${COMPILED_STYLE_DIR}/style.css`);
       }
 
       applyStyle().catch(print);
-    }
+    };
 
     handleStyles();
 
@@ -74,20 +76,34 @@ startAllServices
       opts.modules.session ? forMonitors(Session) : [],
       opts.modules.cheatsheet ? forMonitors(Cheatsheet) : [],
       opts.modules.desktopBackground ? forMonitors(DesktopBackground) : [],
-      opts.modules.wallpaperSelector ? forMonitors(Wallselect) : [],
       opts.modules.dock ? forMonitors(Dock) : [],
       opts.modules.music ? forMonitors(MusicWindow) : [],
       opts.modules.recorder ? Recorder() : [],
       opts.modules.sideright ? SideRight() : [],
       opts.modules.glance ? Glance() : [],
+      opts.modules.wallpaperSelector ? forMonitors(Wallselect) : [],
       opts.modules.sideleft ? SideLeft() : [],
-      ...(opts.modules.fakeScreenRounding ?
-        [
-          forMonitors((id) => Corner(id, "top left", true, opts.etc.screencorners.topleft)),
-          forMonitors((id) => Corner(id, "top right", true, opts.etc.screencorners.topright)),
-          forMonitors((id) => Corner(id, "bottom left", true, opts.etc.screencorners.bottomleft)),
-          forMonitors((id) => Corner(id, "bottom right", true, opts.etc.screencorners.bottomright)),
-        ] : []),
+      ...(opts.modules.fakeScreenRounding
+        ? [
+            forMonitors((id) =>
+              Corner(id, "top left", true, opts.etc.screencorners.topleft)
+            ),
+            forMonitors((id) =>
+              Corner(id, "top right", true, opts.etc.screencorners.topright)
+            ),
+            forMonitors((id) =>
+              Corner(id, "bottom left", true, opts.etc.screencorners.bottomleft)
+            ),
+            forMonitors((id) =>
+              Corner(
+                id,
+                "bottom right",
+                true,
+                opts.etc.screencorners.bottomright
+              )
+            ),
+          ]
+        : []),
     ];
 
     const monitors = Gdk.Display.get_default()?.get_n_monitors() || 1;
@@ -107,4 +123,4 @@ startAllServices
       windows: Modules().flat(1),
     });
   })
-  .catch(e => console.error(e));
+  .catch((e) => console.error(e));

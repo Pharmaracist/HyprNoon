@@ -94,7 +94,7 @@ const antiHorizontalAnchor = () => opposites[horizontalComputeAnchor()];
 export const showColorScheme = Variable(false, {});
 globalThis["openColorScheme"] = showColorScheme;
 globalThis["horizontalAnchor"] = horizontalComputeAnchor;
-globalThis["varticalAnchor"] = verticalComputeAnchor;
+globalThis["verticalAnchor"] = verticalComputeAnchor;
 globalThis["antiVerticalAnchor"] = antiVerticalAnchor;
 globalThis["antiHorizontalAnchor"] = antiHorizontalAnchor;
 globalThis["mpris"] = Mpris;
@@ -102,11 +102,12 @@ globalThis["getString"] = getString;
 globalThis["currentShellMode"] = currentShellMode;
 globalThis["updateMonitorShellMode"] = updateMonitorShellMode;
 globalThis["barPosition"] = barPosition;
-globalThis["applyColor"] = await Utils.execAsync([
-  `bash`,
-  `-c`,
-  `${App.configDir}/scripts/color_generation/applycolor.sh`,
-]);
+globalThis["applyColor"] = async () =>
+  await Utils.execAsync([
+    `bash`,
+    `-c`,
+    `${App.configDir}/scripts/color_generation/applycolor.sh`,
+  ]).catch(print);
 globalThis["runMatugen"] = async () => {
   try {
     await Utils.execAsync([

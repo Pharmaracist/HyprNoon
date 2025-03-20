@@ -49,3 +49,7 @@
   @include titlefont;
   color: $onSurfaceVariant;
 }
+.wallpaper-preview {
+  min-width: 10rem;
+  min-height: 10rem;
+}

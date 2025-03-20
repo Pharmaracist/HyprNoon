@@ -149,7 +149,7 @@ $bar_ws_width_focus_active: 6.045rem;
   @include shadows1;
   @include full-rounding;
   background-color: $layer0;
-  margin: 0.8rem 0;
+  margin: 0.8rem 3rem;
   padding: 0.6rem 2rem;
 }
 
@@ -190,7 +190,17 @@ $bar_ws_width_focus_active: 6.045rem;
 .bar-saadi {
   background-color: $background;
 }
-
+.layer3-group {
+  @include small-rounding;
+  padding: 0 1.8rem;
+  margin: 0.2rem 0.1rem;
+  background-color: $layer3;
+}
+.layer3-notch {
+  padding: 0 1.8rem;
+  background-color: $layer3;
+  border-radius: 0 0 $rounding-small $rounding-small;
+}
 .minimal-notch {
   background-color: $layer3;
   padding: 0 40rem;

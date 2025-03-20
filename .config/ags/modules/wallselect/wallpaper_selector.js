@@ -9,9 +9,7 @@ import Gdk from "gi://Gdk";
 import userOptions from "../.configuration/user_options.js";
 const { Box, Label, EventBox, Scrollable, Button } = Widget;
 const { wallselect: opts, etc } = await userOptions.asyncGet();
-import ColorPicker from "../bar/modules/color_picker.js";
-import color_picker from "../bar/modules/color_picker.js";
-import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
+import PopupWindow from "../.widgethacks/popupwindow.js";
 const elevate = etc.widgetCorners
   ? "wall-rounding shadow-window"
   : "elevation shadow-window";
@@ -21,9 +19,6 @@ const PREVIEW_WIDTH = opts.width || 200;
 const PREVIEW_HEIGHT = opts.height || 120;
 const PREVIEW_CORNER = opts.radius || 18;
 const HIGH_QUALITY_PREVIEW = opts.highQualityPreview;
-const wallpaperStore =
-  GLib.get_user_state_dir() + "/ags/user/current_wallpaper.txt";
-
 // Set up disk cache.
 const DISK_CACHE_DIR = GLib.get_user_cache_dir() + "/ags/user/wallpapers";
 GLib.mkdir_with_parents(DISK_CACHE_DIR, 0o755);
@@ -151,11 +146,12 @@ const WallpaperPreview = (path) =>
         };
 
         // Load image on widget mapping.
-        if (drawingArea.get_mapped()) {
+        if (drawingArea.get_realized()) {
           loadImage();
         } else {
-          drawingArea.connect("map", loadImage);
+          drawingArea.connect("realize", loadImage);
         }
+
         drawingArea.connect("draw", (widget, cr) => {
           if (pixbuf) {
             const areaWidth = widget.get_allocated_width();
@@ -226,7 +222,7 @@ const WallpaperPreview = (path) =>
 const createPlaceholder = () =>
   Box({
     className: "wallpaper-placeholder",
-    vertical: true,
+    // vertical: true,
     vexpand: true,
     hexpand: true,
     spacing: 10,
@@ -250,7 +246,23 @@ const createPlaceholder = () =>
       }),
     ],
   });
+// function anchors() {
+//   return barPosition.value === "left" || barPosition.value === "right"
+//     ? {
+//         vertical: true,
+//         hscroll: "never",
+//         vscroll: "always",
+//         anchors: ["top", "bottom", antiVerticalAnchor()],
+//       }
+//     : {
+//         vertical: false,
+//         hscroll: "always",
+//         vscroll: "never",
+//         anchors: ["left", "right", horizontalAnchor()],
+//       };
+// }
 
+// console.log(antiVerticalAnchor());
 // Create the wallpaper content container.
 const createContent = async () => {
   try {
@@ -262,13 +274,24 @@ const createContent = async () => {
       onMiddleClick: () => App.closeWindow("wallselect"),
       child: Scrollable({
         hexpand: true,
-        vexpand: false,
+        vexpand: true,
         hscroll: "always",
         vscroll: "never",
         child: Box({
           className: "wallpaper-list",
           children: wallpaperPaths.map(WallpaperPreview),
+          // setup: (self) => {
+          //   self.hook(barPosition, () => {
+          //     self.vertical = anchors().vertical;
+          //   });
+          // },
         }),
+        // setup: (self) => {
+        //   self.hook(barPosition, () => {
+        //     self.hscroll = anchors().hscroll;
+        //     self.vscroll = anchors().vscroll;
+        //   });
+        // },
       }),
     });
   } catch (error) {
@@ -287,59 +310,26 @@ const createContent = async () => {
 };
 
 export default () =>
-  Box({
-    vertical: true,
-    children: [
-      Box({
-        className: `wallselect-bg ${elevate}`,
-        children: [
-          Box({
-            vertical: true,
-            vpack: "center",
-            className: "wallselect-content",
-            setup: (self) => {
-              self.hook(
-                App,
-                async (_, name, visible) => {
-                  if (name === "wallselect" && visible) {
-                    self.children = [await createContent()];
-                  }
-                },
-                "window-toggled"
-              );
-            },
-          }),
-        ],
-      }),
-      userOptions.asyncGet().etc.widgetCorners
-        ? Box({
-            children: [
-              RoundedCorner("topleft", { className: "corner" }),
-              opts.showPicker
-                ? Box({
-                    hpack: "center",
-                    hexpand: true,
-                    // css: "margin-top: -0.1rem",
-                    children: [
-                      RoundedCorner("topright", {
-                        vpack: "start",
-                        className: "color-picker-corner",
-                      }),
-                      Box({
-                        child: ColorPicker(),
-                        hpack: "center",
-                        className: "color-picker",
-                      }),
-                      RoundedCorner("topleft", {
-                        vpack: "start",
-                        className: "color-picker-corner",
-                      }),
-                    ],
-                  })
-                : Box({ hexpand: true }),
-              RoundedCorner("topright", { className: "corner" }),
-            ],
-          })
-        : null,
-    ],
+  PopupWindow({
+    keymode: "on-demand",
+    name: "wallselect",
+    child: Box({
+      className: `wallselect-bg ${elevate}`,
+      children: [
+        Box({
+          vertical: true,
+          className: "wallselect-content",
+          setup: (self) => {
+            self.hook(App, async (_) => {
+              self.child = await createContent();
+            });
+          },
+        }),
+      ],
+    }),
+    setup: (self) => {
+      self.hook(barPosition, () => {
+        self.anchor = ["left", "right", horizontalAnchor()];
+      });
+    },
   });

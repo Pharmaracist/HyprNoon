@@ -18,11 +18,9 @@ const date = Variable("", {
   ],
 });
 
-const InLineClock = (props = {}) =>
+export default (props = {}) =>
   Widget.Label({
     label: time.bind(),
     tooltipText: date.bind(),
-    className: 'bar-time',
     ...props,
   });
-export default () => InLineClock();
