@@ -76,6 +76,48 @@ export const BarResource = (name, icon, command, circprogClassName = 'bar-batt-c
     return widget;
 }
 
+export const BarResourceGPUTemp = (name, icon, command, circprogClassName = 'bar-batt-circprog', textClassName = 'txt-onSurfaceVariant', iconClassName = 'bar-batt') => {
+    const resourceCircProg = AnimatedCircProg({
+        className: `${circprogClassName}`,
+        vpack: 'center',
+        hpack: 'center',
+    });
+    const resourceLabel = Label({
+        className: `txt-smallie ${textClassName}`,
+    });
+    const widget = Button({
+        onClicked: () => Utils.execAsync(['bash', '-c', `${userOptions.asyncGet().apps.taskManager}`]).catch(print),
+        child: Box({
+            className: `spacing-h-4 ${textClassName}`,
+            children: [
+                Box({
+                    homogeneous: true,
+                    children: [Overlay({
+                        child: Box({
+                            vpack: 'center',
+                            className: `${iconClassName}`,
+                            homogeneous: true,
+                            children: [MaterialIcon(icon, 'small')],
+                        }),
+                        overlays: [resourceCircProg]
+                    })]
+                }),
+                resourceLabel,
+            ],
+            setup: (self) => self.poll(5000, () => {
+                execAsync(['bash', '-c', command])
+                    .then((output) => {
+                        const value = Math.round(Number(output));
+                        resourceCircProg.css = `font-size: ${value}px;`;
+                        resourceLabel.label = `${value}°C`;
+                        widget.tooltipText = `${name}: ${value}%`;
+                    }).catch(print);
+            }),
+        })
+    });
+    return widget;
+}
+
 const TrackProgress = () => {
     const _updateProgress = (circprog) => {
         const mpris = Mpris.getPlayer('');
@@ -207,9 +249,9 @@ export default () => {
                     BarResource(getString('RAM Usage'), 'memory', 
                         `LANG=C free | awk '/^Mem/ {printf("%.2f\\n", ($3/$2) * 100)}'`,
                         'bar-ram-circprog', 'bar-ram-txt', 'bar-ram-icon'),
-                    BarResource('GPU Temperature', 'thermostat',
-                            `sensors | grep -i 'gpu' | awk '{print $2}' | sed 's/+//;s/°C//'`,
-                            'bar-cpu-circprog', 'bar-cpu-txt', 'bar-cpu-icon'),
+                    BarResourceGPUTemp('GPU Temperature', 'thermostat',
+                            `echo "$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)"`,
+                            'bar-cpu-circprog', 'bar-cpu-txt'),
                     BarResource(getString('CPU Usage'), 'settings_motion_mode',
                         `LANG=C top -bn1 | grep Cpu | sed 's/\\,/\\./g' | awk '{print $2}'`,
                         'bar-cpu-circprog', 'bar-cpu-txt', 'bar-cpu-icon'),
