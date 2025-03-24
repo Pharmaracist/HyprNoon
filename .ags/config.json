@@ -1,77 +1,81 @@
 {
+  "modules": {
+    "cheatsheet": true,
+    "bar": true,
+    "sideright": true,
+    "sideleft": true,
+    "indicators": true,
+    "wallpaperSelector": true,
+    "music": true,
+    "fakeScreenRounding": true,
+    "desktopBackground": true,
+    "dock": true,
+    "recorder": true,
+    "glance": true,
+    "overview": true,
+    "session": true
+  },
   "muslim": {
     "enabled": true,
     "prayerTimes": {
       "city": "Cairo"
     }
   },
-  "indicators": {
-    "enabled": true
-  },
-  "muslimStuff": {
-    "enabled": true,
-    "city": "Cairo"
-  },
   "wallselect": {
-    "enabled": true,
+    "Vmode": true,
     "wallpaperFolder": "/Pictures/Wallpapers",
-    "cachingMode": "disk",
-    "width": 200,
-    "height": 110,
-    "radius": 20,
+    "width": 300,
+    "height": 160,
+    "radius": 16,
     "highQualityPreview": true
   },
-  "session": {
-    "enabled": true
-  },
-  "cheatshhet": {
-    "enabled": true
-  },
   "desktopBackground": {
-    "enabled": true,
-    "resources": true,
+    "CurrentMode": "Normal",
+    "enableWisecat": false,
+    "zoomEffect": false,
+    "resources": false,
     "visible": false
   },
   "ai": {
     "defaultGPTProvider": "microsoft-phi-4",
     "onSearch": "microsoft-phi-4",
-    "defaultTemperature": 0.9,
+    "defaultTemperature": 1,
     "enhancements": true,
     "useHistory": true,
+    "useInitMessages": false,
     "safety": true,
     "writingCursor": " ...",
-    "proxyUrl": "",
+    "proxyUrl": null,
     "__custom": ["extraGptModels"]
   },
   "animations": {
-    "choreographyDelay": 10,
+    "choreographyDelay": 50,
     "durationSmall": 80,
-    "durationLarge": 200
+    "durationLarge": 200,
+    "durationHuge": 400
   },
   "appearance": {
-    "avatar": "avatar.png",
     "autoDarkMode": {
       "enabled": false,
       "from": "18:10",
-      "to": "6:10"
+      "to": "4:10"
     },
     "Scroll": {
       "debounce": 200,
       "transition": "slide_up_down",
       "mode": "scroll"
     },
-    "keyboardUseFlag": false,
     "layerSmoke": false,
-    "layerSmokeStrength": 0.2,
-    "fakeScreenRounding": 1
+    "layerSmokeStrength": 0.2
   },
   "apps": {
-    "bluetooth": "overskride",
+    "bluetooth": "control",
     "imageViewer": "swappy",
-    "network": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
-    "settings": "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center",
+    "network": "control",
+    "settings": "control",
     "taskManager": "kitty btop",
-    "terminal": "kitty"
+    "terminal": "kitty",
+    "editor": "nvim"
   },
   "battery": {
     "low": 20,
@@ -103,20 +107,20 @@
     "scaleMethod": "division"
   },
   "music": {
-    "musiccontrols": true,
     "musicDir": "/Music",
     "preferredPlayer": "plasma-browser-integration"
   },
   "overview": {
-    "enabled": true,
-    "enableContent": true,
+    "maxResults": 10,
+    "spotlightTheme": false,
+    "useNameInPrompt": false,
     "scale": 0.18,
     "numOfRows": 2,
     "wsNumScale": 0.09,
     "wsNumMarginScale": 0.07
   },
   "sidebar": {
-    "extraCss": "min-width:450px",
+    "extraCss": "",
     "ModuleCalendar": {
       "enabled": true,
       "visible": false
@@ -124,14 +128,13 @@
     "showAnimeCat": false,
     "centerModules": {
       "enabled": [
-        "vpnGate",
         "notifications",
+        "vpnGate",
         "audioControls",
         "powerProfiles",
         "taskManager",
         "bluetooth",
         "wifiNetworks",
-        "liveConfig",
         "prayerTimes"
       ],
       "vpnGate": {
@@ -147,7 +150,7 @@
         "enabled": false
       },
       "taskManager": {
-        "enabled": false,
+        "enabled": true,
         "pollingRate": 5000
       },
       "bluetooth": {
@@ -155,9 +158,6 @@
       },
       "wifiNetworks": {
         "enabled": false
-      },
-      "liveConfig": {
-        "enabled": true
       },
       "prayerTimes": {
         "enabled": false
@@ -168,9 +168,21 @@
       "repoName": "HyprNoon"
     },
     "ai": {
+      "medicalDictionary": {
+        "apiKey": "4c195a75-017f-4096-b67b-11d151c29a47"
+      },
       "logo": "deepseek-symbolic",
       "__custom": ["extraGptModels"],
       "extraGptModels": {
+        "chatGPT": {
+          "name": "OpenAI (GPT-3.5)",
+          "logo_name": "ai-openai-symbolic",
+          "description": "An API from OpenAI')",
+          "base_url": "https://app.oxyapi.uk/v1/chat/completions",
+          "key_get_url": "https://discord.com/invite/kM6MaCqGKA",
+          "key_file": "openai_key.txt",
+          "model": "gpt-3.5"
+        },
         "zuki": {
           "name": "ZoukiJourney API",
           "logo_name": "ai-zukijourney-symbolic",
@@ -215,14 +227,31 @@
           "key_get_url": "https://openrouter.ai/keys",
           "key_file": "openrouter_key.txt",
           "model": "mistralai/mistral-7b-instruct:free"
+        },
+        "qwen-qwq-32b-free": {
+          "name": "qwen/qwq-32b:free",
+          "logo_name": "openrouter-symbolic",
+          "description": "qwen/qwq-32b:free via OpenRouter",
+          "base_url": "https://openrouter.ai/api/v1/chat/completions",
+          "key_get_url": "https://openrouter.ai/keys",
+          "key_file": "openrouter_key.txt",
+          "model": "qwen/qwq-32b:free"
+        },
+        "deepseek-deepseek-r1-free": {
+          "name": "deepseek/deepseek-r1:free",
+          "logo_name": "openrouter-symbolic",
+          "description": "deepseek/deepseek-r1:free via OpenRouter",
+          "base_url": "https://openrouter.ai/api/v1/chat/completions",
+          "key_get_url": "https://openrouter.ai/keys",
+          "key_file": "openrouter_key.txt",
+          "model": "deepseek/deepseek-r1:free"
         }
-      },
-      "initMessages": []
+      }
     },
     "pages": {
       "order": ["apis", "tools", "github"],
       "apis": {
-        "order": ["gpt", "gemini", "quran", "translater"]
+        "order": ["gpt", "gemini", "medicaldictionary", "quran", "translater"]
       }
     },
     "translater": {
@@ -246,9 +275,8 @@
       "actions": true,
       "commands": true,
       "mathResults": true,
-      "directorySearch": true,
-      "aiSearch": true,
-      "webSearch": true
+      "aiSearch": false,
+      "webSearch": false
     },
     "engineBaseUrl": "https://www.google.com/search?q=",
     "excludedSites": ["quora.com"]
@@ -274,46 +302,54 @@
   },
   "time": {
     "format": "%I:%M",
-    "interval": 5000,
+    "interval": 1000,
     "dateFormatLong": "%A, %d/%m",
     "dateInterval": 5000,
     "dateFormat": "%d/%m",
     "verticalCLock": {
-      "hours": "%I",
-      "minutes": "%M",
-      "seconds": "%S",
-      "dayTime": "%p"
+      "showHours": true,
+      "showMinutes": true,
+      "showSeconds": true,
+      "showDayTime": false
     }
   },
   "weather": {
     "city": "Cairo",
+    "country": "Egypt",
     "preferredUnit": "C"
   },
   "workspaces": {
     "shown": 10,
-    "style": "chinese"
+    "style": "japanese"
   },
   "dock": {
-    "enabled": true,
-    "hiddenThickness": 7,
+    "hiddenThickness": 50,
+    "dockSize": 35,
     "pinnedApps": [
-      "zen-browser",
-      "spotube",
-      "github-desktop",
+      "obsidian",
       "Code",
-      "zeditor",
-      "firefox",
-      "nwg-look",
-      "Obisidian",
+      "obisidian",
       "steam",
       "heroic-games-launcher",
-      "org.gnome.Nautilus"
+      "bottles",
+      "spotub",
+      "heroic",
+      "cursor",
+      "chromium"
     ],
-    "layer": "top",
     "monitorExclusivity": true,
     "searchPinnedAppIcons": false,
-    "trigger": [],
-    "autoHide": []
+    "trigger": ["client-added", "client-removed"],
+    "autoHide": [
+      {
+        "trigger": "client-added",
+        "interval": 500
+      },
+      {
+        "trigger": "client-removed",
+        "interval": 500
+      }
+    ]
   },
   "icons": {
     "__custom": ["substitutions", "regexSubstitutions"],
@@ -331,7 +367,7 @@
       "pavucontrol-qt": "pavucontrol",
       "wps": "wps-office2019-kprometheus",
       "wpsoffice": "wps-office2019-kprometheus",
-      "": "image-missing"
+      "": "logo-symbolic"
     },
     "regexSubstitutions": [
       {
@@ -347,9 +383,6 @@
       "deleteToEnd": "Ctrl+k"
     },
     "sidebar": {
-      "prayerTimes": {
-        "city": "Cairo"
-      },
       "apis": {
         "nextTab": "Page_Down",
         "prevTab": "Page_Up"
@@ -376,8 +409,8 @@
   "bar": {
     "position": "top",
     "traySize": 16,
-    "floatingWidth": 14,
-    "floatingElevation": 1,
+    "floatingWidth": 2,
+    "floatingElevation": 0.8,
     "verticalBar": {
       "position": "left"
     },
@@ -396,19 +429,21 @@
       "showClock": true,
       "showIndicators": true,
       "showUtils": true,
-      "showWeather": true,
       "showResources": true,
       "showMusic": true,
-      "showBattery": true,
-      "showAvatar": true
+      "showBattery": true
     }
   },
   "etc": {
+    "cava": {
+      "enabled": false
+    },
+    "nightLightTemp": "3000",
+    "enableAmberol": false,
+    "clickCloseRegion": true,
+    "sideLeftPin": true,
     "cornerRadius": "20",
-    "widgetCorners": false,
-    "showPassword": true,
     "todoPath": "/mnt/Data/General-Archive/obsidian/HyprNoon.md",
-    "notesPath": "${GLib.get_user_state_dir()}/ags/user/",
     "recordingPath": "/Videos/Records",
     "screencorners": {
       "debounce": "20",
@@ -416,78 +451,6 @@
       "topright": "",
       "bottomleft": "",
       "bottomright": ""
-    },
-    "weather": {
-      "cycle": false,
-      "cycleTimeout": "5000"
-    }
-  },
-  "ipod": {
-    "widget": {
-      "margin": " 0 0",
-      "minHeight": 270,
-      "borderRadius": 0,
-      "padding": "0",
-      "borderWidth": 0,
-      "borderOpacity": 1,
-      "extraCss": "border-top: 0.5px solid @outline"
-    },
-    "background": {
-      "defaultOpacity": 0.2,
-      "hiddenOpacity": 1,
-      "blurAmount": "0x3",
-      "imageQuality": 80,
-      "imageResize": 60,
-      "transitionMs": 400,
-      "enableBlur": false
-    },
-    "coverArt": {
-      "size": 230,
-      "borderRadius": 12
-    },
-    "visualizer": {
-      "enabled": true,
-      "margin": "0",
-      "mode": "center",
-      "padding": "0",
-      "barSpacing": 2.5,
-      "barMinWidth": 20,
-      "barMaxHeight": 40,
-      "barNumber": 63,
-      "heightMultiplier": 2,
-      "transitionMs": 80,
-      "colors": {
-        "low": "rgba(255,255,255,0)",
-        "medium": "rgba(255,255,255,0.6)",
-        "high": "rgba(255,255,255,1)",
-        "heightThresholds": {
-          "low": 1,
-          "medium": 2.2,
-          "high": 4
-        }
-      }
-    },
-    "trackInfo": {
-      "titleSize": "3rem",
-      "artistSize": "2rem",
-      "titleOpacity": 0.9,
-      "artistOpacity": 0.8,
-      "maxChars": 100
-    },
-    "controls": {
-      "buttonSize": "1.8rem",
-      "otherButtonSize": "1.4rem",
-      "spacing": 10,
-      "iconOpacity": 0.8
-    },
-    "volume": {
-      "iconSize": 36,
-      "progressSize": 40,
-      "textSize": "1rem"
-    },
-    "animations": {
-      "showHideMs": 200,
-      "updateDelay": 200
     }
   }
 }

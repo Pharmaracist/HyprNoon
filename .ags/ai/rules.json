@@ -1,0 +1,8 @@
+[
+  {
+    "type": "rule",
+    "id": "rule-1",
+    "content": "x",
+    "enabled": true
+  }
+]

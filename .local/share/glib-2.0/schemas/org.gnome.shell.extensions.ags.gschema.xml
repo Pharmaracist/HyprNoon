@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.ags" path="/org/gnome/shell/extensions/ags/">
+    <key name="bar-mode" type="s">
+      <default>'0'</default>
+      <summary>Bar Mode</summary>
+      <description>Current bar mode</description>
+    </key>
+    <key name="bar-position" type="s">
+      <default>'top'</default>
+      <summary>Bar Position</summary>
+      <description>Position of the bar (top/bottom/left/right)</description>
+    </key>
+       <key name="use-corners" type="b">
+    <default>false</default>
+    <summary>Enable or disable the use of corners in the UI.</summary>
+    <description>
+      This key is used to toggle whether corners are used in the UI. It is a boolean value.
+    </description>
+        </key>
+       <key name="vertical-mode" type="b">
+    <default>false</default>
+    <summary>Switch the dock Orientation.</summary>  
+  </key>
+<key name="wall-mode" type="b">
+    <default>false</default>
+    <summary>Switch the wallpaper Selector Orientation.</summary>
+  </key>
+
+  </schema>
+</schemalist>
