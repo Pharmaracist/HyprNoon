@@ -1,12 +1,10 @@
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
-import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
-import Variable from "resource:///com/github/Aylur/ags/variable.js";
 import { setupCursorHover } from "../../.widgetutils/cursorhover.js";
-import { MaterialIcon } from "../../.commonwidgets/materialicon.js";
+import { TablerIcon } from "../../.commonwidgets/tablericon.js";
 import QuranService from "../../../services/quran.js";
 import { surahs } from "../../.commondata/surahs.js";
 const { Gtk } = imports.gi;
-const { Box, Button, Icon, Label, Scrollable, Revealer } = Widget;
+const { Box, Button, Label, Scrollable, Revealer } = Widget;
 
 const contentBox = Box({
   className: "spacing-v-5",
@@ -174,10 +172,7 @@ const WelcomeMessage = () =>
     ],
   });
 
-export const quranTabIcon = Widget.Icon({
-  icon: "quran-tab-symbolic",
-  hpack: "center",
-});
+export const quranTabIcon = TablerIcon("f022", "norm");
 
 export const quranContent = Box({
   className: "spacing-v-5",

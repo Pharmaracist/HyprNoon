@@ -19,19 +19,19 @@ const SIDEBARTABS = {
   apis: {
     name: "apis",
     content: apiWidgets,
-    materialIcon: "api",
+    tablerIcon: "effd",
     friendlyName: "APIs",
   },
   tools: {
     name: "tools",
     content: toolBox,
-    materialIcon: "home_repair_service",
+    tablerIcon: "ebca",
     friendlyName: "Tools",
   },
   github: {
     name: "github",
     content: githubWidget,
-    materialIcon: "update",
+    tablerIcon: "ec1c",
     friendlyName: "Updates",
   },
 };
@@ -74,7 +74,7 @@ const pinButton = Button({
 export const WidgetContent = (ORDER) => {
   const CONTENTS = ORDER.map((tabName) => SIDEBARTABS[tabName]);
   return TabContainer({
-    icons: CONTENTS.map((item) => item.materialIcon),
+    icons: CONTENTS.map((item) => item.tablerIcon),
     names: CONTENTS.map((item) => item.friendlyName),
     children: CONTENTS.map((item) => item.content),
     setup: (self) =>

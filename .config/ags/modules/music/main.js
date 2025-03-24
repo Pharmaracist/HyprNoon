@@ -1,20 +1,19 @@
 const { GLib, GdkPixbuf, Gdk } = imports.gi;
-const { Box, Icon, Label, Button } = Widget;
-
+const { Box, Icon, Label, Button, Slider } = Widget;
+import Audio from "resource:///com/github/Aylur/ags/service/audio.js";
 import App from "resource:///com/github/Aylur/ags/app.js";
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import PopupWindow from "../.widgethacks/popupwindow.js";
-import clickCloseRegion from "../.commonwidgets/clickcloseregion.js";
+import { CornerBox } from "../.commonwidgets/cornerbox.js";
 import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 import Mpris from "resource:///com/github/Aylur/ags/service/mpris.js";
 import { AnimatedCircProg } from "../.commonwidgets/cairo_circularprogress.js";
 import { hasPlasmaIntegration } from "../.miscutils/system.js";
 import CavaService from "../../services/cava.js";
+import { bluetoothPill } from "../.commonwidgets/statusicons.js";
+import scrolledmodule from "../.commonwidgets/scrolledmodule.js";
 let opts = userOptions.asyncGet();
-const elevate = opts.etc.widgetCorners
-  ? "osd-round osd-music "
-  : "osd-music elevation elevate-music ";
-const mode = opts.etc.enableAmberol ? "amberoled " : "";
+
 export const getPlayer = (name = opts.music.preferredPlayer) =>
   Mpris.getPlayer(name) || Mpris.players[0] || null;
 
@@ -58,7 +57,7 @@ function trimTrackTitle(title) {
   if (!title) return "";
   const cleanPatterns = [
     /【[^】]*】/, // Remove certain bracketed text (e.g., Touhou/weeb stuff)
-    " [FREE DOWNLOAD]", // Remove literal text such as F-777's suffix
+    " [FREE DOWNLOAD]",
   ];
   cleanPatterns.forEach((expr) => (title = title.replace(expr, "")));
   return title;
@@ -70,7 +69,6 @@ const TrackProgress = ({ player, ...rest }) => {
       circprog.css = `font-size: 0px;`;
       return;
     }
-    // Update circular progress; the font size scales with playback progress.
     circprog.css = `font-size: ${Math.max(
       (player.position / player.length) * 100,
       0
@@ -96,7 +94,7 @@ const TrackTitle = ({ player, ...rest }) =>
       if (player) {
         self.hook(
           player,
-          (self) => {
+          () => {
             self.label =
               player.trackTitle.length > 0
                 ? trimTrackTitle(player.trackTitle)
@@ -123,7 +121,7 @@ const TrackArtists = ({ player, ...rest }) =>
       if (player) {
         self.hook(
           player,
-          (self) => {
+          () => {
             self.label =
               player.trackArtists.length > 0
                 ? player.trackArtists.join(", ")
@@ -138,7 +136,7 @@ const TrackArtists = ({ player, ...rest }) =>
   });
 
 const CoverArt = ({ player, ...rest }) => {
-  const DEFAULT_COVER_SIZE = 235;
+  const DEFAULT_COVER_SIZE = 220;
   let currentCoverPath = null;
   const drawingArea = Widget.DrawingArea({
     className: "osd-music-cover-art shadow-window",
@@ -148,28 +146,22 @@ const CoverArt = ({ player, ...rest }) => {
       self.connect("draw", (widget, cr) => {
         if (!currentCoverPath) return;
         try {
-          // Load the full image
           let pixbuf = GdkPixbuf.Pixbuf.new_from_file(currentCoverPath);
           const imgWidth = pixbuf.get_width();
           const imgHeight = pixbuf.get_height();
-          // Calculate scale factor to cover the area
           const scale = Math.max(
             DEFAULT_COVER_SIZE / imgWidth,
             DEFAULT_COVER_SIZE / imgHeight
           );
           const newWidth = Math.round(imgWidth * scale);
           const newHeight = Math.round(imgHeight * scale);
-          // Center the image: calculate offsets so the image is centered in the square
           const offsetX = (DEFAULT_COVER_SIZE - newWidth) / 2;
           const offsetY = (DEFAULT_COVER_SIZE - newHeight) / 2;
-          // Scale the image to the new dimensions
           pixbuf = pixbuf.scale_simple(
             newWidth,
             newHeight,
             GdkPixbuf.InterpType.BILINEAR
           );
-
-          // Create rounded corners clip region
           const radius = 20;
           cr.arc(radius, radius, radius, Math.PI, 1.5 * Math.PI);
           cr.arc(
@@ -195,8 +187,6 @@ const CoverArt = ({ player, ...rest }) => {
           );
           cr.closePath();
           cr.clip();
-
-          // Paint the scaled image, centered within the area
           Gdk.cairo_set_source_pixbuf(cr, pixbuf, offsetX, offsetY);
           cr.paint();
         } catch (e) {
@@ -221,26 +211,19 @@ const CoverArt = ({ player, ...rest }) => {
     }),
     setup: (self) => {
       const updateCover = () => {
-        // If there's no player or the player isn't actively playing, hide the fallback icon.
         if (!player || player.playBackStatus !== "Playing") {
           currentCoverPath = null;
           drawingArea.queue_draw();
           return;
         }
-
-        // If the player exists and is playing but has no coverPath, show the fallback icon.
         if (!player.coverPath) {
           currentCoverPath = null;
           drawingArea.queue_draw();
           return;
         }
-
-        // If the cover path has changed, update it.
         const newPath = player.coverPath;
         if (newPath === currentCoverPath) return;
-
         currentCoverPath = newPath;
-
         if (newPath.startsWith("http")) {
           Utils.fetch(newPath)
             .then((filePath) => {
@@ -254,7 +237,6 @@ const CoverArt = ({ player, ...rest }) => {
           drawingArea.queue_draw();
         }
       };
-
       if (player) {
         self.hook(player, updateCover, "notify::cover-path");
         self.hook(
@@ -265,8 +247,6 @@ const CoverArt = ({ player, ...rest }) => {
           "notify::play-back-status"
         );
       }
-
-      // Initial update
       updateCover();
     },
   });
@@ -274,7 +254,6 @@ const CoverArt = ({ player, ...rest }) => {
 
 const TrackControls = ({ player, ...rest }) =>
   Widget.Revealer({
-    // Always reveal controls regardless of whether a player is available.
     revealChild: true,
     transition: "slide_right",
     transitionDuration: opts.animations.durationLarge,
@@ -312,45 +291,96 @@ const TrackControls = ({ player, ...rest }) =>
       ],
     }),
     setup: (self) => {
-      // No need to hide controls when no player exists.
       self.revealChild = true;
     },
   });
 
-const TrackSource = ({ player, ...rest }) =>
-  Widget.Revealer({
-    revealChild: true, // Always reveal
-    transition: "slide_left",
-    transitionDuration: opts.animations.durationLarge,
-    child: Widget.Box({
-      ...rest,
-      homogeneous: true,
-      children: [
-        Label({
-          hpack: "start",
-          opacity: 0.6,
-          css: `margin-top:0.75rem`,
-          className: "txt-large onSurfaceVariant",
-          setup: (self) => {
-            if (player) {
-              self.hook(
-                player,
-                (self) => {
-                  self.label = detectMediaSource(player.trackCoverUrl);
-                },
-                "notify::cover-path"
-              );
-            } else {
-              self.label = "";
-            }
-          },
-        }),
-      ],
-    }),
+// === New Volume Slider using Audio.speaker (as in the previous widget) ===
+const VolumeSlider = () =>
+  Box({
+    children: [
+      Box({
+        hexpand: true,
+        vpack: "center",
+        vertical: true,
+        className: "spacing-v-5",
+        children: [
+          Slider({
+            drawValue: false,
+            hpack: "fill",
+            className: "sidebar-volmixer-stream-slider",
+            value: Audio.speaker.volume,
+            min: 0,
+            max: 1,
+            onChange: ({ value }) => {
+              Audio.speaker.volume = value;
+            },
+            setup: (self) =>
+              self.hook(Audio.speaker, () => {
+                self.value = Audio.speaker.volume;
+              }),
+          }),
+        ],
+      }),
+    ],
   });
+const TrackSource = ({ player, ...rest }) => {
+  const notchContent = Box({
+    hpack: "center",
+    hexpand: true,
+    children: [
+      Label({
+        hpack: "start",
+        opacity: 0.6,
+        className: "txt-large onSurfaceVariant",
+        setup: (self) => {
+          if (player) {
+            self.hook(
+              player,
+              () => {
+                self.label = detectMediaSource(player.trackCoverUrl);
+              },
+              "notify::cover-path"
+            );
+          } else {
+            self.label = "";
+          }
+        },
+      }),
+      bluetoothPill({
+        hpack: "end",
+        opacity: 0.6,
+        className: "txt-large onSurfaceVariant",
+      }),
+    ],
+  });
+  let content = Widget.Box({
+    ...rest,
+    css: "margin-top: -1rem;margin-right:2.8rem",
+    hpack: "end",
+    vpack: "start",
+    vexpand: true,
+    hexpand: true,
+    children: [
+      CornerBox("topright", "start", { className: "corner-amberoled" }),
+      Box({
+        className: "osd-music-pill-container",
+        css: "min-width:15rem;min-height:3rem",
+        children: [
+          scrolledmodule({
+            spacing: 100,
+            children: [VolumeSlider(), notchContent],
+          }),
+        ],
+      }),
+      CornerBox("topleft", "start", { className: "corner-amberoled" }),
+    ],
+  });
+  return content;
+};
 
-const TrackTime = ({ player, ...rest }) => {
-  return Widget.Revealer({
+const TrackTime = ({ player, ...rest }) =>
+  Widget.Revealer({
     revealChild: true,
     transition: "slide_left",
     transitionDuration: opts.animations.durationLarge,
@@ -362,7 +392,7 @@ const TrackTime = ({ player, ...rest }) => {
         Label({
           setup: (self) => {
             if (player) {
-              self.poll(1000, (self) => {
+              self.poll(1000, () => {
                 self.label = lengthStr(player.position);
               });
             } else {
@@ -376,7 +406,7 @@ const TrackTime = ({ player, ...rest }) => {
             if (player) {
               self.hook(
                 player,
-                (self) => {
+                () => {
                   self.label = lengthStr(player.length);
                 },
                 "notify::track-artists"
@@ -389,7 +419,6 @@ const TrackTime = ({ player, ...rest }) => {
       ],
     }),
   });
-};
 
 const PlayState = ({ player }) => {
   const trackCircProg = TrackProgress({ player: player });
@@ -418,8 +447,8 @@ const PlayState = ({ player }) => {
               if (player) {
                 self.hook(
                   player,
-                  (label) => {
-                    label.label = `${
+                  () => {
+                    self.label = `${
                       player.playBackStatus == "Playing"
                         ? "pause"
                         : "play_arrow"
@@ -438,8 +467,9 @@ const PlayState = ({ player }) => {
     }),
   });
 };
+
 const CavaVisualizer = () => {
-  const bars = Array(50)
+  const bars = Array(40)
     .fill(0)
     .map(() =>
       Widget.Box({
@@ -451,131 +481,156 @@ const CavaVisualizer = () => {
     );
 
   let cavaHook = null;
-  let isActive = false;
-  let updateTimeout = null;
-  let isDestroyed = false;
+  let visualizer = null;
 
-  const updateBars = () => {
-    if (!isActive || isDestroyed) return;
+  const startCava = () => {
+    if (cavaHook || !visualizer) return;
+    CavaService.start();
 
-    try {
+    const updateBars = () => {
       const output = CavaService.output;
       if (!output || typeof output !== "string") return;
 
-      const values = output.split("").map((c) => {
-        const code = c.charCodeAt(0);
-        return code >= 0x2581 && code <= 0x2588 ? code - 0x2580 : 0;
-      });
-
+      const values = output.split("");
       const step = Math.floor(values.length / bars.length);
+
       bars.forEach((bar, i) => {
-        if (isDestroyed) return;
+        const value = values[i * step]?.charCodeAt(0) - 9601 || 0;
+        const height = Math.max(1, value * 28);
 
-        const start = i * step;
-        const end = start + step;
-        const avg =
-          values.slice(start, end).reduce((a, b) => a + b, 0) / step || 0;
-
-        const height = Math.max(1, avg * 15);
-        const intensity = avg > 5 ? "high" : avg > 1.5 ? "med" : "low";
-
-        bar.css = `
-                    min-height: ${height}px;
-                    min-width: 8px;
-                    border-radius: 4px;
-                    transition: min-height 50ms linear;
-                `;
+        const intensity = value > 1.5 ? "high" : value > 0.5 ? "med" : "low";
         bar.className = `cava-bar cava-bar-${intensity}`;
+        bar.css = `
+                  min-height: ${height}px;
+                  min-width: 10px;
+                  border-radius: 4px;
+              `;
       });
+    };
 
-      if (!isDestroyed) {
-        updateTimeout = Utils.timeout(50, updateBars);
-      }
-    } catch (e) {
-      console.error("Error updating bars:", e);
-    }
+    cavaHook = CavaService.connect("output-changed", updateBars);
   };
 
-  const startUpdates = () => {
-    if (isActive || isDestroyed) return;
-    isActive = true;
-    CavaService.start();
-    updateBars();
-  };
-
-  const stopUpdates = () => {
-    if (!isActive || isDestroyed) return;
-    isActive = false;
+  const stopCava = () => {
+    if (!cavaHook) return;
 
     try {
       CavaService.stop();
-
-      if (updateTimeout) {
-        GLib.Source.remove(updateTimeout);
-        updateTimeout = null;
+      if (cavaHook > 0) {
+        CavaService.disconnect(cavaHook);
       }
+    } catch (e) {}
 
-      bars.forEach((bar) => {
-        if (!isDestroyed) {
-          bar.css = `min-height: 1px;`;
-          bar.className = "cava-bar cava-bar-low";
-        }
-      });
-    } catch (e) {
-      console.error("Error stopping updates:", e);
+    cavaHook = null;
+
+    bars.forEach((bar) => {
+      bar.className = "cava-bar cava-bar-low";
+      bar.css = `
+              min-height: 0px;
+              min-width: 0px;
+              border-radius: 4px;
+          `;
+    });
+  };
+  const checkAndUpdateCava = () => {
+    const player = Mpris.getPlayer();
+    // Only run the visualizer when the widget is visible and the track is playing.
+    // Using visualizer.get_visible() ensures the widget is actually shown.
+    const shouldRun =
+      visualizer &&
+      visualizer.get_visible() &&
+      player?.playBackStatus === "Playing";
+
+    if (shouldRun) {
+      startCava();
+    } else {
+      stopCava();
     }
   };
 
   return Widget.Box({
     className: "cava-visualizer",
+    spacing: 4,
     children: bars,
     setup: (self) => {
-      const initWindow = () => {
-        if (isDestroyed) return;
+      visualizer = self;
 
-        try {
-          const window = App.getWindow("music");
-          if (window) {
-            // Initial state check
-            if (window.visible) startUpdates();
+      // self.hook(showMusicControls, checkAndUpdateCava);
+      self.hook(Mpris, checkAndUpdateCava);
 
-            // Connect visibility changes
-            window.connect("notify::visible", () => {
-              if (isDestroyed) return;
-              window.visible ? startUpdates() : stopUpdates();
-            });
-          } else {
-            Utils.timeout(1000, initWindow); // Retry if window not found
-          }
-        } catch (e) {
-          console.error("Window lookup error:", e);
-          Utils.timeout(1000, initWindow); // Retry on error
-        }
-      };
+      Utils.timeout(1000, checkAndUpdateCava);
 
-      // Start window lookup after short delay
-      Utils.timeout(100, initWindow);
+      self.connect("destroy", () => {
+        stopCava();
+        visualizer = null;
+      });
 
-      self.on("destroy", () => {
-        isDestroyed = true;
-        stopUpdates();
-        if (cavaHook) {
-          try {
-            CavaService.disconnect(cavaHook);
-          } catch (e) {
-            console.error("Error disconnecting CAVA hook:", e);
-          }
-        }
+      self.connect("unrealize", () => {
+        stopCava();
+        visualizer = null;
       });
     },
   });
 };
+
+const createContent = (player) =>
+  Widget.Overlay({
+    child: Box({
+      className: "osd-music-mask cava-container",
+      hexpand: true,
+      vexpand: true,
+      child: opts.etc.cava.enabled ? CavaVisualizer() : null,
+    }),
+    overlays: [
+      Box({
+        // className: "osd-music-mask",
+        child: Box({
+          spacing: 10,
+          css: "margin-left:3rem",
+          children: [
+            CoverArt({ player }),
+            Box({
+              vertical: true,
+              className: "spacing-v-5 osd-music-info",
+              children: [
+                Box({
+                  children: [
+                    Box({
+                      vertical: true,
+                      vpack: "center",
+                      hpack: "start",
+                      children: [
+                        TrackTitle({ player }),
+                        TrackArtists({ player }),
+                      ],
+                    }),
+                    TrackSource({ player, vpack: "center" }),
+                  ],
+                }),
+                Box({ vexpand: true }),
+                Box({
+                  className: "spacing-h-10",
+                  children: [
+                    TrackControls({ player }),
+                    Widget.Box({ hexpand: true }),
+                    ...(hasPlasmaIntegration ? [TrackTime({ player })] : []),
+                    PlayState({ player }),
+                  ],
+                }),
+                // Use the Audio.speaker-based VolumeSlider
+              ],
+            }),
+          ],
+        }),
+      }),
+    ],
+  });
+
 const musicWidget = () => {
   let currentPlayer = getPlayer();
   return Box({
-    // className:`normal-music`,
-    className: ` ${mode} ` + ` ${elevate} `,
     css: `min-height:260px;`,
+    className: "osd-music",
     vexpand: true,
     setup: (self) => {
       const updateChildren = () => {
@@ -584,97 +639,34 @@ const musicWidget = () => {
       };
       self.hook(Mpris, updateChildren, "notify::players");
       updateChildren();
+      self.hook(
+        useCorners,
+        () =>
+          (self.className = useCorners.value
+            ? "osd-music"
+            : "osd-music elevation")
+      );
     },
   });
 };
 
-const createContent = (player) =>
-  Widget.Overlay({
-    child: Box({
-      className: "cava-container",
-      hexpand: true,
-      vexpand: true,
-      child: opts.etc.cava.enabled ? CavaVisualizer() : null,
-    }),
-    overlays: [
-      Box({
-        spacing: 10,
-        children: [
-          CoverArt({ player: player }),
-          Box({
-            vertical: true,
-            className: "spacing-v-5 osd-music-info",
-            children: [
-              Box({
-                children: [
-                  Box({
-                    vertical: true,
-                    vpack: "center",
-                    hpack: "start",
-                    children: [
-                      TrackTitle({ player: player }),
-                      TrackArtists({ player: player }),
-                    ],
-                  }),
-                  Box({
-                    vpack: "start",
-                    hpack: "end",
-                    css: `margin-right:2rem`,
-                    hexpand: true,
-                    spacing: 15,
-                    children: [
-                      TrackSource({ player: player }),
-                      // bluetoothPill({vpack:'center',className:`sec-txt`}),
-                    ],
-                  }),
-                ],
-              }),
-              Box({ vexpand: true }),
-              Box({
-                className: "spacing-h-10",
-                children: [
-                  TrackControls({ player: player }),
-                  Widget.Box({ hexpand: true }),
-                  ...(hasPlasmaIntegration
-                    ? [TrackTime({ player: player })]
-                    : []),
-                  PlayState({ player: player }),
-                ],
-              }),
-            ],
-          }),
-        ],
-      }),
-    ],
-  });
-function exclusive() {
-  if (horizontalAnchor() === "top") {
-    return "ignore";
-  } else {
-    return "normal";
-  }
-}
 export default () =>
   PopupWindow({
     keymode: "on-demand",
     anchor: ["bottom", "right", "left"],
     layer: "top",
-    exclusivity: "ignore",
     name: "music",
     child: Box({
       vertical: true,
       children: [
-        clickCloseRegion({
-          name: "music",
-          multimonitor: false,
-          fillMonitor: "vertical",
+        Box({
+          children: [
+            CornerBox("bottomleft", "start"),
+            Box({ hexpand: true }),
+            CornerBox("bottomright", "start"),
+          ],
         }),
         musicWidget(),
       ],
     }),
-    setup: (self) => {
-      self.hook(barPosition, () => {
-        self.exclusivity = exclusive();
-      });
-    },
   });

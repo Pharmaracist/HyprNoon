@@ -219,10 +219,11 @@ export const SearchAndWindows = () => {
   const EntryBarContent = () =>
     Widget.Box({
       vertical: true,
-      hpack: "fill",
+      hpack: "center",
       children: [
         Widget.Box({
           hpack: "fill",
+          hexpand: true,
           children: [
             RoundedCorner("topright", {
               vpack: "start",
@@ -238,6 +239,7 @@ export const SearchAndWindows = () => {
             }),
             RoundedCorner("topleft", {
               vpack: "start",
+              hpack: "start",
               className: "corner corner-colorscheme",
             }),
           ],

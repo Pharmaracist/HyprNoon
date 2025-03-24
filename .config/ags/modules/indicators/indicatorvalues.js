@@ -7,7 +7,7 @@ import { MarginRevealer } from "../.widgethacks/advancedrevealers.js";
 import Brightness from "../../services/brightness.js";
 import Indicator from "../../services/indicator.js";
 import { MaterialIcon } from "../.commonwidgets/materialicon.js";
-import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
+import { CornerBox } from "../.commonwidgets/cornerbox.js";
 // Import Gio to access GSettings
 const { Gio } = imports.gi;
 // Create a Gio.Settings instance for the GTK text-scaling-factor
@@ -186,20 +186,6 @@ const scaleIndicator = OsdValue({
     });
   },
 });
-const CornerBox = (corner, vpack) =>
-  Widget.Box({
-    setup: (self) =>
-      self.hook(useCorners, () => {
-        self.children = useCorners.value
-          ? [
-              RoundedCorner(corner, {
-                vpack,
-                className: "corner-colorscheme corner",
-              }),
-            ]
-          : [];
-      }),
-  });
 
 // Export the indicator widget with brightness, volume, and the new scale indicator.
 // The MarginRevealer uses a hook on the Indicator service to determine when to show or hide the indicator.

@@ -4,7 +4,7 @@ import Bluetooth from "resource:///com/github/Aylur/ags/service/bluetooth.js";
 import Network from "resource:///com/github/Aylur/ags/service/network.js";
 import Notifications from "resource:///com/github/Aylur/ags/service/notifications.js";
 import { MaterialIcon } from "./materialicon.js";
-let opts = await userOptions.asyncGet()
+let opts = await userOptions.asyncGet();
 export const NotificationIndicator = (notifCenterName = "sideright") => {
   const widget = Widget.Revealer({
     transition: "slide_left",
@@ -20,7 +20,7 @@ export const NotificationIndicator = (notifCenterName = "sideright") => {
             if (!Notifications.getNotification(id)) return;
             self.revealChild = true;
           },
-          "notified",
+          "notified"
         )
         .hook(App, (self, currentName, visible) => {
           if (visible && currentName === notifCenterName) {
@@ -47,7 +47,7 @@ export const NotificationIndicator = (notifCenterName = "sideright") => {
                   self.attribute.unreadCount++;
                   self.attribute.update(self);
                 },
-                "notified",
+                "notified"
               )
               .hook(App, (self, currentName, visible) => {
                 if (visible && currentName === notifCenterName) {
@@ -98,27 +98,27 @@ const BluetoothDevices = () =>
                 Widget.Icon(`${device.iconName}-symbolic`),
                 ...(device.batteryPercentage
                   ? [
-                    Widget.Label({
-                      className: "txt-smallie ",
-                      label: `${device.batteryPercentage}`,
-                      setup: (self) => {
-                        self.hook(
-                          device,
-                          (self) => {
-                            self.label = `${device.batteryPercentage}`;
-                          },
-                          "notify::batteryPercentage",
-                        );
-                      },
-                    }),
-                  ]
+                      Widget.Label({
+                        className: "txt-smallie ",
+                        label: `${device.batteryPercentage}`,
+                        setup: (self) => {
+                          self.hook(
+                            device,
+                            (self) => {
+                              self.label = `${device.batteryPercentage}`;
+                            },
+                            "notify::batteryPercentage"
+                          );
+                        },
+                      }),
+                    ]
                   : []),
               ],
             });
           });
           self.visible = Bluetooth.connected_devices.length > 0;
         },
-        "notify::connected-devices",
+        "notify::connected-devices"
       ),
   });
 
@@ -164,7 +164,7 @@ const SimpleNetworkIndicator = () =>
         const icon = Network[Network.primary || "wifi"]?.iconName;
         self.icon = icon || "";
         self.visible = icon;
-        self.toggleClassName = "txt-norm "
+        self.toggleClassName = "txt-norm ";
       }),
   });
 
@@ -221,7 +221,7 @@ const NetworkWifiIndicator = () =>
       }),
   });
 
-export const NetworkIndicator = (props = {},) =>
+export const NetworkIndicator = (props = {}) =>
   Widget.Stack({
     ...props,
     transition: "slide_up_down",
@@ -245,13 +245,10 @@ export const NetworkIndicator = (props = {},) =>
 
 export const bluetoothPill = (props = {}) =>
   Widget.Box({
-    ...props,
+    vpack: "center",
     spacing: 15,
-    className: "",
-    children: [
-      BluetoothDevices(),
-      BluetoothIndicator(),
-    ],
+    children: [BluetoothDevices(), BluetoothIndicator()],
+    ...props,
   });
 
 export const StatusIcons = (props = {}, monitor = 0) =>

@@ -1,180 +1,261 @@
 .auva-clock {
-    @include mainfont;
-    font-size: 1.8rem;
-    color: $onPrimary
+  @include mainfont;
+  font-size: 1.8rem;
+  color: $onPrimary;
 }
 
 .auva-date {
-    @include mainfont;
-    font-size: 1.4rem;
-    color: $onPrimary
+  @include mainfont;
+  font-size: 1.4rem;
+  color: $onPrimary;
 }
 
 .auva-day {
-    font-family: 'steelfish';
-    font-size: 4rem;
+  font-family: "steelfish";
+  font-size: 4rem;
 }
 
 .auva-day-color {
-    font-family: 'steelfish';
-    color: $primary;
-    font-size: 4rem;
-
+  font-family: "steelfish";
+  color: $primary;
+  font-size: 4rem;
 }
 
 .auva-weather {
-    @include mainfont;
-    font-size: 1.3rem;
-    font-weight: 300;
+  @include mainfont;
+  font-size: 1.3rem;
+  font-weight: 300;
 }
 
 .auva-greeting {
-    font-family: 'Big John';
-    font-size: 3rem
+  font-family: "Big John";
+  font-size: 3rem;
 }
 
 .auva-circprog-main {
-    @include fluent_decel_long;
-    min-width: 0.705rem;
-    min-height: 4.7rem;
-    padding: 0rem;
-    background: linear-gradient(to right, $primary 0%, $surface 100%);
+  @include fluent_decel_long;
+  min-width: 0.705rem;
+  min-height: 4.7rem;
+  padding: 0rem;
+  background: linear-gradient(to right, $primary 0%, $surface 100%);
 }
 
 .auva-clock-box {
-    @include full-rounding;
-    padding: 0.2rem 1.5rem;
-    background-color: $primary;
+  @include full-rounding;
+  padding: 0.2rem 1.5rem;
+  background-color: $primary;
 }
 
 //////////////////////////////////
 
 .add-calendar-bg {
-    @include shadows1;
-    @include normal-rounding;
-    min-width: 15rem;
-    min-height: 15rem;
-    margin: 2rem 1rem 0rem 0rem;
-    background-color: $background;
-    color: $onSurface
+  @include shadows1;
+  @include normal-rounding;
+  min-width: 15rem;
+  min-height: 15rem;
+  margin: 2rem 1rem 0rem 0rem;
+  background-color: $background;
+  color: $onSurface;
 }
 
 .add-calendar-date-day {
-    font-family: 'steelfish';
-    font-size: 7rem;
-    font-weight: bold;
-    color: $onSurface
+  font-family: "steelfish";
+  font-size: 7rem;
+  font-weight: bold;
+  color: $onSurface;
 }
 
 .add-calendar-dayname {
-    @include titlefont;
-    font-size: 1.8rem;
-    color: $onSurfaceVariant
+  @include titlefont;
+  font-size: 1.8rem;
+  color: $onSurfaceVariant;
 }
 
 .add-calendar-year {
-    @include titlefont;
-    font-size: 1.8rem;
-    margin-top: 0.5rem;
-    color: $onSurfaceVariant
+  @include titlefont;
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+  color: $onSurfaceVariant;
 }
 
 .calendar-tree {
-    color: $onSurfaceVariant
+  color: $onSurfaceVariant;
 }
 
 //////////////////////////////////
 
-
 .add-notif-bg {
-    @include shadows1;
-    @include normal-rounding;
-    @include bordering;
-    min-width: 10rem;
-    min-height: 40rem;
-    min-width: 21rem;
-    margin: 12rem 2rem 2rem 0;
-    padding: 0rem 1rem 1rem 1rem;
-    background-color: $background;
-    color: $onSurface
+  @include shadows1;
+  @include normal-rounding;
+  @include bordering;
+  min-width: 10rem;
+  min-height: 40rem;
+  min-width: 21rem;
+  margin: 12rem 2rem 2rem 0;
+  padding: 0rem 1rem 1rem 1rem;
+  background-color: $background;
+  color: $onSurface;
 }
 
 .add-notif-header {
-    border-radius: 0rem 0rem $rounding_small $rounding_small;
-    border-bottom: 0.6px solid $outliner;
-    background-color: $layer2;
-    padding: 0.6rem 1.8rem;
-    margin-bottom: 0.4rem
+  border-radius: 0rem 0rem $rounding_small $rounding_small;
+  border-bottom: 0.6px solid $outliner;
+  background-color: $layer2;
+  padding: 0.6rem 1.8rem;
+  margin-bottom: 0.4rem;
 }
 
 .add-notif-header-txt {
-    @include titlefont;
-    font-size: large;
-    color: $onLayer2
+  @include titlefont;
+  font-size: large;
+  color: $onLayer2;
 }
 
 .add-notif-list-item {
-    border-radius: $rounding_small;
-    @include element_decel;
-    min-height: 2.5rem;
-    background-color: $layer2;
-    color: $secondary;
-    padding: 0.1rem 1rem;
-
+  border-radius: $rounding_small;
+  @include element_decel;
+  min-height: 2.5rem;
+  background-color: $layer2;
+  color: $secondary;
+  padding: 0.1rem 1rem;
 }
 
 .add-notif-scilence-btn-active {
-    border-radius: $rounding_small;
-    background-color: $primary;
-    color: $onPrimary;
+  border-radius: $rounding_small;
+  background-color: $primary;
+  color: $onPrimary;
 }
 
 .add-corner-notif {
-    background-color: $layer2;
+  background-color: $layer2;
 }
 
 //////////////////////////////////
 
 .add-weather-bg {
-    @include shadows1;
-    @include normal-rounding;
-    min-width: 15rem;
-    min-height: 15rem;
-    margin: 2rem 2.5rem 0rem 0rem;
-    background-color: $background;
-    color: $onSurface
+  @include shadows1;
+  @include normal-rounding;
+  min-width: 15rem;
+  min-height: 15rem;
+  margin: 2rem 2.5rem 0rem 0rem;
+  background-color: $background;
+  color: $onSurface;
 }
 
 .add-weather-icon-bg {
-    color: $onSurfaceVariant;
-    font-size: 11rem;
+  color: $onSurfaceVariant;
+  font-size: 11rem;
 }
 
 .add-weather-temp-label {
-    font-family: 'steelfish';
-    font-size: 3rem;
-    color: $secondary
+  font-family: "steelfish";
+  font-size: 3rem;
+  color: $secondary;
 }
 
 .add-weather-feels-label {
-    @include titlefont;
-    font-size: 1.7rem
+  @include titlefont;
+  font-size: 1.7rem;
 }
 
 //////////////////////////////////
 .add-resources-block-bg {
-    @include shadows1;
-    @include normal-rounding;
-    min-width: 31.3rem;
-    min-height: 10rem;
-    margin: 1rem 2.5rem 0rem 0rem;
-    background-color: $background;
-    color: $onSurface;
+  @include shadows1;
+  @include normal-rounding;
+  min-width: 31.3rem;
+  min-height: 10rem;
+  margin: 1rem 2.5rem 0rem 0rem;
+  background-color: $background;
+  color: $onSurface;
 }
 
 .add-resources-circprog-main {
-    @include fluent_decel_long;
-    min-width: 0.8rem;
-    min-height: 5.5rem;
-    background: $secondaryContainer
+  @include fluent_decel_long;
+  min-width: 0.8rem;
+  min-height: 5.5rem;
+  background: $secondaryContainer;
+}
+///////////////////////////////
+/// /* Container for the entire Emoji Picker window */
+.emoji {
+  @include emojiefont;
+}
+/* A generic standard icon button style */
+.standard_icon_button {
+  border: none;
+  padding: 0.5rem;
+  margin: 0.2rem;
+  transition: background-color 0.2s ease;
+}
+
+.standard_icon_button:hover {
+  background-color: $onLayer2;
+  background-color: $secondaryContainer;
+  @include full-rounding;
+  min-width: 1.6rem;
+  min-height: 1.6rem;
+}
+/* Specific style for emoji buttons */
+.standard_icon_button.emoji {
+  // font-family: "Apple Color Emoji";
+  font-size: 1.7rem;
+}
+
+/* Active state for category buttons */
+.standard_icon_button.active {
+  background-color: $secondaryContainer;
+  @include full-rounding;
+  min-width: 1.6rem;
+  min-height: 1.6rem;
+}
+
+/* Category button style (uses MaterialIcon) */
+.emoji_category {
+  @include normal-rounding;
+  font-size: 1.4rem;
+  color: $secondary;
+  min-width: 1.6rem;
+  min-height: 1.6rem;
+}
+
+/* Top bar container (holds search entry and category buttons) */
+.top_bar {
+  @include normal-rounding;
+  padding: 0.65rem;
+  background-color: $layer1;
+  margin-bottom: 0.8rem;
+}
+
+/* Style for the search entry */
+.search {
+  @include mainfont;
+  border: 1px solid $surfaceContainerHighest;
+  @include full-rounding;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  margin-right: 0.8rem;
+  color: $onSurfaceVariant;
+  opacity: 0.7;
+}
+.emojie-scrollable {
+  // @include normal-rounding;
+}
+/* Container for the emoji list */
+.emoji_list {
+  @include shadows1;
+  @include normal-rounding;
+  min-height: 600px;
+  min-width: 380px;
+  background-color: $layer0;
+  @include elevation2;
+}
+
+/* Title label for each emoji category */
+.title {
+  @include mainfont;
+  font-size: larger;
+  padding: 0.5rem 1rem;
+  margin: 0.3rem 0;
+  color: $onSurfaceVariant;
+  opacity: 0.7;
 }

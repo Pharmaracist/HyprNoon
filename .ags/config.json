@@ -312,17 +312,8 @@
     "layer": "top",
     "monitorExclusivity": true,
     "searchPinnedAppIcons": false,
-    "trigger": ["client-added", "client-removed"],
-    "autoHide": [
-      {
-        "trigger": "client-added",
-        "interval": 500
-      },
-      {
-        "trigger": "client-removed",
-        "interval": 500
-      }
-    ]
+    "trigger": [],
+    "autoHide": []
   },
   "icons": {
     "__custom": ["substitutions", "regexSubstitutions"],

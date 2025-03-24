@@ -1,24 +1,26 @@
 .dock-bg {
   @include shadows1;
   background-color: $layer0;
-  margin-top: 1rem;
-  border-top: 0.5px solid $outliner;
-  border-radius: $rounding_medium $rounding_medium 0 0;
-}
-.dock-round {
-  border-top: 0.5px solid $outliner;
-  border-radius: $rounding_medium $rounding_medium 0 0;
+  padding: 0.35rem;
+  // border-top: 0.5px solid $outliner;
 }
 .dock-app-btn-animate {
   transition-property: color;
   transition-duration: 0.5s;
+}
+.dock-round-vertical {
+  border-radius: $rounding_medium 0 0 $rounding_medium;
+}
+
+.dock-round-top {
+  border-radius: $rounding_medium $rounding_medium 0 0;
 }
 
 .dock-app-btn {
   @include normal-rounding;
 }
 .unpinned-dock-app-btn {
-  color: $surfaceContainerLowest;
+  color: $surface;
 }
 .pinned-dock-app-btn {
   @include full-rounding;
@@ -43,6 +45,13 @@
 .dock-separator {
   min-width: 0.04rem;
   opacity: 0.4;
-  margin: 0.45rem 0.6rem;
+  margin: 0 0.6rem;
+  background-color: $outline;
+}
+
+.dock-separator-vertical {
+  min-width: 1.4rem;
+  opacity: 0.5;
+  margin: 0 0.2rem;
   background-color: $outline;
 }

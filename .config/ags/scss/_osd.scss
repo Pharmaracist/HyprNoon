@@ -6,7 +6,7 @@
 .osd-value {
   background-color: $layer0;
   padding: 0.625rem 1.023rem;
-  border-bottom: 0.6 solid $outliner;
+  border-bottom: 0.6px solid $outliner;
 }
 .osd-full-round {
   margin-top: 1rem;
@@ -72,7 +72,7 @@
 }
 
 .osd-round {
-  border-radius: 0 0 $rounding_medium $rounding_medium;
+  border-radius: 0rem 0rem $rounding_medium $rounding_medium;
 }
 
 .osd-colorscheme {
@@ -242,7 +242,14 @@
   background-color: $background;
   color: $onBackground;
   padding: 1rem;
-  border-left: 0.2px solid $outliner;
+}
+.recorder-round {
+  border-radius: $rounding_small 0 0 $rounding_small;
+}
+.recorder-mask {
+  @include small-rounding;
+  // background-color: $surfaceContainer;
+  // padding: 1rem;
 }
 .recorder-btn {
   @include full-rounding;

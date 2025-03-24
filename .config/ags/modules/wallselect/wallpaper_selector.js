@@ -10,15 +10,36 @@ import userOptions from "../.configuration/user_options.js";
 const { Box, Label, EventBox, Scrollable, Button } = Widget;
 const { wallselect: opts, etc } = await userOptions.asyncGet();
 import PopupWindow from "../.widgethacks/popupwindow.js";
-const elevate = etc.widgetCorners
-  ? "wall-rounding shadow-window"
-  : "elevation shadow-window";
+import {
+  upperCorners,
+  lowerCorners,
+  rightCorners,
+  leftCorners,
+} from "../.commonwidgets/dynamiccorners.js";
+function styling() {
+  let anchors, hscroll, vscroll, value;
+
+  if (opts.Vmode) {
+    anchors = [antiVerticalAnchor(), "top", "bottom"];
+    hscroll = "never";
+    vscroll = "always";
+    value = true;
+  } else {
+    anchors = [antiHorizontalAnchor(), "right", "left"];
+    hscroll = "always";
+    vscroll = "never";
+    value = false;
+  }
+  return { anchors, hscroll, vscroll, value };
+}
+
 const WALLPAPER_DIR =
   GLib.get_home_dir() + (opts.wallpaperFolder || "/Pictures/Wallpapers");
 const PREVIEW_WIDTH = opts.width || 200;
 const PREVIEW_HEIGHT = opts.height || 120;
 const PREVIEW_CORNER = opts.radius || 18;
 const HIGH_QUALITY_PREVIEW = opts.highQualityPreview;
+
 // Set up disk cache.
 const DISK_CACHE_DIR = GLib.get_user_cache_dir() + "/ags/user/wallpapers";
 GLib.mkdir_with_parents(DISK_CACHE_DIR, 0o755);
@@ -131,17 +152,34 @@ const WallpaperPreview = (path) =>
         drawingArea.set_size_request(PREVIEW_WIDTH, PREVIEW_HEIGHT);
         self.add(drawingArea);
         let pixbuf = null;
+        let drawingAreaDestroyed = false;
+
+        // Mark when the drawing area is unrealized.
+        drawingArea.connect("unrealize", () => {
+          drawingAreaDestroyed = true;
+        });
 
         // Function to load the image.
         const loadImage = () => {
           loadPreviewAsync(path)
             .then((p) => {
               pixbuf = p;
-              drawingArea.queue_draw();
+              // Use GLib.idle_add to ensure the draw is scheduled on the main loop.
+              GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+                if (!drawingAreaDestroyed && drawingArea.get_window()) {
+                  drawingArea.queue_draw();
+                }
+                return GLib.SOURCE_REMOVE;
+              });
             })
             .catch((e) => {
               log(`Error loading image ${path}: ${e}`);
-              drawingArea.queue_draw();
+              GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+                if (!drawingAreaDestroyed && drawingArea.get_window()) {
+                  drawingArea.queue_draw();
+                }
+                return GLib.SOURCE_REMOVE;
+              });
             });
         };
 
@@ -153,52 +191,58 @@ const WallpaperPreview = (path) =>
         }
 
         drawingArea.connect("draw", (widget, cr) => {
-          if (pixbuf) {
-            const areaWidth = widget.get_allocated_width();
-            const areaHeight = widget.get_allocated_height();
-            cr.save();
-            // Create a rounded clipping path.
-            cr.newPath();
-            cr.arc(
-              PREVIEW_CORNER,
-              PREVIEW_CORNER,
-              PREVIEW_CORNER,
-              Math.PI,
-              1.5 * Math.PI
-            );
-            cr.arc(
-              areaWidth - PREVIEW_CORNER,
-              PREVIEW_CORNER,
-              PREVIEW_CORNER,
-              1.5 * Math.PI,
-              2 * Math.PI
-            );
-            cr.arc(
-              areaWidth - PREVIEW_CORNER,
-              areaHeight - PREVIEW_CORNER,
-              PREVIEW_CORNER,
-              0,
-              0.5 * Math.PI
-            );
-            cr.arc(
-              PREVIEW_CORNER,
-              areaHeight - PREVIEW_CORNER,
-              PREVIEW_CORNER,
-              0.5 * Math.PI,
-              Math.PI
-            );
-            cr.closePath();
-            cr.clip();
+          // Make sure the drawing surface is still valid.
+          if (!widget.get_window()) return false;
+          try {
+            if (pixbuf) {
+              const areaWidth = widget.get_allocated_width();
+              const areaHeight = widget.get_allocated_height();
+              cr.save();
+              // Create a rounded clipping path.
+              cr.newPath();
+              cr.arc(
+                PREVIEW_CORNER,
+                PREVIEW_CORNER,
+                PREVIEW_CORNER,
+                Math.PI,
+                1.5 * Math.PI
+              );
+              cr.arc(
+                areaWidth - PREVIEW_CORNER,
+                PREVIEW_CORNER,
+                PREVIEW_CORNER,
+                1.5 * Math.PI,
+                2 * Math.PI
+              );
+              cr.arc(
+                areaWidth - PREVIEW_CORNER,
+                areaHeight - PREVIEW_CORNER,
+                PREVIEW_CORNER,
+                0,
+                0.5 * Math.PI
+              );
+              cr.arc(
+                PREVIEW_CORNER,
+                areaHeight - PREVIEW_CORNER,
+                PREVIEW_CORNER,
+                0.5 * Math.PI,
+                Math.PI
+              );
+              cr.closePath();
+              cr.clip();
 
-            // Compute independent scale factors for width and height.
-            const scaleX = areaWidth / pixbuf.get_width();
-            const scaleY = areaHeight / pixbuf.get_height();
-            cr.scale(scaleX, scaleY);
+              // Compute independent scale factors for width and height.
+              const scaleX = areaWidth / pixbuf.get_width();
+              const scaleY = areaHeight / pixbuf.get_height();
+              cr.scale(scaleX, scaleY);
 
-            // Draw the image so that it fills the entire area.
-            Gdk.cairo_set_source_pixbuf(cr, pixbuf, 0, 0);
-            cr.paint();
-            cr.restore();
+              // Draw the image so that it fills the entire area.
+              Gdk.cairo_set_source_pixbuf(cr, pixbuf, 0, 0);
+              cr.paint();
+              cr.restore();
+            }
+          } catch (err) {
+            log(`Drawing error: ${err}`);
           }
           return false;
         });
@@ -222,7 +266,6 @@ const WallpaperPreview = (path) =>
 const createPlaceholder = () =>
   Box({
     className: "wallpaper-placeholder",
-    // vertical: true,
     vexpand: true,
     hexpand: true,
     spacing: 10,
@@ -246,24 +289,7 @@ const createPlaceholder = () =>
       }),
     ],
   });
-// function anchors() {
-//   return barPosition.value === "left" || barPosition.value === "right"
-//     ? {
-//         vertical: true,
-//         hscroll: "never",
-//         vscroll: "always",
-//         anchors: ["top", "bottom", antiVerticalAnchor()],
-//       }
-//     : {
-//         vertical: false,
-//         hscroll: "always",
-//         vscroll: "never",
-//         anchors: ["left", "right", horizontalAnchor()],
-//       };
-// }
 
-// console.log(antiVerticalAnchor());
-// Create the wallpaper content container.
 const createContent = async () => {
   try {
     const wallpaperPaths = await getWallpaperPaths();
@@ -275,23 +301,23 @@ const createContent = async () => {
       child: Scrollable({
         hexpand: true,
         vexpand: true,
-        hscroll: "always",
-        vscroll: "never",
         child: Box({
           className: "wallpaper-list",
           children: wallpaperPaths.map(WallpaperPreview),
-          // setup: (self) => {
-          //   self.hook(barPosition, () => {
-          //     self.vertical = anchors().vertical;
-          //   });
-          // },
+          setup: (self) => {
+            self.hook(barPosition, () => {
+              const newStyle = styling();
+              self.vertical = newStyle.value;
+            });
+          },
         }),
-        // setup: (self) => {
-        //   self.hook(barPosition, () => {
-        //     self.hscroll = anchors().hscroll;
-        //     self.vscroll = anchors().vscroll;
-        //   });
-        // },
+        setup: (self) => {
+          self.hook(barPosition, () => {
+            const newStyle = styling();
+            self.hscroll = newStyle.hscroll;
+            self.vscroll = newStyle.vscroll;
+          });
+        },
       }),
     });
   } catch (error) {
@@ -309,27 +335,71 @@ const createContent = async () => {
   }
 };
 
-export default () =>
-  PopupWindow({
-    keymode: "on-demand",
-    name: "wallselect",
+export default () => {
+  const contentContainer = Box({
     child: Box({
-      className: `wallselect-bg ${elevate}`,
-      children: [
-        Box({
-          vertical: true,
-          className: "wallselect-content",
-          setup: (self) => {
-            self.hook(App, async (_) => {
-              self.child = await createContent();
-            });
-          },
-        }),
-      ],
+      vertical: true,
+      className: "wallselect-content",
+      child: createPlaceholder(),
+      setup: async (self) => {
+        self.child = await createContent();
+      },
     }),
-    setup: (self) => {
-      self.hook(barPosition, () => {
-        self.anchor = ["left", "right", horizontalAnchor()];
+    setup: async (self) => {
+      self.hook(useCorners, async () => {
+        self.className = useCorners.value
+          ? "wallselect-bg"
+          : "wallselect-bg elevation";
       });
     },
   });
+  const windowWidget = PopupWindow({
+    keymode: "on-demand",
+    name: "wallselect",
+    child: Box({
+      vertical: true,
+      children: [
+        upperCorners,
+        Box({
+          children: [leftCorners, contentContainer, rightCorners],
+        }),
+        lowerCorners,
+      ],
+    }),
+    setup: (self) => {
+      self.hook(barPosition, async () => {
+        self.anchor = styling().anchors;
+        if (opts.Vmode) {
+          upperCorners.visible = false;
+          lowerCorners.visible = false;
+          if (antiVerticalAnchor() === "left") {
+            rightCorners.visible = true;
+            leftCorners.visible = false;
+            upperCorners.visible = false;
+            lowerCorners.visible = false;
+          }
+          if (antiVerticalAnchor() === "right") {
+            rightCorners.visible = false;
+            leftCorners.visible = true;
+            upperCorners.visible = false;
+            lowerCorners.visible = false;
+          }
+        } else {
+          if (antiHorizontalAnchor() === "top") {
+            leftCorners.visible = false;
+            rightCorners.visible = false;
+            upperCorners.visible = false;
+            lowerCorners.visible = true;
+          }
+          if (antiHorizontalAnchor() === "bottom") {
+            leftCorners.visible = false;
+            rightCorners.visible = false;
+            upperCorners.visible = true;
+            lowerCorners.visible = false;
+          }
+        }
+      });
+    },
+  });
+  return windowWidget;
+};

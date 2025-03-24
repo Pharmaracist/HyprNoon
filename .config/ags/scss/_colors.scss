@@ -22,48 +22,6 @@
   $surfaceTint: transparentize($surfaceTint, $transparency);
   $outliner: transparentize($secondary, $rootTransparency);
 }
-@if $monochrome ==True {
-  // Material BadApple
-  $primary: #e2e2e2;
-  $onPrimary: #000000;
-  $primaryContainer: #6b6b6b;
-  $onPrimaryContainer: #e2e2e2;
-  $secondary: #e2e2e2;
-  $onSecondary: #000000;
-  $secondaryContainer: #313131;
-  $onSecondaryContainer: #e2e2e2;
-  $tertiary: #e2e2e2;
-  $onTertiary: #000000;
-  $tertiaryContainer: #000000;
-  $onTertiaryContainer: #e2e2e2;
-  $error: #e2e2e2;
-  $onError: #000000;
-  $errorContainer: #000000;
-  $onErrorContainer: #e2e2e2;
-  $colorbarbg: #000000;
-  $background: #000000;
-  $onBackground: #e2e2e2;
-  $surface: #161616;
-  $onSurface: #e2e2e2;
-  $surfaceVariant: #242424;
-  $onSurfaceVariant: #e2e2e2;
-  $outline: #a1a1a1;
-  $shadow: #000000;
-  $inverseSurface: #e2e2e2;
-  $inverseOnSurface: #000000;
-  $inversePrimary: #e2e2e2;
-
-  // Surface Variants
-  $surfaceVariant: #44474f;
-  $onSurfaceVariant: #c4c6d0;
-  $surfaceDim: #111318;
-  $surfaceBright: #3e4045;
-  $surfaceContainerLowest: #080a0f;
-  $surfaceContainerLow: #1b1d22;
-  $surfaceContainer: #23242a;
-  $surfaceContainerHigh: #2d2f34;
-  $surfaceContainerHighest: #383a3f;
-}
 @if $transProfile ==Normal {
   $rootTransparency: 0.22; // Transparency = 1 - opacity
   $transparency: 1;

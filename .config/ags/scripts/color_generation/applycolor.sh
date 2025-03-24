@@ -53,11 +53,16 @@ if [[ "${lines[5]}" == *"normal"* ]]; then
 else 
     vibrant=True
 fi
-
+# Custom Themes
 if [[ "${lines[2]}" == *"scheme-monochrome"* ]]; then 
     monochrome=True
 else 
     monochrome=False
+fi
+if [[ "${lines[2]}" == *"scheme-custom"* ]]; then 
+    monochrome="custom"
+else 
+    monochrome="scheme-tonal-spot"
 fi
 
 # Update _mode.scss only if needed

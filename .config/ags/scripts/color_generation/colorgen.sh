@@ -13,10 +13,10 @@ contrast=0.3 # TODO $(sed -n '8p' "$STATE_DIR/user/colormode.txt")
 
 # SWWW options for wallpaper transition
 SWWW_OPTIONS="
-    --transition-type wipe \
-    --transition-duration 2 \
+    --transition-type center \
+    --transition-duration 1.5 \
     --transition-step 90 \
-    --transition-fps 100 \
+    --transition-fps 144 \
     -f Nearest
 "
 
@@ -37,13 +37,13 @@ main () {
 
     # Check if the wallpaper file exists
     if [[ -f "$currentwallpaper" ]]; then
-        echo "$currentwallpaper" > "$WALLPAPER_FILE" &
-        matugen image "$currentwallpaper" --type "$colorscheme" --mode "$lightdark" --contrast "$contrast" &
-        # swww img $SWWW_OPTIONS "$currentwallpaper" &
+        echo "$currentwallpaper" > "$WALLPAPER_FILE" 
+        swww img $SWWW_OPTIONS "$currentwallpaper" 
+        matugen image "$currentwallpaper" --type "$colorscheme" --mode "$lightdark" --contrast "$contrast" 
     else
         echo "Error: Wallpaper file not found at '$currentwallpaper'"
         exit 1
     fi
 }
 
-main "$1"
+main "$1" &

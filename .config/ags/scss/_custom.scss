@@ -1,0 +1,44 @@
+@if $monochrome == "custom" {
+  // Pop Dark Purple Theme
+  $primary: #ea80fc; // Bold, vibrant purple
+  $onPrimary: #000000;
+  $primaryContainer: #e040fb; // Deep purple container
+  $onPrimaryContainer: #e0e0e0;
+
+  $secondary: #b388ff; // Lively lavender accent
+  $onSecondary: #000000;
+  $secondaryContainer: #7c4dff;
+  $onSecondaryContainer: #e0e0e0;
+
+  $tertiary: #8c9eff; // Bright blue accent for added pop
+  $onTertiary: #000000;
+  $tertiaryContainer: #536dfe;
+  $onTertiaryContainer: #e0e0e0;
+
+  $error: #cf6679;
+  $onError: #000000;
+  $errorContainer: #b00020;
+  $onErrorContainer: #e0e0e0;
+
+  $colorbarbg: #000000;
+  $background: #121212;
+  $onBackground: #e0e0e0;
+  $surface: #1e1e1e;
+  $onSurface: #e0e0e0;
+  $surfaceVariant: #2a2a2a;
+  $onSurfaceVariant: #e0e0e0;
+  $outline: #757575;
+  $shadow: #000000;
+  $inverseSurface: #e0e0e0;
+  $inverseOnSurface: #121212;
+  $inversePrimary: #ea80fc;
+
+  // Additional surface variants
+  $surfaceDim: #171717;
+  $surfaceBright: #2c2c2c;
+  $surfaceContainerLowest: #101010;
+  $surfaceContainerLow: #1a1a1a;
+  $surfaceContainer: #242424;
+  $surfaceContainerHigh: #2e2e2e;
+  $surfaceContainerHighest: #383838;
+}

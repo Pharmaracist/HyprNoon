@@ -36,43 +36,43 @@ export const calendarRevealer = Widget.Revealer({
 const modulesList = {
   vpnGate: {
     name: "VPN Gate",
-    materialIcon: "vpn_key",
+    tablerIcon: "fa4e",
     contentWidget: VPN, // Renamed vpn to VPN
   },
   notifications: {
     name: getString("Notifications"),
-    materialIcon: "notifications",
+    tablerIcon: "eafe",
     contentWidget: ModuleNotificationList,
   },
   audioControls: {
     name: getString("Audio controls"),
-    materialIcon: "volume_up",
+    tablerIcon: "fd2c",
     contentWidget: ModuleAudioControls,
   },
   powerProfiles: {
     name: "Power Profiles",
-    materialIcon: "speed",
+    tablerIcon: "10021",
     contentWidget: ModulePowerProfiles,
   },
   taskManager: {
     name: getString("Tasks Manager"),
-    materialIcon: "check",
+    tablerIcon: "ed79",
     contentWidget: taskmanager,
   },
   bluetooth: {
     name: getString("Bluetooth"),
-    materialIcon: "bluetooth",
+    tablerIcon: "ea37",
     contentWidget: ModuleBluetooth,
   },
   wifiNetworks: {
     name: getString("Wifi networks"),
-    materialIcon: "wifi",
+    tablerIcon: "eb52",
     contentWidget: ModuleWifiNetworks,
     onFocus: () => execAsync("nmcli dev wifi list").catch(print),
   },
   prayerTimes: {
     name: "Prayer Times",
-    materialIcon: "mosque",
+    tablerIcon: "ece7",
     contentWidget: ModulePrayerTimes,
   },
 };
@@ -182,7 +182,7 @@ const togglesBox = Widget.Box({
 export const sidebarOptionsStack = ExpandingIconTabContainer({
   tabsHpack: "center",
   tabSwitcherClassName: "sidebar-icontabswitcher",
-  icons: getEnabledModules().map((api) => api.materialIcon),
+  icons: getEnabledModules().map((api) => api.tablerIcon),
   names: getEnabledModules().map((api) => api.name),
   children: getEnabledModules().map((api) => api.contentWidget()),
   onChange: (self, id) => {

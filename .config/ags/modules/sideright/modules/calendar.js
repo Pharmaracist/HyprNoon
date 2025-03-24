@@ -8,11 +8,12 @@ import { TimerWidget } from "./timers.js";
 import { TodoWidget } from "./todolist.js";
 import { getCalendarLayout } from "./calendar_layout.js";
 import AudioFiles from "./media.js";
-import { PrayerTimesWidget } from "../prayertimes.js";
+import { PrayerTimesWidget } from "./prayertimes.js";
 import Todo from "../../../services/todo.js";
+import { TablerIcon } from "../../.commonwidgets/tablericon.js";
 
 // Use the same userOpts variable as before
-let userOpts = userOptions.asyncGet();
+let userOpts = await userOptions.asyncGet();
 
 // Cached calendar values
 let calendarJson = getCalendarLayout(undefined, true);
@@ -190,10 +191,7 @@ const StackButton = (stackItemName, icon, name) =>
       className: "spacing-v-5",
       vertical: true,
       children: [
-        Label({
-          className: "txt icon-material txt-hugeass",
-          label: icon,
-        }),
+        TablerIcon(icon, "hugeass", { className: "txt-hugerass onSurface" }),
         Label({
           label: name,
           className: "txt txt-smallie",
@@ -243,12 +241,12 @@ const navrail = Box({
   className: "sidebar-navrail spacing-v-10",
   children: [
     ...(userOpts.muslim?.enabled
-      ? [StackButton("PrayerTimes", "mosque", getString("Prayers"))]
+      ? [StackButton("PrayerTimes", "fa57", getString("Prayers"))]
       : []),
-    StackButton("calendar", "calendar_month", getString("Calendar")),
-    StackButton("todo", "done_outline", getString("To Do")),
-    StackButton("media", "music_note", getString("Media")),
-    StackButton("timers", "access_time", getString("Timers")),
+    StackButton("calendar", "fd30", getString("Calendar")),
+    StackButton("todo", "eb6a", getString("To Do")),
+    StackButton("media", "eabd", getString("Media")),
+    StackButton("timers", "f146", getString("Timers")),
   ],
 });
 

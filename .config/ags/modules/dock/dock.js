@@ -1,23 +1,24 @@
 const { Gtk, GLib } = imports.gi;
 import Widget from "resource:///com/github/Aylur/ags/widget.js";
 import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
-const { EventBox } = Widget;
+const { Box, Revealer, EventBox } = Widget;
 import { RoundedCorner } from "./../.commonwidgets/cairo_roundedcorner.js";
 import Hyprland from "resource:///com/github/Aylur/ags/service/hyprland.js";
 import Applications from "resource:///com/github/Aylur/ags/service/applications.js";
-const { Box, Revealer } = Widget;
 import { setupCursorHover } from "../.widgetutils/cursorhover.js";
+// import { checkKeybind } from "../.widgetutils/keybind.js";
 import { getAllFiles } from "./icons.js";
 import { substitute } from "../.miscutils/icons.js";
 import { getValidIcon } from "../.miscutils/icon_handling.js";
+import { toggleDockMode } from "../../variables.js";
+import { getDistroIcon } from "../.miscutils/system.js";
 let opts = await userOptions.asyncGet();
 
-const icon_files = opts.icons.searchPaths.map((e) => getAllFiles(e)).flat(1);
+// let anchor, className, c1, c2;
 let dockSize = opts.dock.dockSize;
-let elevate = opts.etc.widgetCorners
-  ? "dock-bg dock-round "
-  : "elevation dock-bg";
-let appSpacing = dockSize / 15;
+let appSpacing = dockSize / 30;
+
+const icon_files = opts.icons.searchPaths.map((e) => getAllFiles(e)).flat(1);
 let isPinned = false;
 let cachePath = new Map();
 let timers = [];
@@ -53,25 +54,38 @@ const getIconPath = (appClass, fromCache = true) => {
   return getValidIcon(appClass, icon_files, fromCache, cachePath);
 };
 
-const DockSeparator = (props = {}) =>
+const DockSeparator = () =>
   Box({
-    ...props,
-    className: "dock-separator",
+    setup: (self) => {
+      self.hook(dockMode, () => {
+        self.className = dockMode.value
+          ? "spacing-v--10 dock-separator-vertical"
+          : "dock-separator spacing-h-15 ";
+      });
+    },
   });
 
 const PinButton = () =>
-  Widget.Button({
+  Widget.EventBox({
     tooltipText: "Pin Dock",
-    css: `margin: 0 ${appSpacing}px;padding: 0 10px`,
+    hpack: "center",
     child: Widget.Box({
+      css: "margin:0.4rem 0.3rem",
       homogeneous: true,
       child: Widget.Icon({
-        icon: "logo-symbolic",
-        size: dockSize,
+        icon: getDistroIcon(),
+        size: dockSize * 0.9,
       }),
     }),
-    onClicked: (self) => {
+    onSecondaryClick: () => {
+      toggleDockMode();
+    },
+    onPrimaryClick: (self) => {
       isPinned = !isPinned;
+      let win = App.getWindow("dock");
+      if (win) {
+        win.exclusivity = isPinned ? "exclusive" : "normal";
+      }
       self.className = `${
         isPinned
           ? "pinned-dock-app-btn dock-app-btn-animate"
@@ -80,27 +94,28 @@ const PinButton = () =>
     },
     setup: setupCursorHover,
   });
-
 const AppButton = ({ icon, ...rest }) =>
   Widget.Revealer({
     attribute: {
       workspace: 0,
     },
     revealChild: false,
-    transition: "slide_right",
+    transition: "crossfade",
     transitionDuration: opts.animations.durationLarge,
     child: Widget.Button({
       ...rest,
       className: "dock-app-btn dock-app-btn-animate",
-      css: `margin: 0 ${appSpacing}px`,
+      hpack: "center",
       child: Widget.Box({
+        spacing: appSpacing + 10,
         child: Widget.Overlay({
           child: Widget.Box({
+            spacing: appSpacing + 10,
             homogeneous: true,
             className: "dock-app-icon",
             child: Widget.Icon({
               icon: icon,
-              size: dockSize,
+              size: dockSize + 5,
             }),
           }),
           overlays: [
@@ -112,12 +127,15 @@ const AppButton = ({ icon, ...rest }) =>
           ],
         }),
       }),
-      setup: (button) => {
-        setupCursorHover(button);
+      setup: (self) => {
+        self.hook(dockMode, () => {
+          self.vertical = dockMode.value;
+        });
+
+        setupCursorHover(self);
       },
     }),
   });
-
 const Taskbar = (monitor) =>
   Widget.Box({
     className: "dock-apps",
@@ -182,6 +200,10 @@ const Taskbar = (monitor) =>
       },
     },
     setup: (self) => {
+      self.hook(dockMode, () => {
+        self.vertical = dockMode.value;
+      });
+
       self
         .hook(
           Hyprland,
@@ -244,55 +266,88 @@ const PinnedApps = () =>
         newButton.revealChild = true;
         return newButton;
       }),
+    setup: (self) => {
+      self.hook(dockMode, () => {
+        self.vertical = dockMode.value;
+      });
+    },
   });
-export default (monitor = 0) => {
+const topCorner = RoundedCorner("bottomright", {
+  hpack: "end",
+  vpack: "end",
+  className: "corner-amberoled corner",
+});
+const bottomCorner = RoundedCorner("topright", {
+  className: "corner-amberoled corner",
+  hpack: "end",
+  vpack: "end",
+});
+const bottomLeftCorner = RoundedCorner("bottomleft", {
+  className: "corner-amberoled corner",
+  vpack: "end",
+});
+
+const Dock = (monitor = 0) => {
   const dockContent = Box({
-    vertical: true,
+    vpack: "center",
     children: [
+      topCorner,
       Box({
-        children: [
-          Box({
-            setup: (self) => {
+        hpack: "center",
+        children: [PinButton(), PinnedApps(), DockSeparator(), Taskbar()],
+        setup: (self) => {
+          self.hook(dockMode, () => {
+            if (dockMode.value) {
+              // If dockMode is true
               self.hook(useCorners, () => {
-                self.children = useCorners.value
-                  ? [
-                      RoundedCorner("bottomright", {
-                        className: "corner corner-colorscheme",
-                        vpack: "end",
-                      }),
-                    ]
-                  : [];
+                if (useCorners.value) {
+                  self.className = "dock-bg dock-round-vertical";
+                } else {
+                  self.className = "dock-bg elevation sidebar-round";
+                }
               });
-            },
-          }),
-          Box({
-            css: `padding:${dockSize / 85}rem`,
-            children: [PinButton(), PinnedApps(), DockSeparator(), Taskbar()],
-            setup: (self) => {
+              self.vertical = true;
+            } else {
+              // If dockMode is not true
               self.hook(useCorners, () => {
-                self.className = useCorners.value
-                  ? "dock-bg"
-                  : "dock-bg elevation sidebar-round";
+                if (useCorners.value) {
+                  self.className = "dock-bg dock-round-top";
+                } else {
+                  self.className = "dock-bg elevation sidebar-round";
+                }
               });
-            },
-          }),
-          Box({
-            setup: (self) => {
-              self.hook(useCorners, () => {
-                self.children = useCorners.value
-                  ? [
-                      RoundedCorner("bottomleft", {
-                        className: "corner corner-colorscheme",
-                        vpack: "end",
-                      }),
-                    ]
-                  : [];
-              });
-            },
-          }),
-        ],
+              self.vertical = false;
+            }
+          });
+        },
       }),
+      bottomCorner,
+      bottomLeftCorner,
     ],
+    setup: (self) => {
+      self.hook(dockMode, () => {
+        if (dockMode.value) {
+          self.vertical = true;
+          bottomCorner.visible = true;
+          bottomLeftCorner.visible = false;
+        } else {
+          self.vertical = false;
+          bottomCorner.visible = false;
+          bottomLeftCorner.visible = true;
+        }
+        self.hook(useCorners, () => {
+          if (dockMode.value) {
+            topCorner.visible = useCorners.value;
+            bottomCorner.visible = useCorners.value;
+            bottomLeftCorner.visible = false;
+          } else {
+            topCorner.visible = useCorners.value;
+            bottomCorner.visible = false;
+            bottomLeftCorner.visible = useCorners.value;
+          }
+        });
+      });
+    },
   });
   const dockRevealer = Revealer({
     attribute: {
@@ -306,7 +361,7 @@ export default (monitor = 0) => {
       },
     },
     revealChild: false,
-    transition: "slide_up",
+    transition: "crossfade",
     transitionDuration: opts.animations.durationSmall,
     child: dockContent,
     setup: (self) => {
@@ -364,3 +419,25 @@ export default (monitor = 0) => {
       }),
   });
 };
+
+export default (monitor = 0) =>
+  Widget.Window({
+    monitor,
+    name: `dock`,
+    child: Dock(monitor),
+    layer: "overlay",
+    anchor: ["bottom"],
+    setup: (self) => {
+      self.hook(dockMode, () => {
+        if (dockMode.value) {
+          self.hook(barPosition, () => {
+            self.anchor = ["right"]; // [antiVerticalAnchor()]; Todo
+          });
+        } else {
+          self.hook(barPosition, () => {
+            self.anchor = ["bottom"];
+          });
+        }
+      });
+    },
+  });

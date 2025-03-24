@@ -22,8 +22,8 @@
     }
   },
   "wallselect": {
+    "Vmode": true,
     "wallpaperFolder": "/Pictures/Wallpapers",
-    "showPicker": true,
     "width": 200,
     "height": 110,
     "radius": 20,

@@ -91,9 +91,9 @@ $bar_ws_width_focus_active: 6.045rem;
 
 .bar-knocks {
   @include menu_accel_fast;
+  @include normal-borders;
   border-radius: $rounding_mediumlarge;
   margin: 0.6rem 0;
-  border: 0.4px solid $outliner;
   background-color: $layer0;
   padding: 0rem 1rem;
   box-shadow: 0 4px 2px rgba($shadow, 0.15), 0 3px 4px rgba($shadow, 0.2);
@@ -107,7 +107,7 @@ $bar_ws_width_focus_active: 6.045rem;
 .bar-floating {
   background-color: $layer0;
   @include elevation2;
-  border: 0.4px solid rgba($outliner, 0.6);
+  border: 1px solid $outliner;
   @include anim-enter;
   @include normal-rounding;
   @include shadows1;
@@ -130,6 +130,7 @@ $bar_ws_width_focus_active: 6.045rem;
   @include small-rounding;
   @include elevation2;
   @include shadows1;
+  @include normal-borders;
   background-color: $background;
 }
 
@@ -148,6 +149,7 @@ $bar_ws_width_focus_active: 6.045rem;
   @include fluent_decel_long;
   @include shadows1;
   @include full-rounding;
+  @include normal-borders;
   background-color: $layer0;
   margin: 0.8rem 3rem;
   padding: 0.6rem 2rem;

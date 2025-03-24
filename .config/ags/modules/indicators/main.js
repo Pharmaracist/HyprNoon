@@ -9,26 +9,26 @@ export default (monitor = 0) =>
     name: `indicator${monitor}`,
     monitor,
     anchor: ["top"],
-    className: "indicator",
-    layer: "overlay",
     child: Widget.EventBox({
       onHover: () => {
         Indicator.popup(-1);
       },
       child: Widget.Box({
         vertical: true,
-        className: "osd-window",
         children: [
-          ColorschemeContent(),
+          ColorschemeContent(monitor),
           IndicatorValues(monitor),
           NotificationPopups(),
         ],
       }),
     }),
-    // setup: (self) => {
-    //   self.hook(barPosition, () => {
-    //     // self.anchor = [horizontalAnchor(), "left", "right"];
-    //     self.exclusivity = exclusive();
-    //   });
-    // },
+    setup: (self) => {
+      self.hook(barPosition, () => {
+        if (horizontalAnchor() === "top") {
+          self.exclusivity = "normal";
+        } else {
+          self.exclusivity = "ignore";
+        }
+      });
+    },
   });

@@ -16,6 +16,7 @@ import { dumpToWorkspace, swapWorkspace } from "./actions.js";
 import { iconExists, substitute } from "../.miscutils/icons.js";
 import { monitors } from "../.commondata/hyprlanddata.js";
 import { MaterialIcon } from "../.commonwidgets/materialicon.js";
+import { CornerBox } from "../.commonwidgets/cornerbox.js";
 import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
 // Cache user options
 const opts = await userOptions.asyncGet();
@@ -542,44 +543,47 @@ export default (overviewMonitor = 0) => {
           });
       },
     });
-  const elevate = opts.etc.widgetCorners
-    ? "overview-tasks overview-round"
-    : "overview-tasks elevation";
-  return Widget.Revealer({
-    revealChild: true,
-    hpack: opts.etc.widgetCorners ? "fill" : "center",
-    transition: "slide_down",
-    transitionDuration: opts.animations.durationHuge,
-    child: Widget.Box({
-      vertical: true,
-      children: [
-        Widget.Box({
-          vertical: true,
-          className: `${elevate}`,
-          children: Array.from(
-            { length: opts.overview.numOfRows },
-            (_, index) =>
-              OverviewRow({
-                startWorkspace: 1 + index * 5,
-                workspaces: 5,
-              })
-          ),
-        }),
-        opts.etc.widgetCorners
-          ? Widget.Box({
-              css: "margin-top:-1rem",
-              children: [
-                RoundedCorner("topleft", {
-                  className: "corner ",
-                }),
-                Widget.Box({ hexpand: true }),
-                RoundedCorner("topright", {
-                  className: "corner",
-                }),
-              ],
-            })
-          : null,
-      ],
-    }),
+  return Widget.Box({
+    vertical: true,
+    hexpand: true,
+    children: [
+      Widget.Box({
+        children: [
+          CornerBox("bottomleft", "end"),
+          Widget.Box({ hexpand: true }),
+          CornerBox("bottomright", "end"),
+        ],
+      }),
+      Widget.Box({
+        vertical: true,
+        homogeneous: true,
+        children: Array.from({ length: opts.overview.numOfRows }, (_, index) =>
+          OverviewRow({
+            startWorkspace: 1 + index * 5,
+            workspaces: 5,
+          })
+        ),
+        setup: (self) => {
+          self.hook(useCorners, () => {
+            self.hexpand = true;
+            self.className = useCorners.value
+              ? "overview-tasks"
+              : "overview-tasks elevation";
+          });
+        },
+      }),
+      Widget.Box({
+        children: [
+          CornerBox("topleft", "start"),
+          Widget.Box({ hexpand: true }),
+          CornerBox("topright", "start"),
+        ],
+      }),
+    ],
+    setup: (self) => {
+      self.hook(useCorners, () => {
+        self.hpack = useCorners.value ? "fill" : "center";
+      });
+    },
   });
 };

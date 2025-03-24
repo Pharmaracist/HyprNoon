@@ -4,24 +4,30 @@ import PopupWindow from "../.widgethacks/popupwindow.js";
 import Keybinds from "./keybinds.js";
 import { ExpandingIconTabContainer } from "../.commonwidgets/tabcontainer.js";
 import { checkKeybind } from "../.widgetutils/keybind.js";
-import clickCloseRegion from "../.commonwidgets/clickcloseregion.js";
+// import clickCloseRegion from "../.commonwidgets/clickcloseregion.js";
+// import dashboard from "./dashboard.js";
 import PeriodicTable from "./periodictable.js";
 import quran from "./quran.js";
 
 const cheatsheets = [
+  // {
+  //   name: getString("Dashboard"),
+  //   tablerIcon: "dashboard",
+  //   contentWidget: dashboard,
+  // }, TODO
   {
     name: getString("Keybinds"),
-    materialIcon: "keyboard",
+    tablerIcon: "ebd6",
     contentWidget: Keybinds,
   },
   {
     name: getString("Al Quran Al Kareem"),
-    materialIcon: "book",
+    tablerIcon: "f022",
     contentWidget: quran,
   },
   {
     name: getString("Periodic table"),
-    materialIcon: "experiment",
+    tablerIcon: "fd12",
     contentWidget: PeriodicTable,
   },
 ];
@@ -84,7 +90,7 @@ const SheetContent = (id) => {
     tabsHpack: "center",
     tabSwitcherClassName: "sidebar-icontabswitcher",
     transitionDuration: userOptions.asyncGet().animations.durationHuge,
-    icons: cheatsheets.map((api) => api.materialIcon),
+    icons: cheatsheets.map((api) => api.tablerIcon),
     names: cheatsheets.map((api) => api.name),
     children: cheatsheets.map((api) => api.contentWidget()),
     onChange: (self, id) => {

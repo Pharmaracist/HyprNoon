@@ -21,7 +21,34 @@ const SCHEMA_ID = "org.gnome.shell.extensions.ags";
 const KEY_BAR_MODE = "bar-mode";
 const KEY_BAR_POSITION = "bar-position";
 const KEY_USE_CORNERS = "use-corners"; // New schema key for UseCorners
+const KEY_DOCK_MODE = "vertical-mode";
+const KEY_WALLSELECT_MODE = "wall-mode";
+const COMPILED_STYLE_DIR = `${GLib.get_user_cache_dir()}/ags/user/generated`;
 const settings = new Gio.Settings({ schema_id: SCHEMA_ID });
+
+globalThis["handleStyles"] = () => {
+  // Utils.exec(`mkdir -p "${GLib.get_user_state_dir()}/ags/scss"`);
+  // let lightdark = darkMode.value;
+  // Utils.writeFileSync(
+  //   `@mixin symbolic-icon { -gtk-icon-theme: '${opts.icons.symbolicIconTheme[lightdark]}'}`,
+  //   `${GLib.get_user_state_dir()}/ags/scss/_lib_mixins_overrides.scss`
+  // );
+
+  async function applyStyle() {
+    // Utils.exec(`mkdir -p ${COMPILED_STYLE_DIR}`);
+    Utils.exec(`
+          sass -I "${GLib.get_user_state_dir()}/ags/scss" "${
+      App.configDir
+    }/scss/main.scss" "${COMPILED_STYLE_DIR}/style.css"
+        `);
+    App.resetCss();
+    App.applyCss(`${COMPILED_STYLE_DIR}/style.css`);
+  }
+
+  applyStyle().catch(print);
+};
+
+handleStyles();
 
 const getInitialMode = () => {
   const monitors = Hyprland.monitors;
@@ -39,7 +66,7 @@ export const barPosition = Variable(
 
 // Initialize UseCorners variable directly
 const getInitialUseCorners = () => {
-  return settings.get_boolean(KEY_USE_CORNERS) || false; // Read the boolean value, default to false
+  return settings.get_boolean(KEY_USE_CORNERS); //|| false; // Read the boolean value, default to false
 };
 export const useCorners = Variable(getInitialUseCorners());
 globalThis["useCorners"] = useCorners;
@@ -72,6 +99,7 @@ globalThis["toggleBarPosition"] = () => {
   barPosition.value = newPosition;
 };
 
+// Anchor mappings
 const horizontalAnchorMapping = {
   top: "top",
   left: "top",
@@ -124,7 +152,7 @@ globalThis["runMatugen"] = async () => {
       `bash`,
       `-c`,
       `${App.configDir}/scripts/color_generation/colorgen.sh`,
-    ]);
+    ]).then(handleStyles());
   } catch (error) {
     console.error("Error during color generation:", error);
   }
@@ -196,20 +224,48 @@ export const toggleUseCorners = () => {
   const newValue = !useCorners.value; // Toggle the current boolean value
   useCorners.value = newValue; // Update the variable
   settings.set_boolean(KEY_USE_CORNERS, newValue); // Save the new value to gsettings
-  print(`UseCorners toggled: ${newValue}`); // Optional: Print status for debugging
+  // print(`UseCorners toggled: ${newValue}`); // Optional: Print status for debugging
 };
 
 // Expose toggleUseCorners globally for external access
 globalThis["toggleUseCorners"] = () => toggleUseCorners();
 
-// Handle --run-js argument for toggleUseCorners (similar to bar method)
-const handleArgs = (args) => {
-  if (args.includes("toggleUseCorners")) {
-    toggleUseCorners();
-  }
+// Initialize UseCorners variable directly
+const getInitialDockMode = () => {
+  return settings.get_boolean(KEY_DOCK_MODE); // Read the boolean value, default to false
+};
+export const dockMode = Variable(getInitialDockMode());
+globalThis["dockMode"] = dockMode;
+
+export const toggleDockMode = () => {
+  const newValue = !dockMode.value; // Toggle the current boolean value
+  dockMode.value = newValue; // Update the variable
+  settings.set_boolean(KEY_DOCK_MODE, newValue); // Save the new value to gsettings
 };
 
-// Execute function based on args
-if (typeof ARGV !== "undefined") {
-  handleArgs(ARGV);
+// Expose toggleUseCorners globally for external access
+globalThis["toggleVerticalDock"] = () => toggleDockMode();
+function getWallMode() {
+  // Check if barPosition is left or right and return "true" or "false"
+  return barPosition.value === "left" || barPosition.value === "right"
+    ? "true"
+    : "false";
 }
+
+// globalThis["wallMode"] = getWallMode();
+
+// // Initialize Wallselect variable directly
+// const getInitialWallSelector = () => {
+//   return settings.get_boolean(KEY_WALLSELECT_MODE); // Read the boolean value, default to false
+// };
+// export const wallMode = Variable(getInitialWallSelector());
+// globalThis["wallMode"] = wallMode;
+
+// export const toggleWallMode = () => {
+//   const newValue = !wallMode.value; // Toggle the current boolean value
+//   wallMode.value = newValue; // Update the variable
+//   settings.set_boolean(KEY_WALLSELECT_MODE, newValue); // Save the new value to gsettings
+// };
+
+// // Expose toggleUseCorners globally for external access
+// globalThis["toggleWallMode"] = () => toggleWallMode();

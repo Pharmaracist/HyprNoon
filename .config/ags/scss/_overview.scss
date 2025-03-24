@@ -114,8 +114,7 @@
 
 .overview-tasks {
   @include shadows1;
-  margin-bottom: 1rem;
-  border-top: 0.2px solid $outliner;
+  @include fluent_accel;
   padding: 1rem;
   background-color: $layer0;
   color: $onLayer0;

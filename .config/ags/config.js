@@ -14,7 +14,7 @@ import { startAutoDarkModeService } from "./services/darkmode.js";
 import { Bar } from "./modules/bar/main.js";
 import Cheatsheet from "./modules/cheatsheet/main.js";
 import DesktopBackground from "./modules/desktopbackground/main.js";
-import Dock from "./modules/dock/main.js";
+import Dock from "./modules/dock/dock.js";
 import Corner from "./modules/screencorners/main.js";
 import Indicator from "./modules/indicators/main.js";
 import Overview from "./modules/overview/main.js";
@@ -24,9 +24,7 @@ import SideRight from "./modules/sideright/main.js";
 import Recorder from "./modules/indicators/recorder.js";
 import MusicWindow from "./modules/music/main.js";
 import Glance from "./modules/overview/glance.js";
-
-const COMPILED_STYLE_DIR = `${GLib.get_user_cache_dir()}/ags/user/generated`;
-
+// import { EmojisWindow } from "./modules/desktopbackground/onscreenwidgets/emojie.js";
 // Gather all the asynchronous operations to parallelize
 const startAllServices = Promise.all([
   userOptions.asyncGet(),
@@ -34,6 +32,7 @@ const startAllServices = Promise.all([
   startBatteryWarningService(),
   startAutoDarkModeService(),
 ]);
+const COMPILED_STYLE_DIR = `${GLib.get_user_cache_dir()}/ags/user/generated`;
 
 // Once all services are started, execute further logic
 startAllServices
@@ -46,31 +45,8 @@ startAllServices
       return range(n, 0).map(widget).flat(1);
     }
 
-    globalThis["handleStyles"] = () => {
-      Utils.exec(`mkdir -p "${GLib.get_user_state_dir()}/ags/scss"`);
-      let lightdark = darkMode.value;
-      Utils.writeFileSync(
-        `@mixin symbolic-icon { -gtk-icon-theme: '${opts.icons.symbolicIconTheme[lightdark]}'}`,
-        `${GLib.get_user_state_dir()}/ags/scss/_lib_mixins_overrides.scss`
-      );
-
-      async function applyStyle() {
-        Utils.exec(`mkdir -p ${COMPILED_STYLE_DIR}`);
-        Utils.exec(`
-          sass -I "${GLib.get_user_state_dir()}/ags/scss" "${
-          App.configDir
-        }/scss/main.scss" "${COMPILED_STYLE_DIR}/style.css"
-        `);
-        App.resetCss();
-        App.applyCss(`${COMPILED_STYLE_DIR}/style.css`);
-      }
-
-      applyStyle().catch(print);
-    };
-
-    handleStyles();
-
     let Modules = () => [
+      // EmojisWindow(),
       opts.modules.overview ? Overview() : [],
       opts.modules.indicators ? forMonitors(Indicator) : [],
       opts.modules.session ? forMonitors(Session) : [],

@@ -12,7 +12,8 @@ import { showColorScheme } from "../../variables.js";
 import { MaterialIcon } from "../.commonwidgets/materialicon.js";
 import { gowallArr } from "../.commondata/colorschemes.js";
 import { schemeOptionsArr } from "../.commondata/colorschemes.js";
-import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
+import { CornerBox } from "../.commonwidgets/cornerbox.js";
+
 const ColorBox = ({ name = "Color", ...rest }) =>
   Widget.Box({
     ...rest,
@@ -378,21 +379,6 @@ const ColorschemeContent = () =>
       }),
     ],
   });
-const CornerBox = (corner, vpack) =>
-  Widget.Box({
-    setup: (self) =>
-      self.hook(useCorners, () => {
-        self.children = useCorners.value
-          ? [
-              RoundedCorner(corner, {
-                vpack,
-                className: "corner-colorscheme corner",
-              }),
-            ]
-          : [];
-      }),
-  });
-
 const BorderedColorSchemeContent = () =>
   Widget.Box({
     children: [

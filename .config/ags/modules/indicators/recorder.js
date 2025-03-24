@@ -5,13 +5,8 @@ import PopupWindow from "../.widgethacks/popupwindow.js";
 import * as Utils from "resource:///com/github/Aylur/ags/utils.js";
 const { execAsync } = Utils;
 const { Box, Button, Label } = Widget;
-import { setupCursorHover } from "../.widgetutils/cursorhover.js";
-import { MaterialIcon } from "../.commonwidgets/materialicon.js";
-import { RoundedCorner } from "../.commonwidgets/cairo_roundedcorner.js";
-const elevate = userOptions.asyncGet().etc.widgetCorners
-  ? "record-rounding"
-  : "elevation";
-// State management
+import { rightCorners, leftCorners } from "../.commonwidgets/dynamiccorners.js";
+
 const isRecording = Variable(false);
 const isPaused = Variable(false);
 const isSilent = Variable(false);
@@ -112,52 +107,37 @@ const screenButton = Button({
   onClicked: () => (isScreen.value = !isScreen.value),
   child: ScreenIcon(),
 });
+const content = Box({
+  className: "recorder-bg elevation",
+  vertical: true,
+  vpack: "center",
+  spacing: 10,
+  children: [
+    recordButton,
+    pauseButton,
+    qualityButton,
+    audioButton,
+    screenButton,
+  ],
+});
 // Main widget
 export default () =>
   PopupWindow({
     name: "recorder",
-    anchor: ["top", "right", "bottom"],
     layer: "top",
-    child: Box({
-      vpack: "center",
-      vertical: true,
-      children: [
-        userOptions.asyncGet().etc.widgetCorners
-          ? RoundedCorner("bottomright", {
-              hpack: "end",
-              className: "corner corner-colorscheme",
-            })
-          : null,
-        Box({
-          vpack: "center",
-          className: "recorder-bg " + elevate,
-          vertical: true,
-          children: [
-            Box({
-              vertical: true,
-              vpack: "center",
-              spacing: 10,
-              children: [
-                recordButton,
-                pauseButton,
-                qualityButton,
-                audioButton,
-                screenButton,
-              ],
-            }),
-          ],
-        }),
-        userOptions.asyncGet().etc.widgetCorners
-          ? RoundedCorner("topright", {
-              hpack: "end",
-              className: "corner corner-colorscheme",
-            })
-          : null,
-      ],
-    }),
+    child: content,
+    // if (antiVerticalAnchor() === "right") {
+    //   rightCorners.visible = false;
+    //   leftCorners.visible = true;
+    // }
+    // if (antiVerticalAnchor() === "left") {
+    //   rightCorners.visible = true;
+    //   leftCorners.visible = false;
+    // }
+    // },
     setup: (self) => {
       self.hook(barPosition, () => {
-        self.anchor = [antiVerticalAnchor(), "top", "bottom"];
+        self.anchor = [antiVerticalAnchor()];
       });
     },
   });

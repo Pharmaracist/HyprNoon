@@ -177,6 +177,7 @@ export const Bar = async (monitor = 0) => {
     anchor: getAnchor(monitor, mode),
     exclusivity: "exclusive",
     visible: true,
+    layer: "top",
     child: stack,
     setup: (self) => {
       self.hook(currentShellMode, (w) => {
